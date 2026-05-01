@@ -1,0 +1,4116 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>公益 SKILL 对话 Demo v3</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", sans-serif;
+  background: #e5e5e5;
+  height: 100vh;
+  overflow: hidden;
+  color: #111;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 左侧：路径选择器 */
+.path-selector {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 280px;
+  background: #1a1a1a;
+  padding: 24px 20px;
+  color: #fff;
+  overflow-y: auto;
+}
+
+.ps-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.ps-subtitle {
+  font-size: 11px;
+  color: #888;
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+
+.ps-section {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #666;
+  margin-bottom: 10px;
+  margin-top: 20px;
+}
+
+.path-item {
+  background: #252525;
+  border: 1px solid #2a2a2a;
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.path-item:hover { background: #2d2d2d; }
+
+.path-item.active {
+  background: #07c160;
+  border-color: #07c160;
+}
+
+.path-item .pi-label {
+  font-size: 11px;
+  color: #888;
+  margin-bottom: 2px;
+}
+
+.path-item.active .pi-label { color: rgba(255,255,255,0.75); }
+
+.path-item .pi-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #eee;
+  margin-bottom: 4px;
+}
+
+.path-item.active .pi-title { color: #fff; }
+
+.path-item .pi-desc {
+  font-size: 11px;
+  color: #888;
+  line-height: 1.5;
+}
+
+.path-item.active .pi-desc { color: rgba(255,255,255,0.8); }
+
+.ps-note {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid #2a2a2a;
+  font-size: 10px;
+  color: #555;
+  line-height: 1.6;
+}
+
+/* 右侧：手机外壳 */
+.phone-shell {
+  position: fixed;
+  left: 280px;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: #e5e5e5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.phone {
+  width: 390px;
+  height: 100%;
+  max-height: 844px;
+  background: #ededed;
+  border-radius: 40px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+  overflow: hidden;
+  position: relative;
+  border: 10px solid #1a1a1a;
+}
+
+.status-bar {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 44px;
+  padding: 0 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 600;
+  z-index: 10;
+}
+
+.nav-bar {
+  position: absolute;
+  top: 44px; left: 0; right: 0;
+  height: 44px;
+  background: #ededed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 0.5px solid #d9d9d9;
+  z-index: 10;
+}
+
+.nav-back {
+  position: absolute;
+  left: 12px;
+  font-size: 24px;
+  color: #000;
+  font-weight: 300;
+}
+
+.nav-title {
+  font-size: 17px;
+  font-weight: 500;
+  color: #000;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.nav-ai-dot {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #a78bfa 0%, #ec4899 50%, #f59e0b 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-ai-dot::before {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9), rgba(255,255,255,0) 50%);
+}
+
+.nav-agent-icon {
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  background: linear-gradient(135deg, #07c160, #0ab877);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+}
+
+.nav-right {
+  position: absolute;
+  right: 12px;
+  font-size: 24px;
+  color: #000;
+}
+
+/* 对话区 */
+.chat {
+  position: absolute;
+  top: 88px;
+  bottom: 56px;
+  left: 0;
+  right: 0;
+  overflow-y: auto;
+  padding: 20px 14px 24px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.chat::-webkit-scrollbar { display: none; }
+
+/* 时间戳 */
+.time-stamp {
+  text-align: center;
+  font-size: 11px;
+  color: #888;
+  margin: 8px 0 16px;
+}
+
+.time-stamp span {
+  background: rgba(169, 169, 169, 0.4);
+  color: #fff;
+  padding: 2px 8px;
+  border-radius: 3px;
+}
+
+/* 消息行 */
+.msg {
+  display: flex;
+  margin-bottom: 14px;
+  align-items: flex-start;
+  opacity: 0;
+  animation: msgIn 0.35s cubic-bezier(0.17, 0.67, 0.3, 1) forwards;
+}
+
+/* 连续的Agent消息（两条紧挨）缩小间距 */
+.msg.agent + .msg.agent {
+  margin-top: -8px;
+}
+.msg.user + .msg.user {
+  margin-top: -8px;
+}
+
+@keyframes msgIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.msg.user { justify-content: flex-end; }
+
+.msg .avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 4px;
+  flex-shrink: 0;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.msg.agent .avatar {
+  background: linear-gradient(135deg, #a78bfa 0%, #ec4899 50%, #f59e0b 100%);
+  font-size: 16px;
+  position: relative;
+  overflow: hidden;
+  color: transparent;
+}
+
+.msg.agent .avatar::after {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border-radius: 3px;
+  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9), rgba(255,255,255,0) 55%);
+}
+
+.msg.user .avatar {
+  background: #d8d8d8;
+  font-size: 18px;
+  color: #666;
+  margin-left: 8px;
+}
+
+.msg.agent .avatar { margin-right: 8px; }
+
+.bubble {
+  max-width: 260px;
+  padding: 10px 14px;
+  font-size: 15px;
+  line-height: 1.45;
+  word-break: break-word;
+  position: relative;
+  border-radius: 6px;
+}
+
+.msg.user .bubble {
+  background: #95ec69;
+  color: #111;
+}
+
+.msg.agent .bubble {
+  background: #fff;
+  color: #111;
+}
+
+.msg.user .bubble::before {
+  content: '';
+  position: absolute;
+  top: 10px;
+  right: -5px;
+  width: 0;
+  height: 0;
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+  border-left: 6px solid #95ec69;
+}
+
+.msg.agent .bubble::before {
+  content: '';
+  position: absolute;
+  top: 10px;
+  left: -5px;
+  width: 0;
+  height: 0;
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+  border-right: 6px solid #fff;
+}
+
+/* 快捷气泡组（选项） */
+.quick-group {
+  margin-left: 44px;
+  margin-top: 8px;
+  margin-bottom: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  opacity: 0;
+  animation: msgIn 0.35s cubic-bezier(0.17, 0.67, 0.3, 1) 0.1s forwards;
+  max-width: 280px;
+  position: relative;
+}
+
+.quick-group.flagged {
+  padding: 10px 8px 8px;
+  background: repeating-linear-gradient(45deg, rgba(255,159,67,0.05) 0 8px, transparent 8px 16px);
+  border: 1px dashed rgba(255,159,67,0.3);
+  border-radius: 8px;
+}
+
+.quick-group-flag {
+  position: absolute;
+  top: -9px;
+  left: 6px;
+  background: #ff9f43;
+  color: #fff;
+  font-size: 9px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.quick-btn {
+  background: #fff;
+  border: 0.5px solid #d8d8d8;
+  border-radius: 14px;
+  padding: 6px 14px;
+  font-size: 13px;
+  color: #07c160;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+
+.quick-btn:active {
+  background: #f5f5f5;
+  transform: scale(0.97);
+}
+
+.quick-btn.used {
+  color: #999;
+  background: #f5f5f5;
+  pointer-events: none;
+}
+
+/* Agent 卡片 */
+.card-wrap {
+  margin-left: 44px;
+  margin-top: 6px;
+  margin-bottom: 18px;
+  max-width: 280px;
+  opacity: 0;
+  animation: cardIn 0.4s cubic-bezier(0.17, 0.67, 0.3, 1) forwards;
+}
+
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(12px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* 项目推荐卡 */
+.proj-card {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.04);
+  border: 0.5px solid rgba(0,0,0,0.06);
+}
+
+.proj-img {
+  width: 100%;
+  height: 140px;
+  position: relative;
+  overflow: hidden;
+  background: #f5f5f5;
+}
+
+/* v6: 主图占比变大 + 底部机构角标 */
+.proj-hero {
+  width: 100%;
+  height: 200px;
+  position: relative;
+  overflow: hidden;
+  background: #e8e8e8;
+}
+
+.proj-hero-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.proj-hero .proj-img-inner {
+  font-size: 88px;
+}
+
+.proj-hero-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 40px 14px 12px;
+  background: linear-gradient(to top, rgba(0,0,0,0.65), rgba(0,0,0,0) 100%);
+}
+
+.proj-org-badge {
+  color: rgba(255,255,255,0.95);
+  font-size: 11px;
+  letter-spacing: 0.03em;
+  padding: 4px 10px;
+  background: rgba(255,255,255,0.15);
+  border: 0.5px solid rgba(255,255,255,0.25);
+  border-radius: 3px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: inline-block;
+}
+
+/* 故事为主——字号大、行距宽 */
+.story-lead {
+  font-size: 14.5px;
+  color: #1a1a1a;
+  line-height: 1.7;
+  margin: 0 0 14px;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+}
+
+.story-lead .highlight {
+  color: #78350f;
+  font-weight: 500;
+  background: linear-gradient(transparent 60%, rgba(245, 158, 11, 0.3) 60%);
+  padding: 0 1px;
+}
+
+.story-lead b {
+  color: #e8413c;
+  font-weight: 600;
+}
+
+.story-more {
+  color: #07c160;
+  font-size: 13px;
+  cursor: pointer;
+  white-space: nowrap;
+  margin-left: 2px;
+  font-weight: 500;
+}
+
+.story-more:active {
+  opacity: 0.6;
+}
+
+/* 标题缩小为次要信息 */
+.proj-title-row {
+  margin-bottom: 12px;
+}
+
+.proj-title-small {
+  font-size: 12.5px;
+  color: #999;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+}
+
+.proj-title-small::before {
+  content: '— ';
+  color: #ccc;
+}
+
+/* 信任贴片带（模式4） */
+.trust-chips {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+
+.trust-chip {
+  font-size: 10.5px;
+  color: #666;
+  background: #f4f5f7;
+  padding: 4px 9px;
+  border-radius: 4px;
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+}
+
+.trust-chip:last-child {
+  color: #047857;
+  background: #f0fdf4;
+}
+
+.proj-img-inner {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 56px;
+  position: relative;
+}
+
+.proj-img-inner.chunlei {
+  background: linear-gradient(135deg, #ffd89b 0%, #f8a5a5 100%);
+}
+
+.proj-img-inner.library {
+  background: linear-gradient(135deg, #a8edea 0%, #7ad5ca 100%);
+}
+
+.proj-img-inner.elderly {
+  background: linear-gradient(135deg, #ffc3a0 0%, #ffafbd 100%);
+}
+
+.proj-img-inner.animal {
+  background: linear-gradient(135deg, #d4fc79, #96e6a1);
+}
+
+.proj-img-inner.warmth {
+  background: linear-gradient(135deg, #c2e9fb 0%, #a1c4fd 100%);
+}
+
+.proj-tag-overlay {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: rgba(0,0,0,0.6);
+  color: #fff;
+  font-size: 10px;
+  padding: 3px 8px;
+  border-radius: 10px;
+  backdrop-filter: blur(4px);
+}
+
+.proj-body {
+  padding: 16px 16px 14px;
+}
+
+.proj-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #111;
+  margin-bottom: 4px;
+  line-height: 1.3;
+}
+
+.proj-org {
+  font-size: 11px;
+  color: #666;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.proj-org-verify {
+  color: #07c160;
+  font-weight: 600;
+  font-size: 10px;
+}
+
+.proj-tags {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.proj-tag {
+  font-size: 10px;
+  padding: 2px 6px;
+  background: #fff5f5;
+  color: #e8413c;
+  border-radius: 3px;
+  border: 0.5px solid #ffe0e0;
+}
+
+/* 具体故事段——不是"营销 AI 推荐"，而是"讲一个具体的人" */
+.why-box {
+  background: linear-gradient(135deg, #fefcf5 0%, #fef7e8 100%);
+  border-left: 2px solid #f59e0b;
+  padding: 11px 13px;
+  margin-bottom: 12px;
+  border-radius: 0 6px 6px 0;
+}
+
+.why-label {
+  font-size: 10.5px;
+  color: #b45309;
+  font-weight: 600;
+  margin-bottom: 4px;
+  letter-spacing: 0.04em;
+}
+
+.why-text {
+  font-size: 13px;
+  color: #3f2f10;
+  line-height: 1.6;
+}
+
+.why-text .highlight {
+  background: rgba(245, 158, 11, 0.18);
+  padding: 0 2px;
+  border-radius: 2px;
+  font-weight: 500;
+  color: #78350f;
+}
+
+/* 进度 */
+.proj-progress {
+  margin-bottom: 16px;
+  padding-top: 4px;
+}
+
+.prog-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 11.5px;
+  color: #666;
+  margin-bottom: 6px;
+}
+
+.prog-row .prog-pct {
+  color: #e8413c;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.prog-remain {
+  font-size: 10.5px;
+  color: #999;
+}
+
+.prog-bar {
+  height: 3px;
+  background: #f0f0f0;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.prog-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #ff8b9a, #e8413c);
+  border-radius: 2px;
+  transition: width 1.2s ease-out;
+}
+
+/* 主"我想帮一下"按钮 */
+.help-btn {
+  width: 100%;
+  height: 46px;
+  margin-top: 8px;
+  border: none;
+  border-radius: 10px;
+  background: #e8413c;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  letter-spacing: 0.03em;
+  transition: all 0.15s;
+}
+
+.help-btn:active {
+  transform: scale(0.99);
+  background: #d4362f;
+}
+
+/* 金额按钮组（卡片内部） */
+.amount-group {
+  margin-top: 4px;
+  margin-bottom: 0;
+}
+
+.amount-label {
+  font-size: 11px;
+  color: #888;
+  margin-bottom: 8px;
+}
+
+.amount-row {
+  display: flex;
+  gap: 6px;
+}
+
+.amount-btn {
+  flex: 1;
+  height: 40px;
+  border: 1px solid #eee;
+  background: #fafafa;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.amount-btn:active {
+  background: #f0f0f0;
+  transform: scale(0.97);
+}
+
+.amount-btn .ab-num {
+  font-size: 14px;
+  font-weight: 600;
+  color: #e8413c;
+  line-height: 1;
+}
+
+.amount-btn .ab-sub {
+  font-size: 9px;
+  color: #999;
+  margin-top: 2px;
+}
+
+.amount-btn.primary {
+  background: linear-gradient(135deg, #ff8b9a, #e8413c);
+  border-color: #e8413c;
+}
+
+.amount-btn.primary .ab-num { color: #fff; }
+.amount-btn.primary .ab-sub { color: rgba(255,255,255,0.85); }
+
+.change-btn {
+  width: 100%;
+  height: 38px;
+  margin-top: 8px;
+  border: 1px solid #e5e5e5;
+  background: #fafafa;
+  color: #666;
+  font-size: 13px;
+  cursor: pointer;
+  border-radius: 10px;
+  transition: all 0.15s;
+}
+
+.change-btn:hover {
+  background: #f0f0f0;
+  color: #333;
+}
+
+.change-btn:active {
+  background: #eaeaea;
+  transform: scale(0.99);
+}
+
+/* 进展卡片 */
+.prog-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 14px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+  border: 0.5px solid rgba(0,0,0,0.06);
+}
+
+.prog-card-header {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.prog-card-thumb {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #ffd89b 0%, #f8a5a5 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.prog-card-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.prog-card-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #111;
+  margin-bottom: 2px;
+}
+
+.prog-card-meta {
+  font-size: 11px;
+  color: #888;
+}
+
+.prog-update {
+  background: #fff9e6;
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 12px;
+  position: relative;
+}
+
+.prog-update-badge {
+  position: absolute;
+  top: -6px;
+  right: 10px;
+  background: #ff7e40;
+  color: #fff;
+  font-size: 9px;
+  padding: 2px 6px;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+.prog-update-date {
+  font-size: 10px;
+  color: #b08300;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.prog-update-text {
+  font-size: 13px;
+  color: #4a3c00;
+  line-height: 1.5;
+}
+
+.prog-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.prog-stat {
+  background: #f8f9fa;
+  border-radius: 6px;
+  padding: 8px 10px;
+}
+
+.prog-stat-label {
+  font-size: 10px;
+  color: #999;
+  margin-bottom: 2px;
+}
+
+.prog-stat-value {
+  font-size: 15px;
+  font-weight: 600;
+  color: #333;
+}
+
+.prog-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.prog-action-btn {
+  flex: 1;
+  height: 34px;
+  border-radius: 17px;
+  border: 1px solid #e0e0e0;
+  background: #fff;
+  color: #555;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.prog-action-btn:active {
+  background: #f5f5f5;
+  transform: scale(0.98);
+}
+
+.prog-action-btn.primary {
+  background: linear-gradient(135deg, #07c160, #0ab877);
+  color: #fff;
+  border: none;
+  font-weight: 500;
+}
+
+/* 完成卡 */
+.done-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 28px 18px 18px;
+  text-align: center;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+  border: 0.5px solid rgba(0,0,0,0.06);
+  position: relative;
+}
+
+.done-mark {
+  margin-bottom: 16px;
+  animation: doneMarkIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s both;
+  display: flex;
+  justify-content: center;
+}
+
+@keyframes doneMarkIn {
+  0% { transform: scale(0) rotate(-15deg); opacity: 0; }
+  100% { transform: scale(1) rotate(0); opacity: 1; }
+}
+
+.done-bg-flower {
+  display: none;
+}
+
+.done-flower-anim {
+  display: none;
+}
+
+.done-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #111;
+  margin-bottom: 6px;
+}
+
+.done-amount {
+  font-size: 24px;
+  font-weight: 700;
+  color: #e8413c;
+  margin-bottom: 8px;
+}
+
+.done-where {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 14px;
+  line-height: 1.5;
+}
+
+.done-promise {
+  background: #f7faf5;
+  border-radius: 8px;
+  padding: 12px 14px;
+  margin: 14px 0 16px;
+  font-size: 12.5px;
+  color: #2e4a34;
+  line-height: 1.6;
+  text-align: left;
+}
+
+.done-promise-icon {
+  display: none;
+}
+
+.done-flower-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #fff5f5;
+  color: #e8413c;
+  padding: 5px 12px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 500;
+  margin-bottom: 12px;
+}
+
+.done-btn-main {
+  width: 100%;
+  padding: 14px 16px;
+  border: none;
+  border-radius: 24px;
+  background: linear-gradient(135deg, #fff5f5, #ffe4e1);
+  color: #e8413c;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 2px 10px rgba(232,65,60,0.12);
+  border: 1px solid rgba(232,65,60,0.15);
+  transition: all 0.15s;
+  margin-top: 4px;
+}
+
+.done-btn-main:active {
+  transform: scale(0.97);
+  background: linear-gradient(135deg, #ffeaea, #ffd7d2);
+}
+
+.done-btn-sub {
+  flex: 1;
+  padding: 10px 12px;
+  border: 1px solid #e8e8e8;
+  border-radius: 10px;
+  background: #fff;
+  color: #555;
+  font-size: 13px;
+  font-weight: 400;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.done-btn-sub:active {
+  background: #f5f5f5;
+  transform: scale(0.98);
+}
+
+.done-btn-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.done-refund {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.done-refund a {
+  font-size: 11px;
+  color: #999;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.done-refund a:active { color: #07c160; }
+
+/* 资金流向预告（模式2 工具透明） */
+.fund-flow {
+  background: #f8faf8;
+  border-radius: 10px;
+  padding: 14px 14px 8px;
+  margin: 14px 0;
+  text-align: left;
+}
+
+.fund-flow-label {
+  font-size: 11px;
+  color: #666;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+.fund-step {
+  display: flex;
+  gap: 10px;
+  padding-bottom: 10px;
+  position: relative;
+}
+
+.fund-step:not(.last)::before {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 14px;
+  bottom: -2px;
+  width: 1.5px;
+  background: #d8e6d8;
+}
+
+.fund-step-dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #d0d0d0;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.fund-step-dot.active {
+  background: #07c160;
+  box-shadow: 0 0 0 3px rgba(7,193,96,0.15);
+}
+
+.fund-step-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.fund-step-main {
+  font-size: 12.5px;
+  color: #333;
+  line-height: 1.3;
+  font-weight: 500;
+}
+
+.fund-step.last .fund-step-main { color: #555; }
+.fund-step:first-child .fund-step-main { color: #07c160; font-weight: 600; }
+
+.fund-step-sub {
+  font-size: 10px;
+  color: #999;
+  margin-top: 2px;
+}
+
+.done-btns {
+  display: flex;
+  gap: 6px;
+}
+
+.done-btn {
+  flex: 1;
+  height: 36px;
+  border-radius: 18px;
+  border: 1px solid #e0e0e0;
+  background: #fff;
+  color: #555;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.done-btn.primary {
+  border: none;
+  background: #07c160;
+  color: #fff;
+}
+
+.done-btn:active { transform: scale(0.98); }
+
+/* 新版支付半屏：主金额展示 + 抽屉式改金额 */
+.pay-amount-display {
+  text-align: center;
+  padding: 20px 0 24px;
+  border-bottom: 0.5px solid #f0f0f0;
+  margin-bottom: 4px;
+  position: relative;
+}
+
+.pay-amount-main {
+  font-size: 40px;
+  font-weight: 700;
+  color: #e8413c;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.pay-amount-sub {
+  font-size: 12px;
+  color: #888;
+  margin-top: 8px;
+  line-height: 1.4;
+}
+
+.pay-amount-edit {
+  display: inline-block;
+  margin-top: 10px;
+  font-size: 12px;
+  color: #07c160;
+  cursor: pointer;
+  padding: 4px 10px;
+  border-radius: 12px;
+  background: rgba(7, 193, 96, 0.08);
+  transition: background 0.15s;
+}
+
+.pay-amount-edit:active {
+  background: rgba(7, 193, 96, 0.16);
+}
+
+.pay-row-simple {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 0.5px solid #f0f0f0;
+}
+
+.pay-row-simple:last-of-type {
+  border-bottom: none;
+}
+
+.amount-picker {
+  margin-top: 16px;
+  padding: 14px;
+  background: #f8f9fa;
+  border-radius: 10px;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.amount-picker.open {
+  max-height: 200px;
+  opacity: 1;
+}
+
+/* 常态展开的金额选择 */
+.amount-picker-always {
+  margin: 0 0 14px;
+}
+
+.amount-picker-title {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.amount-picker-row {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.ap-btn {
+  flex: 1;
+  min-width: 60px;
+  height: 54px;
+  border: 1px solid #e0e0e0;
+  background: #fff;
+  border-radius: 8px;
+  font-size: 13px;
+  color: #333;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 4px 2px;
+}
+
+.ap-btn:active {
+  transform: scale(0.96);
+}
+
+.ap-btn.ap-active {
+  border-color: #e8413c;
+  color: #e8413c;
+  background: #fff5f2;
+  font-weight: 600;
+}
+
+.ap-btn.ap-custom {
+  color: #07c160;
+  border-color: #e0e0e0;
+  border-style: dashed;
+}
+
+.ap-num {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.ap-desc {
+  font-size: 9px;
+  color: #888;
+  line-height: 1.1;
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+.ap-btn.ap-active .ap-desc {
+  color: #e8413c;
+  opacity: 0.75;
+}
+
+/* 月捐勾选框 */
+.monthly-toggle {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 12px 14px;
+  background: #fafafa;
+  border-radius: 10px;
+  margin: 14px 0 8px;
+  cursor: pointer;
+  transition: background 0.15s;
+  border: 1px solid transparent;
+}
+
+.monthly-toggle:active {
+  background: #f0f0f0;
+}
+
+.monthly-toggle.checked {
+  background: #fff5f2;
+  border-color: rgba(232, 65, 60, 0.2);
+}
+
+.monthly-check {
+  font-size: 18px;
+  color: #bbb;
+  line-height: 1;
+  flex-shrink: 0;
+  margin-top: 1px;
+  transition: color 0.2s;
+}
+
+.monthly-toggle.checked .monthly-check {
+  color: #e8413c;
+}
+
+.monthly-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.monthly-title {
+  font-size: 13.5px;
+  color: #333;
+  font-weight: 500;
+  margin-bottom: 2px;
+}
+
+.monthly-toggle.checked .monthly-title {
+  color: #e8413c;
+}
+
+.monthly-sub {
+  font-size: 11.5px;
+  color: #888;
+  line-height: 1.45;
+}
+
+.monthly-sub b {
+  color: #555;
+}
+
+.monthly-toggle.checked .monthly-sub b {
+  color: #e8413c;
+}
+
+/* 半屏 overlay 基础 */
+.half-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.4);
+  z-index: 50;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s;
+}
+
+.half-overlay.active { opacity: 1; pointer-events: all; }
+
+.half-sheet {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border-radius: 14px 14px 0 0;
+  transform: translateY(100%);
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  max-height: 70%;
+  overflow-y: auto;
+}
+
+.half-overlay.active .half-sheet { transform: translateY(0); }
+
+.hs-handle {
+  width: 36px;
+  height: 4px;
+  background: #ddd;
+  border-radius: 2px;
+  margin: 10px auto 8px;
+}
+
+.hs-header {
+  padding: 8px 20px 16px;
+  border-bottom: 0.5px solid #f0f0f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.hs-title {
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.hs-close {
+  font-size: 20px;
+  color: #888;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.hs-body {
+  padding: 16px 20px 28px;
+}
+
+.pay-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 0;
+  border-bottom: 0.5px solid #f0f0f0;
+}
+
+.pay-row:last-child { border-bottom: none; }
+
+.pay-label {
+  font-size: 14px;
+  color: #888;
+}
+
+.pay-value {
+  font-size: 14px;
+  color: #111;
+  font-weight: 500;
+}
+
+.pay-amount {
+  font-size: 22px;
+  font-weight: 700;
+  color: #e8413c;
+}
+
+.pay-method-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pay-method-icon .wxpay {
+  width: 18px;
+  height: 18px;
+  background: #07c160;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.pay-btn {
+  width: 100%;
+  height: 46px;
+  margin-top: 20px;
+  border: none;
+  background: #07c160;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.pay-btn:active { opacity: 0.9; }
+
+.pay-safety {
+  text-align: center;
+  font-size: 11px;
+  color: #999;
+  margin-top: 12px;
+}
+
+/* 进展详情半屏 */
+.timeline {
+  padding: 8px 0 0;
+}
+
+.tl-item {
+  display: flex;
+  gap: 14px;
+  padding-bottom: 20px;
+  position: relative;
+}
+
+.tl-item:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 14px;
+  bottom: 0;
+  width: 1px;
+  background: #e5e5e5;
+}
+
+.tl-item:first-child .tl-dot {
+  background: #07c160;
+  box-shadow: 0 0 0 3px rgba(7, 193, 96, 0.15);
+}
+
+.tl-dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #ccc;
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+
+.tl-content {
+  flex: 1;
+  min-width: 0;
+  padding-bottom: 0;
+}
+
+.tl-date {
+  font-size: 11px;
+  color: #999;
+  margin-bottom: 4px;
+  font-weight: 500;
+}
+
+.tl-text {
+  font-size: 13.5px;
+  color: #111;
+  line-height: 1.55;
+  margin-bottom: 8px;
+}
+
+.tl-item:first-child .tl-text {
+  font-weight: 500;
+}
+
+.tl-photo {
+  width: 100%;
+  height: 90px;
+  background: linear-gradient(135deg, #e9f5db, #cfe1b9);
+  border-radius: 8px;
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6c8043;
+  font-size: 11px;
+}
+
+.tl-photo.receipt {
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  color: #92400e;
+}
+
+.tl-photo.letter {
+  background: linear-gradient(135deg, #fce7f3, #fbcfe8);
+  color: #9d174d;
+}
+
+/* 底部输入栏 */
+.input-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 56px;
+  background: #f7f7f7;
+  border-top: 0.5px solid #d9d9d9;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  gap: 8px;
+  z-index: 5;
+}
+
+.input-icon {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  color: #333;
+}
+
+.input-field {
+  flex: 1;
+  height: 36px;
+  border-radius: 4px;
+  border: none;
+  background: #fff;
+  padding: 0 12px;
+  font-size: 15px;
+  outline: none;
+}
+
+.input-field:focus { outline: none; }
+
+.input-send {
+  padding: 0 14px;
+  height: 36px;
+  background: #07c160;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  display: none;
+}
+
+.input-send.show { display: block; }
+
+/* 捐赠证书半屏（腾讯公益官方风格） */
+.cert-sheet {
+  background: linear-gradient(180deg, #fff5ef 0%, #fff 40%);
+}
+
+.cert-frame {
+  background: linear-gradient(180deg, #fffaf4 0%, #fdf3e4 100%);
+  border: 1.5px solid #d4a54a;
+  border-radius: 6px;
+  padding: 28px 24px 22px;
+  position: relative;
+  box-shadow: 0 2px 20px rgba(212, 165, 74, 0.15);
+  margin-bottom: 20px;
+}
+
+/* 边角花纹 */
+.cert-corner {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  pointer-events: none;
+}
+.cert-corner::before {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #d4a54a 20%, transparent 22%);
+  background-size: 4px 4px;
+  opacity: 0.5;
+}
+.cert-corner-tl { top: 6px; left: 6px; }
+.cert-corner-tr { top: 6px; right: 6px; }
+.cert-corner-bl { bottom: 6px; left: 6px; }
+.cert-corner-br { bottom: 6px; right: 6px; }
+
+/* 顶部金色"捐赠证书"标题 */
+.cert-crown {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.cert-crown-deco {
+  width: 30px;
+  height: 16px;
+  background: linear-gradient(90deg, transparent, #d4a54a, transparent);
+  position: relative;
+}
+
+.cert-crown-deco::before,
+.cert-crown-deco::after {
+  content: '';
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #d4a54a;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.cert-crown-deco-l::before { left: 0; }
+.cert-crown-deco-l::after { right: 10px; }
+.cert-crown-deco-r::before { left: 10px; }
+.cert-crown-deco-r::after { right: 0; }
+
+.cert-crown-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #c89245;
+  letter-spacing: 0.3em;
+  padding-left: 0.3em;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.6);
+  background: linear-gradient(180deg, #e8c47a 0%, #b88032 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.cert-no {
+  text-align: center;
+  font-size: 11px;
+  color: #b88032;
+  letter-spacing: 0.05em;
+  margin-bottom: 28px;
+  font-family: 'SF Mono', Monaco, monospace;
+}
+
+.cert-recipient {
+  text-align: center;
+  font-size: 22px;
+  font-weight: 600;
+  color: #3d2a15;
+  margin-bottom: 8px;
+  letter-spacing: 0.08em;
+}
+
+.cert-divider {
+  width: 60px;
+  height: 1px;
+  background: #d4a54a;
+  margin: 0 auto 18px;
+  position: relative;
+}
+.cert-divider::before,
+.cert-divider::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #d4a54a;
+  transform: translateY(-50%);
+}
+.cert-divider::before { left: -8px; }
+.cert-divider::after { right: -8px; }
+
+.cert-body {
+  text-align: center;
+  font-size: 13.5px;
+  color: #3d2a15;
+  line-height: 2;
+  margin-bottom: 28px;
+  letter-spacing: 0.02em;
+}
+
+.cert-amount {
+  font-weight: 700;
+  color: #c72e24;
+  font-size: 15px;
+  padding: 0 2px;
+}
+
+.cert-sign-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding-top: 8px;
+  position: relative;
+}
+
+.cert-org-sign {
+  font-size: 11px;
+  color: #6b4a22;
+  line-height: 1.7;
+}
+
+.cert-org-name {
+  font-weight: 500;
+}
+
+.cert-date {
+  color: #8b6834;
+}
+
+/* 印章 */
+.cert-stamp {
+  position: relative;
+  margin-right: -4px;
+}
+
+.cert-stamp-ring {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  border: 2px solid #c72e24;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.85;
+  transform: rotate(-8deg);
+}
+
+.cert-stamp-star {
+  font-size: 22px;
+  color: #c72e24;
+  line-height: 1;
+}
+
+.cert-stamp-text-top,
+.cert-stamp-text-bottom {
+  position: absolute;
+  font-size: 7px;
+  color: #c72e24;
+  font-weight: 600;
+  white-space: nowrap;
+  letter-spacing: 0.08em;
+}
+
+.cert-stamp-text-top {
+  top: 4px;
+  transform: rotate(0);
+}
+
+.cert-stamp-text-bottom {
+  bottom: 4px;
+}
+
+/* 底部操作 */
+.cert-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-top: 6px;
+}
+
+.cert-action {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  width: 52px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.cert-action:active {
+  opacity: 0.5;
+}
+
+.cert-action span {
+  font-size: 10px;
+  color: #999;
+}
+
+.cert-share-btn {
+  flex: 1;
+  height: 42px;
+  border: 1.5px solid #e8413c;
+  background: #fff;
+  color: #e8413c;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 22px;
+  cursor: pointer;
+}
+
+.cert-share-btn:active {
+  background: #fff5f5;
+}
+
+/* 项目深度卡半屏 */
+.deep-ai-block {
+  background: linear-gradient(135deg, #f8faf8 0%, #f0f7f4 100%);
+  border-left: 2px solid #07c160;
+  padding: 12px 14px;
+  border-radius: 0 8px 8px 0;
+  margin-bottom: 20px;
+}
+
+.deep-ai-label {
+  font-size: 11px;
+  color: #07c160;
+  font-weight: 600;
+  margin-bottom: 6px;
+  letter-spacing: 0.04em;
+}
+
+.deep-ai-text {
+  font-size: 13.5px;
+  color: #1a3326;
+  line-height: 1.6;
+}
+
+.deep-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.deep-stat-item {
+  background: #fafafa;
+  border-radius: 10px;
+  padding: 14px 8px;
+  text-align: center;
+  border: 0.5px solid #eee;
+}
+
+.deep-stat-value {
+  font-size: 17px;
+  font-weight: 700;
+  color: #111;
+  line-height: 1.1;
+  margin-bottom: 4px;
+  letter-spacing: -0.01em;
+}
+
+.deep-stat-label {
+  font-size: 10.5px;
+  color: #888;
+  line-height: 1.3;
+}
+
+.deep-why {
+  background: #fff9f0;
+  border-radius: 10px;
+  padding: 14px;
+  margin-bottom: 20px;
+  border: 0.5px solid #fde4a6;
+}
+
+.deep-why-title {
+  font-size: 12.5px;
+  color: #92400e;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.deep-why-list div {
+  font-size: 12.5px;
+  color: #4a3c00;
+  line-height: 1.7;
+}
+
+.deep-why-note {
+  font-size: 10.5px;
+  color: #b45309;
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 0.5px dashed rgba(180, 83, 9, 0.3);
+  line-height: 1.5;
+}
+
+/* 深度卡 · 模块通用标题 */
+.deep-section {
+  margin-bottom: 20px;
+}
+
+.deep-section-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.deep-section-title-extra {
+  font-size: 11px;
+  color: #999;
+  font-weight: 400;
+}
+
+/* 深度卡 · 执行地区覆盖 */
+.deep-regions {
+  background: #fafafa;
+  border-radius: 10px;
+  padding: 14px;
+  border: 0.5px solid #eee;
+}
+
+.deep-regions-map {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.deep-regions-visual {
+  width: 72px;
+  height: 72px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #fff5f2, #ffe8e3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #e8413c;
+}
+
+.deep-regions-summary {
+  flex: 1;
+}
+
+.deep-regions-count {
+  font-size: 20px;
+  font-weight: 700;
+  color: #111;
+  line-height: 1.1;
+  margin-bottom: 4px;
+  letter-spacing: -0.01em;
+}
+
+.deep-regions-desc {
+  font-size: 11.5px;
+  color: #888;
+  line-height: 1.5;
+}
+
+.deep-regions-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding-top: 10px;
+  border-top: 0.5px dashed #e5e5e5;
+}
+
+.deep-regions-tag {
+  font-size: 11px;
+  color: #555;
+  background: #fff;
+  border: 0.5px solid #e5e5e5;
+  border-radius: 10px;
+  padding: 3px 8px;
+}
+
+/* 深度卡 · 机构情况 */
+.deep-org-card {
+  background: #fafafa;
+  border-radius: 10px;
+  padding: 14px;
+  border: 0.5px solid #eee;
+}
+
+.deep-org-header {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+.deep-org-logo {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #fef7ed, #fde4a6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: #b45309;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.deep-org-meta {
+  flex: 1;
+  min-width: 0;
+}
+
+.deep-org-name {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 4px;
+  line-height: 1.3;
+}
+
+.deep-org-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.deep-org-badge {
+  font-size: 10px;
+  color: #b45309;
+  background: #fef7ed;
+  border: 0.5px solid #fde4a6;
+  border-radius: 8px;
+  padding: 2px 6px;
+  line-height: 1.4;
+}
+
+.deep-org-desc {
+  font-size: 12px;
+  color: #555;
+  line-height: 1.6;
+  padding-top: 10px;
+  border-top: 0.5px dashed #e5e5e5;
+}
+
+/* 深度卡 · 爱心留言 */
+.deep-comments {
+  background: #fafafa;
+  border-radius: 10px;
+  padding: 14px;
+  border: 0.5px solid #eee;
+}
+
+.deep-comment-item {
+  display: flex;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 0.5px dashed #ececec;
+}
+
+.deep-comment-item:first-child {
+  padding-top: 0;
+}
+
+.deep-comment-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.deep-comment-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #e8e8e8;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: #888;
+  font-weight: 500;
+}
+
+.deep-comment-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.deep-comment-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 3px;
+}
+
+.deep-comment-name {
+  font-size: 11.5px;
+  color: #555;
+  font-weight: 500;
+}
+
+.deep-comment-amount {
+  font-size: 10.5px;
+  color: #e8413c;
+  background: #fff5f2;
+  border-radius: 6px;
+  padding: 1px 5px;
+}
+
+.deep-comment-time {
+  font-size: 10.5px;
+  color: #aaa;
+  margin-left: auto;
+}
+
+.deep-comment-text {
+  font-size: 12.5px;
+  color: #333;
+  line-height: 1.55;
+}
+
+.deep-comments-total {
+  font-size: 11px;
+  color: #888;
+  text-align: center;
+  padding-top: 10px;
+  margin-top: 2px;
+  border-top: 0.5px dashed #e5e5e5;
+}
+
+.deep-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.deep-btn-sub {
+  flex: 1;
+  height: 44px;
+  border: 1px solid #e0e0e0;
+  background: #fff;
+  border-radius: 22px;
+  font-size: 14px;
+  color: #666;
+  cursor: pointer;
+}
+
+.deep-btn-sub:active {
+  background: #f5f5f5;
+}
+
+.deep-btn-main {
+  flex: 2;
+  height: 44px;
+  border: none;
+  border-radius: 22px;
+  background: linear-gradient(135deg, #ff8b9a, #e8413c);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(232,65,60,0.2);
+}
+
+.deep-btn-main:active {
+  transform: scale(0.98);
+}
+
+/* 状态设置半屏 */
+.status-preview {
+  background: #fafafa;
+  border-radius: 10px;
+  padding: 14px;
+  margin-bottom: 20px;
+}
+
+.status-preview-label {
+  font-size: 11px;
+  color: #999;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.status-card-preview {
+  background: #fff;
+  border-radius: 8px;
+  padding: 12px;
+  border: 0.5px solid #eee;
+}
+
+.status-card-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.status-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  background: #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+
+.status-name {
+  font-size: 14px;
+  font-weight: 500;
+  flex: 1;
+}
+
+.status-time {
+  font-size: 11px;
+  color: #999;
+}
+
+.status-content {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background: linear-gradient(135deg, #fff5f5, #ffe4e1);
+  border-radius: 16px;
+  width: fit-content;
+  margin-bottom: 6px;
+}
+
+.status-emoji {
+  font-size: 18px;
+}
+
+.status-text {
+  font-size: 14px;
+  color: #e8413c;
+  font-weight: 500;
+}
+
+.status-detail {
+  font-size: 12px;
+  color: #666;
+  padding-left: 4px;
+}
+
+.status-options {
+  padding: 0 2px;
+}
+
+.status-options-label {
+  font-size: 12px;
+  color: #999;
+  margin-bottom: 10px;
+}
+
+.status-option {
+  padding: 11px 14px;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  margin-bottom: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.status-option:active { transform: scale(0.98); }
+
+.status-option.active {
+  border-color: #e8413c;
+  background: #fff5f2;
+  color: #e8413c;
+  font-weight: 500;
+}
+
+/* 小红花花园半屏 */
+.garden-total {
+  text-align: center;
+  padding: 24px 0 16px;
+  border-bottom: 0.5px solid #f0f0f0;
+  margin-bottom: 20px;
+}
+
+.garden-number {
+  font-size: 48px;
+  font-weight: 700;
+  color: #e8413c;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.garden-label {
+  font-size: 13px;
+  color: #888;
+  margin-top: 8px;
+}
+
+.garden-list-label {
+  font-size: 12px;
+  color: #999;
+  margin-bottom: 12px;
+}
+
+.garden-list {
+  margin-bottom: 20px;
+}
+
+.garden-item {
+  display: flex;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 0.5px solid #f5f5f5;
+  align-items: flex-start;
+}
+
+.garden-item:last-child { border-bottom: none; }
+
+.garden-flower {
+  font-size: 20px;
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff5f5;
+  border-radius: 50%;
+}
+
+.garden-item-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.garden-item-title {
+  font-size: 14px;
+  color: #111;
+  font-weight: 500;
+  margin-bottom: 2px;
+}
+
+.garden-item-meta {
+  font-size: 11px;
+  color: #999;
+}
+
+.garden-footer {
+  text-align: center;
+  padding: 16px 0 4px;
+}
+
+.garden-link {
+  color: #07c160;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+/* 飞花动画 */
+@keyframes flyFlower {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  70% {
+    transform: translate(var(--fly-x, 100px), var(--fly-y, -200px)) scale(1.4);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--fly-x, 100px), var(--fly-y, -200px)) scale(0.6);
+    opacity: 0;
+  }
+}
+
+.flower-fly {
+  position: fixed;
+  font-size: 32px;
+  z-index: 999;
+  pointer-events: none;
+  animation: flyFlower 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+/* Typing indicator */
+.typing {
+  display: flex;
+  gap: 3px;
+  background: #fff;
+  padding: 12px 14px;
+  border-radius: 6px;
+  margin-bottom: 4px;
+  margin-left: 44px;
+  max-width: 60px;
+  position: relative;
+  opacity: 0;
+  animation: msgIn 0.2s forwards;
+}
+
+.typing::before {
+  content: '';
+  position: absolute;
+  top: 10px;
+  left: -5px;
+  width: 0;
+  height: 0;
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+  border-right: 6px solid #fff;
+}
+
+.typing span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #bbb;
+  animation: typingDot 1.2s infinite;
+}
+
+.typing span:nth-child(2) { animation-delay: 0.15s; }
+.typing span:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes typingDot {
+  0%, 60%, 100% { opacity: 0.3; transform: translateY(0); }
+  30% { opacity: 1; transform: translateY(-3px); }
+}
+
+.hidden { display: none !important; }
+
+/* 响应式：小屏 */
+@media (max-width: 900px) {
+  .path-selector {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: auto;
+    width: 100%;
+    height: 180px;
+    padding: 12px;
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    gap: 8px;
+  }
+  .path-selector .ps-title, .path-selector .ps-subtitle, .path-selector .ps-section, .path-selector .ps-note { display: none; }
+  .path-item {
+    min-width: 200px;
+    margin-bottom: 0;
+  }
+  .phone-shell { left: 0; top: 180px; }
+  .phone { border-radius: 0; border: none; width: 100%; max-width: 390px; }
+}
+
+/* 小提示标 */
+.hint-badge {
+  position: absolute;
+  top: 100px;
+  right: 12px;
+  z-index: 20;
+  background: rgba(0,0,0,0.7);
+  color: #fff;
+  font-size: 11px;
+  padding: 6px 10px;
+  border-radius: 12px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+
+.hint-badge.show { opacity: 1; }
+
+</style>
+</head>
+<body>
+
+<!-- 左侧路径选择器 -->
+<div class="path-selector">
+  <div class="ps-title">公益 SKILL · 对话 Demo</div>
+  <div class="ps-subtitle">模拟大 Agent 调用公益原子能力后呈现的效果</div>
+
+  <div class="ps-section">快捷气泡实现方式</div>
+  <div style="background:#1a1a1a;border-radius:10px;padding:4px;display:flex;margin-bottom:10px;gap:4px;">
+    <button id="variant-inline" onclick="setVariant('inline')" style="flex:1;background:#07c160;border:none;color:#fff;font-size:11px;padding:8px 4px;border-radius:7px;cursor:pointer;font-weight:500;">
+      版本 A<br><span style="font-weight:400;opacity:0.85;">卡片内按钮</span>
+    </button>
+    <button id="variant-bubble" onclick="setVariant('bubble')" style="flex:1;background:transparent;border:none;color:#888;font-size:11px;padding:8px 4px;border-radius:7px;cursor:pointer;">
+      版本 B<br><span style="opacity:0.8;">外挂气泡⚠️</span>
+    </button>
+  </div>
+  <div id="variantNote" style="font-size:10px;color:#666;margin-bottom:18px;line-height:1.5;padding:0 4px;">
+    版本 A · 选项全部做进卡片，100% 合规
+  </div>
+
+  <div class="ps-section">首次用户</div>
+  <div class="path-item active" data-path="fuzzy" onclick="loadPath('fuzzy')">
+    <div class="pi-label">PATH 1</div>
+    <div class="pi-title">🤔 模糊意图</div>
+    <div class="pi-desc">"我想做点好事" — 对话收窄（帮谁 + 多少钱）</div>
+  </div>
+  <div class="path-item" data-path="clear" onclick="loadPath('clear')">
+    <div class="pi-label">PATH 2</div>
+    <div class="pi-title">🎯 清晰意图</div>
+    <div class="pi-desc">"我想捐给山区女童" — 直接匹配项目</div>
+  </div>
+
+  <div class="ps-section">老用户（有捐款历史）</div>
+  <div class="path-item" data-path="return-progress" onclick="loadPath('return-progress')">
+    <div class="pi-label">PATH 3a</div>
+    <div class="pi-title">主动问进展</div>
+    <div class="pi-desc">"我上次捐的那个怎么样了"</div>
+  </div>
+  <div class="path-item" data-path="return-donate" onclick="loadPath('return-donate')">
+    <div class="pi-label">PATH 3b</div>
+    <div class="pi-title">再做点好事</div>
+    <div class="pi-desc">"我想再做点好事" → Agent 附带历史进展</div>
+  </div>
+  <div class="path-item" data-path="ask-garden" onclick="loadPath('ask-garden')">
+    <div class="pi-label">PATH 3c</div>
+    <div class="pi-title">看我的小红花</div>
+    <div class="pi-desc">"我有多少小红花了？" → 弹花园半屏</div>
+  </div>
+
+  <!-- 规范边界说明 -->
+  <div style="margin-top:28px;padding:14px;background:#1a1a1a;border-radius:10px;border:1px solid #2a2a2a;">
+    <div style="font-size:11px;color:#ff9f43;margin-bottom:10px;font-weight:600;">⚠️ 设计边界（按微信规范）</div>
+    <ul style="list-style:none;padding:0;">
+      <li style="font-size:10.5px;color:#888;line-height:1.6;padding-left:12px;position:relative;margin-bottom:6px;"><span style="position:absolute;left:2px;color:#ff9f43;font-weight:700;">·</span><strong style="color:#ccc;font-weight:500;">SKILL 不是独立 App</strong> — 是大 Agent 的能力包，用户在微信 AI 对话里说话才触发</li>
+      <li style="font-size:10.5px;color:#888;line-height:1.6;padding-left:12px;position:relative;margin-bottom:6px;"><span style="position:absolute;left:2px;color:#ff9f43;font-weight:700;">·</span><strong style="color:#ccc;font-weight:500;">不会主动开场白</strong> — 不存在"你好我是公益小助手"这种话</li>
+      <li style="font-size:10.5px;color:#888;line-height:1.6;padding-left:12px;position:relative;margin-bottom:6px;"><span style="position:absolute;left:2px;color:#ff9f43;font-weight:700;">·</span><strong style="color:#ccc;font-weight:500;">导航栏无独立名字</strong> — 对话属于微信 AI，只显示通用 AI 图标</li>
+      <li style="font-size:10.5px;color:#888;line-height:1.6;padding-left:12px;position:relative;margin-bottom:6px;"><span style="position:absolute;left:2px;color:#ff9f43;font-weight:700;">·</span><strong style="color:#ccc;font-weight:500;">卡片仅支持 tap</strong> — 点击只能做两件事：发消息 or 弹半屏</li>
+      <li style="font-size:10.5px;color:#888;line-height:1.6;padding-left:12px;position:relative;margin-bottom:6px;"><span style="position:absolute;left:2px;color:#ff9f43;font-weight:700;">·</span><strong style="color:#ccc;font-weight:500;">高宽比 4:1 ~ 1:1</strong> — 内容一屏说完，无滚动</li>
+      <li style="font-size:10.5px;color:#888;line-height:1.6;padding-left:12px;position:relative;margin-bottom:6px;"><span style="position:absolute;left:2px;color:#ff9f43;font-weight:700;">·</span><strong style="color:#ccc;font-weight:500;">AI 说的话都是预生成</strong> — 放 content 字段返回，不靠 LLM 临场发挥</li>
+    </ul>
+  </div>
+
+  <div style="margin-top:20px;padding-top:14px;border-top:1px solid #222;font-size:9.5px;color:#444;line-height:1.6;">
+    Demo v6 · 2026-04-30<br>
+    按成熟 Agent 模式库打磨（模式2/4/5/6/8）
+  </div>
+</div>
+
+<!-- 手机壳 -->
+<div class="phone-shell">
+  <div class="phone">
+    <div class="status-bar">
+      <span>9:41</span>
+      <span>●●● 100%</span>
+    </div>
+    <div class="nav-bar">
+      <span class="nav-back">‹</span>
+      <div class="nav-title">
+        <div class="nav-ai-dot"></div>
+      </div>
+      <span class="nav-right">⋯</span>
+    </div>
+
+    <div class="chat" id="chat">
+      <!-- 对话内容动态生成 -->
+    </div>
+
+    <!-- 支付半屏：默认金额 + 修改入口 -->
+    <div class="half-overlay" id="payOverlay" onclick="closeHalf('payOverlay')">
+      <div class="half-sheet" onclick="event.stopPropagation()">
+        <div class="hs-handle"></div>
+        <div class="hs-header">
+          <div>
+            <div class="hs-title">腾讯公益 · 确认帮一下</div>
+            <div class="hs-sub" id="payOrg">由中国儿童少年基金会执行</div>
+          </div>
+          <div class="hs-close" onclick="closeHalf('payOverlay')">×</div>
+        </div>
+        <div class="hs-body">
+          <div class="pay-amount-display">
+            <div class="pay-amount-main" id="payAmount">¥20</div>
+            <div class="pay-amount-sub" id="payAmountSub">≈ 帮小卓玛补齐这学期学费</div>
+          </div>
+
+          <!-- 金额选择：默认展开，不藏 -->
+          <div class="amount-picker-always">
+            <div class="amount-picker-row">
+              <button class="ap-btn" onclick="setAmount(10)" data-amount="10">
+                <div class="ap-num">¥10</div>
+                <div class="ap-desc" id="apDesc10">半份助学金</div>
+              </button>
+              <button class="ap-btn ap-active" onclick="setAmount(20)" id="apDefault" data-amount="20">
+                <div class="ap-num">¥20</div>
+                <div class="ap-desc" id="apDesc20">一位女童</div>
+              </button>
+              <button class="ap-btn" onclick="setAmount(50)" data-amount="50">
+                <div class="ap-num">¥50</div>
+                <div class="ap-desc" id="apDesc50">帮她+同学</div>
+              </button>
+              <button class="ap-btn" onclick="setAmount(100)" data-amount="100">
+                <div class="ap-num">¥100</div>
+                <div class="ap-desc" id="apDesc100">5 位女童</div>
+              </button>
+              <button class="ap-btn ap-custom" onclick="setAmountCustom()">
+                <div class="ap-num">其他</div>
+              </button>
+            </div>
+          </div>
+
+          <!-- 月捐勾选框（模式：0摩擦升级，不做Tab切换） -->
+          <div class="monthly-toggle" onclick="toggleMonthly()">
+            <div class="monthly-check" id="monthlyCheck">☐</div>
+            <div class="monthly-text">
+              <div class="monthly-title">每月持续帮一下</div>
+              <div class="monthly-sub" id="monthlySub">一份小承诺，<b>随时可停</b>。月捐人已经帮到了 12,458 位女童。</div>
+            </div>
+          </div>
+
+          <div class="pay-row-simple">
+            <span class="pay-label">捐助项目</span>
+            <span class="pay-value" id="payProject">春蕾计划她们想上学</span>
+          </div>
+          <div class="pay-row-simple">
+            <span class="pay-label">支付方式</span>
+            <span class="pay-method-icon"><span class="wxpay">微</span><span class="pay-value">微信支付</span></span>
+          </div>
+
+          <button class="pay-btn" onclick="doPay()">确认帮这个忙 <span id="payBtnAmount">¥20</span></button>
+          <div class="pay-safety">善款由腾讯公益托管，全程可追溯</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 捐赠证书半屏（1:1 复刻腾讯公益官方样式） -->
+    <div class="half-overlay" id="certOverlay" onclick="closeHalf('certOverlay')">
+      <div class="half-sheet cert-sheet" onclick="event.stopPropagation()">
+        <div class="hs-handle"></div>
+        <div class="hs-header">
+          <div>
+            <div class="hs-title">我的捐赠证书</div>
+            <div class="hs-sub" style="font-size:12px;color:#999;">由腾讯公益出具 · 可作税前抵扣凭证</div>
+          </div>
+          <div class="hs-close" onclick="closeHalf('certOverlay')">×</div>
+        </div>
+        <div class="hs-body" style="padding:18px 18px 24px;">
+          <!-- 证书主体 -->
+          <div class="cert-frame">
+            <!-- 边角花纹 -->
+            <div class="cert-corner cert-corner-tl"></div>
+            <div class="cert-corner cert-corner-tr"></div>
+            <div class="cert-corner cert-corner-bl"></div>
+            <div class="cert-corner cert-corner-br"></div>
+
+            <!-- 顶部金色装饰 -->
+            <div class="cert-crown">
+              <div class="cert-crown-deco cert-crown-deco-l"></div>
+              <div class="cert-crown-title">捐赠证书</div>
+              <div class="cert-crown-deco cert-crown-deco-r"></div>
+            </div>
+
+            <div class="cert-no" id="certNo">NO. 5KY586RTD5ZRG6YX</div>
+
+            <div class="cert-recipient" id="certRecipient">麦麦麦子</div>
+            <div class="cert-divider"></div>
+
+            <div class="cert-body">
+              感谢你为「<span id="certProject">春蕾计划她们想上学</span>」<br>
+              成功捐赠了 <span id="certAmount" class="cert-amount">¥20</span>。<br>
+              点亮孩子的希望，让社会未来<br>
+              拥有更多优秀人才，感恩有您！
+            </div>
+
+            <!-- 底部签名 + 印章 -->
+            <div class="cert-sign-row">
+              <div class="cert-org-sign">
+                <div class="cert-org-name" id="certOrgName">中国儿童少年基金会</div>
+                <div class="cert-date" id="certDate">2026年04月30日</div>
+              </div>
+              <div class="cert-stamp">
+                <div class="cert-stamp-ring">
+                  <div class="cert-stamp-star">★</div>
+                  <div class="cert-stamp-text-top">中国儿童少年基金会</div>
+                  <div class="cert-stamp-text-bottom">证书专用章</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 底部操作 -->
+          <div class="cert-actions">
+            <div class="cert-action">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
+                <line x1="1" y1="1" x2="23" y2="23"/>
+              </svg>
+              <span>隐藏金额</span>
+            </div>
+            <div class="cert-action">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+              </svg>
+              <span>证书改名</span>
+            </div>
+            <button class="cert-share-btn" onclick="onClickCertShare()">
+              保存图片分享朋友圈
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 项目深度卡半屏 -->
+    <div class="half-overlay" id="deepOverlay" onclick="closeHalf('deepOverlay')">
+      <div class="half-sheet" onclick="event.stopPropagation()">
+        <div class="hs-handle"></div>
+        <div class="hs-header">
+          <div>
+            <div class="hs-title" id="deepTitle">关于这个项目</div>
+            <div class="hs-sub" style="font-size:12px;color:#999;" id="deepOrg">执行机构</div>
+          </div>
+          <div class="hs-close" onclick="closeHalf('deepOverlay')">×</div>
+        </div>
+        <div class="hs-body">
+          <!-- 3 组关键数据（保留） -->
+          <div class="deep-stats">
+            <div class="deep-stat-item">
+              <div class="deep-stat-value" id="deepBeneficiary">—</div>
+              <div class="deep-stat-label" id="deepBeneficiaryLabel">—</div>
+            </div>
+            <div class="deep-stat-item">
+              <div class="deep-stat-value" id="deepDuration">—</div>
+              <div class="deep-stat-label" id="deepDurationLabel">—</div>
+            </div>
+            <div class="deep-stat-item">
+              <div class="deep-stat-value" id="deepEfficiency">—</div>
+              <div class="deep-stat-label" id="deepEfficiencyLabel">—</div>
+            </div>
+          </div>
+
+          <!-- 为什么推荐给你（保留，这是 AI 的合理合法输出） -->
+          <div class="deep-why">
+            <div class="deep-why-title">为什么给你推这个</div>
+            <div class="deep-why-list" id="deepWhy">
+              <div>· 你之前关注过类似话题</div>
+              <div>· 平台运营 10 年，信用等级 A+</div>
+              <div>· 你有 3 个朋友捐过</div>
+              <div>· 剩 17 天，筹款还差最后一点</div>
+            </div>
+            <div class="deep-why-note">推荐不受付费影响，你可以随时说"换一个"</div>
+          </div>
+
+          <!-- 执行地区覆盖 -->
+          <div class="deep-section">
+            <div class="deep-section-title">
+              <span>全国执行地区</span>
+              <span class="deep-section-title-extra" id="deepRegionExtra"></span>
+            </div>
+            <div class="deep-regions">
+              <div class="deep-regions-map">
+                <div class="deep-regions-visual">
+                  <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+                    <circle cx="12" cy="10" r="3"/>
+                  </svg>
+                </div>
+                <div class="deep-regions-summary">
+                  <div class="deep-regions-count" id="deepRegionCount">—</div>
+                  <div class="deep-regions-desc" id="deepRegionDesc">—</div>
+                </div>
+              </div>
+              <div class="deep-regions-list" id="deepRegionList"></div>
+            </div>
+          </div>
+
+          <!-- 执行机构情况 -->
+          <div class="deep-section">
+            <div class="deep-section-title">
+              <span>关于执行机构</span>
+              <span class="deep-section-title-extra">民政部备案</span>
+            </div>
+            <div class="deep-org-card">
+              <div class="deep-org-header">
+                <div class="deep-org-logo" id="deepOrgLogo">—</div>
+                <div class="deep-org-meta">
+                  <div class="deep-org-name" id="deepOrgFullName">—</div>
+                  <div class="deep-org-badges" id="deepOrgBadges"></div>
+                </div>
+              </div>
+              <div class="deep-org-desc" id="deepOrgDesc">—</div>
+            </div>
+          </div>
+
+          <!-- 爱心留言 -->
+          <div class="deep-section">
+            <div class="deep-section-title">
+              <span>爱心留言</span>
+              <span class="deep-section-title-extra" id="deepCommentsExtra"></span>
+            </div>
+            <div class="deep-comments" id="deepComments"></div>
+          </div>
+
+          <!-- 操作 -->
+          <div class="deep-actions">
+            <button class="deep-btn-sub" onclick="closeHalf('deepOverlay')">再想想</button>
+            <button class="deep-btn-main" onclick="deepToHelp()">我想帮一下</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 带花到状态 半屏 -->
+    <div class="half-overlay" id="statusOverlay" onclick="closeHalf('statusOverlay')">
+      <div class="half-sheet" onclick="event.stopPropagation()">
+        <div class="hs-handle"></div>
+        <div class="hs-header">
+          <div>
+            <div class="hs-title">设置我的状态</div>
+            <div class="hs-sub" style="font-size:12px;color:#999;">让朋友看到你今天做的好事</div>
+          </div>
+          <div class="hs-close" onclick="closeHalf('statusOverlay')">×</div>
+        </div>
+        <div class="hs-body">
+          <!-- 状态预览：模拟微信状态卡片 -->
+          <div class="status-preview">
+            <div class="status-preview-label">预览：朋友看到会是这样</div>
+            <div class="status-card-preview">
+              <div class="status-card-header">
+                <div class="status-avatar"><svg width="14" height="14" viewBox="0 0 24 24" fill="#999"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg></div>
+                <div class="status-name">你</div>
+                <div class="status-time">现在</div>
+              </div>
+              <div class="status-content">
+                <span class="status-emoji">🌸</span>
+                <span class="status-text">做好事</span>
+              </div>
+              <div class="status-detail">帮小卓玛凑齐了这学期的学费</div>
+            </div>
+          </div>
+
+          <div class="status-options">
+            <div class="status-options-label">也可以挑一句：</div>
+            <div class="status-option active" onclick="pickStatusText(this, '做好事')">做好事</div>
+            <div class="status-option" onclick="pickStatusText(this, '今天多了一朵小红花')">今天多了一朵小红花</div>
+            <div class="status-option" onclick="pickStatusText(this, '刚刚帮了一个人')">刚刚帮了一个人</div>
+          </div>
+
+          <button class="pay-btn" onclick="confirmStatus()" style="margin-top:20px;">带这朵花到我的状态</button>
+          <div class="pay-safety" style="color:#999;">只有你同意后才会发布，可以随时取下</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 我的花园 半屏 -->
+    <div class="half-overlay" id="gardenOverlay" onclick="closeHalf('gardenOverlay')">
+      <div class="half-sheet" onclick="event.stopPropagation()">
+        <div class="hs-handle"></div>
+        <div class="hs-header">
+          <div>
+            <div class="hs-title">我的小红花</div>
+            <div class="hs-sub" style="font-size:12px;color:#999;">你做过的好事累积</div>
+          </div>
+          <div class="hs-close" onclick="closeHalf('gardenOverlay')">×</div>
+        </div>
+        <div class="hs-body">
+          <div class="garden-total">
+            <div class="garden-number">48</div>
+            <div class="garden-label">朵小红花</div>
+          </div>
+          <div class="garden-list-label">最近 10 朵</div>
+          <div class="garden-list">
+            <div class="garden-item">
+              <span class="garden-flower">🌸</span>
+              <div class="garden-item-text">
+                <div class="garden-item-title">帮小卓玛凑了学费</div>
+                <div class="garden-item-meta">今天 · 春蕾计划 · ¥20</div>
+              </div>
+            </div>
+            <div class="garden-item">
+              <span class="garden-flower">🌸</span>
+              <div class="garden-item-text">
+                <div class="garden-item-title">标了一张红外相机照片</div>
+                <div class="garden-item-meta">昨天 · 野朋友计划</div>
+              </div>
+            </div>
+            <div class="garden-item">
+              <span class="garden-flower">🌸</span>
+              <div class="garden-item-text">
+                <div class="garden-item-title">给张奶奶送了一餐热饭</div>
+                <div class="garden-item-meta">3 天前 · 为困境老人送一餐热饭 · ¥20</div>
+              </div>
+            </div>
+            <div class="garden-item">
+              <span class="garden-flower">🌸</span>
+              <div class="garden-item-text">
+                <div class="garden-item-title">给一所小学捐了 2 本书</div>
+                <div class="garden-item-meta">上周 · 满天星公益图书馆 · ¥20</div>
+              </div>
+            </div>
+            <div class="garden-item">
+              <span class="garden-flower">🌸</span>
+              <div class="garden-item-text">
+                <div class="garden-item-title">回答了 3 道公益知识题</div>
+                <div class="garden-item-meta">上周 · 公益答题</div>
+              </div>
+            </div>
+          </div>
+          <div class="garden-footer">
+            <a class="garden-link" onclick="toGardenFull()">看完整花园和腾讯公益的其他故事 ›</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 我的花园 半屏（旧的：项目进展时间线，保留做"查进展"路径用） -->
+    <div class="half-overlay" id="progressOverlay" onclick="closeHalf('progressOverlay')">
+      <div class="half-sheet" onclick="event.stopPropagation()">
+        <div class="hs-handle"></div>
+        <div class="hs-header">
+          <div class="hs-title">这个项目的完整时间线</div>
+          <div class="hs-close" onclick="closeHalf('progressOverlay')">×</div>
+        </div>
+        <div class="hs-body">
+          <div class="timeline">
+            <div class="tl-item">
+              <div class="tl-dot"></div>
+              <div class="tl-content">
+                <div class="tl-date">今天 · 刚刚</div>
+                <div class="tl-text">你的 20 元 已汇入春蕾计划第 39 批助学金池，正在匹配下一位受助女童。</div>
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot"></div>
+              <div class="tl-content">
+                <div class="tl-date">2026年4月15日</div>
+                <div class="tl-text">第 38 批助学金已拨付至云南临沧，覆盖 67 名困境女童本学期学费。</div>
+                <div class="tl-photo receipt">🧾 拨款凭证（由基金会提供）</div>
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot"></div>
+              <div class="tl-content">
+                <div class="tl-date">2026年3月2日</div>
+                <div class="tl-text">春季学期开学，受助女童小卓玛（化名）回信："谢谢叔叔阿姨，这学期我要学好数学。"</div>
+                <div class="tl-photo letter">✉️ 回信手写稿（匿名处理）</div>
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot"></div>
+              <div class="tl-content">
+                <div class="tl-date">2026年1月18日</div>
+                <div class="tl-text">2025 年度报告发布：全年帮助 1,247 名困境女童完成学业，覆盖 23 个省份。</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 输入栏 -->
+    <div class="input-bar">
+      <span class="input-icon">🎤</span>
+      <input class="input-field" id="userInput" placeholder="" readonly />
+      <button class="input-send" id="sendBtn" onclick="userSendTyped()">发送</button>
+      <span class="input-icon">😊</span>
+      <span class="input-icon">+</span>
+    </div>
+  </div>
+</div>
+
+<script>
+let currentPath = 'fuzzy';
+let currentVariant = 'inline'; // 'inline' 版本A | 'bubble' 版本B
+let state = {};
+
+// ========================= 核心渲染工具 =========================
+const chat = () => document.getElementById('chat');
+
+function clearChat() {
+  chat().innerHTML = '';
+  // 添加时间戳
+  const ts = document.createElement('div');
+  ts.className = 'time-stamp';
+  ts.innerHTML = '<span>今天 20:21</span>';
+  chat().appendChild(ts);
+
+  // 系统提示：说明接下来的对话发生在微信 Agent 里
+  const sys = document.createElement('div');
+  sys.style.cssText = 'text-align:center;margin:0 0 16px;opacity:0;animation:msgIn 0.35s ease forwards;';
+  sys.innerHTML = '<span style="background:rgba(0,0,0,0.06);color:#999;padding:4px 12px;border-radius:10px;font-size:10.5px;">以下对话发生在微信 AI 里 · 公益 SKILL 被触发后返回</span>';
+  chat().appendChild(sys);
+}
+
+function scrollBottom() {
+  setTimeout(() => {
+    chat().scrollTop = chat().scrollHeight;
+  }, 30);
+}
+
+function wait(ms) {
+  return new Promise(r => setTimeout(r, ms));
+}
+
+async function addUserBubble(text) {
+  const el = document.createElement('div');
+  el.className = 'msg user';
+  el.innerHTML = `<div class="bubble">${text}</div><div class="avatar"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" fill="#999"/><path d="M4 20c0-4.4 3.6-8 8-8s8 3.6 8 8" fill="#999"/></svg></div>`;
+  chat().appendChild(el);
+  scrollBottom();
+  await wait(300);
+}
+
+async function addTyping() {
+  const t = document.createElement('div');
+  t.className = 'typing';
+  t.innerHTML = '<span></span><span></span><span></span>';
+  chat().appendChild(t);
+  scrollBottom();
+  return t;
+}
+
+async function addAgentBubble(text, delay = 900) {
+  const t = await addTyping();
+  await wait(delay);
+  t.remove();
+  const el = document.createElement('div');
+  el.className = 'msg agent';
+  el.innerHTML = `<div class="avatar"></div><div class="bubble">${text}</div>`;
+  chat().appendChild(el);
+  scrollBottom();
+  await wait(200);
+}
+
+async function addQuickGroup(opts, onPick, opts2 = {}) {
+  if (currentVariant === 'inline') {
+    // 版本A：选项做进卡片
+    const btnsHtml = opts.map((o, i) => `
+      <button class="amount-btn" style="flex:1 1 calc(50% - 3px);min-height:46px;flex-direction:column;" data-idx="${i}" onclick="_inlinePick(${i})">
+        <div class="ab-num" style="font-size:13px;color:#111;font-weight:500;line-height:1.2;">${o.label}</div>
+      </button>
+    `).join('');
+
+    const html = `
+      <div class="proj-card" style="animation:none;">
+        <div class="proj-body" style="padding:14px;">
+          ${opts2.question ? `<div style="font-size:13px;color:#888;margin-bottom:10px;">${opts2.question}</div>` : ''}
+          <div class="amount-row" style="flex-wrap:wrap;gap:6px;">${btnsHtml}</div>
+        </div>
+      </div>
+    `;
+    const w = document.createElement('div');
+    w.className = 'card-wrap';
+    w.style.animation = 'cardIn 0.4s cubic-bezier(0.17, 0.67, 0.3, 1) forwards';
+    w.innerHTML = html;
+    // 挂接回调
+    w._onPick = onPick;
+    w._opts = opts;
+    chat().appendChild(w);
+    // 绑定点击
+    window._lastInlineCard = w;
+    scrollBottom();
+    return;
+  }
+
+  // 版本 B：对话流里的浮动气泡 + 标注
+  const g = document.createElement('div');
+  g.className = 'quick-group flagged';
+  g.innerHTML = '<span class="quick-group-flag">待官方确认</span>';
+  opts.forEach(opt => {
+    const b = document.createElement('button');
+    b.className = 'quick-btn';
+    b.textContent = opt.label;
+    b.onclick = () => {
+      g.querySelectorAll('.quick-btn').forEach(x => x.classList.add('used'));
+      onPick(opt);
+    };
+    g.appendChild(b);
+  });
+  chat().appendChild(g);
+  scrollBottom();
+}
+
+function _inlinePick(idx) {
+  const w = window._lastInlineCard;
+  if (!w || !w._onPick) return;
+  const opt = w._opts[idx];
+  // 禁用所有按钮
+  w.querySelectorAll('button').forEach(b => {
+    b.style.pointerEvents = 'none';
+    b.style.opacity = '0.45';
+  });
+  w._onPick(opt);
+}
+
+async function addCard(html, delay = 1200) {
+  const t = await addTyping();
+  await wait(delay);
+  t.remove();
+  const w = document.createElement('div');
+  w.className = 'card-wrap';
+  w.innerHTML = html;
+  chat().appendChild(w);
+  scrollBottom();
+  return w;
+}
+
+// ========================= 变体切换 =========================
+function setVariant(v) {
+  currentVariant = v;
+  const inlineBtn = document.getElementById('variant-inline');
+  const bubbleBtn = document.getElementById('variant-bubble');
+  if (v === 'inline') {
+    inlineBtn.style.background = '#07c160';
+    inlineBtn.style.color = '#fff';
+    bubbleBtn.style.background = 'transparent';
+    bubbleBtn.style.color = '#888';
+    document.getElementById('variantNote').textContent = '版本 A · 选项全部做进卡片，100% 合规';
+  } else {
+    bubbleBtn.style.background = '#07c160';
+    bubbleBtn.style.color = '#fff';
+    inlineBtn.style.background = 'transparent';
+    inlineBtn.style.color = '#888';
+    document.getElementById('variantNote').textContent = '版本 B · 更接近 ChatGPT/Claude 的建议回复效果，但微信 Agent 规范里未明确此能力，待官方确认';
+  }
+  // 重载当前路径
+  loadPath(currentPath);
+}
+
+// ========================= 路径切换 =========================
+function loadPath(p) {
+  currentPath = p;
+  state = {};
+  document.querySelectorAll('.path-item').forEach(x => x.classList.remove('active'));
+  document.querySelector(`.path-item[data-path="${p}"]`).classList.add('active');
+  clearChat();
+
+  if (p === 'fuzzy') startFuzzy();
+  if (p === 'clear') startClear();
+  if (p === 'return-progress') startReturnProgress();
+  if (p === 'return-donate') startReturnDonate();
+  if (p === 'ask-garden') onAskGarden();
+}
+
+// ========================= 卡片模板 =========================
+const PROJECTS = {
+  chunlei: {
+    id: 'chunlei',
+    title: '春蕾计划她们想上学',
+    org: '中国儿童少年基金会',
+    imgUrl: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=800&q=80',
+    tags: ['平台10年项目', '善款可追溯', '电子捐赠票据'],
+    years: 10,
+    friendsCount: 3,
+    progress: 94.5,
+    progressText: '还差 328.91 / 6,000 元',
+    amounts: [10, 20, 50],
+    amountUnit: '元 ≈ 一位女童',
+    primaryAmount: 20,
+    deep: {
+      summary: '春蕾计划由中国儿基会发起，资助贫困女童完成学业。项目在腾讯公益已运营 10 年，每月在小程序公示资助名单与走访记录。',
+      beneficiary: '10 年',
+      beneficiaryLabel: '在腾讯公益运营',
+      duration: '每月',
+      durationLabel: '资助进展公示',
+      efficiency: '电子票据',
+      efficiencyLabel: '捐赠可追溯',
+      regions: {
+        count: '14 个省份',
+        desc: '集中在西部和西南山区，以云南、贵州、甘肃为主',
+        list: ['云南', '贵州', '甘肃', '四川', '广西', '新疆', '青海', '西藏', '湖南', '陕西', '宁夏', '重庆', '河南', '湖北']
+      },
+      orgInfo: {
+        logo: '儿基',
+        fullName: '中国儿童少年基金会',
+        badges: ['5A级基金会', '公募资质', '民政部备案'],
+        desc: '1981 年成立的全国性公募基金会，长期为困境儿童提供教育、健康、安全等领域的公益支持。'
+      },
+      comments: [
+        { name: '小*', amount: 20, time: '12 分钟前', text: '希望她能好好上学，未来可期。' },
+        { name: '阿**', amount: 100, time: '1 小时前', text: '以我女儿的名字捐的，想让她知道这个世界上还有很多和她一样大的孩子。' },
+        { name: '周*', amount: 10, time: '3 小时前', text: '月捐第 8 个月，愿你们都平安。' }
+      ],
+      commentsTotal: '共 3,821 条留言'
+    }
+  },
+  library: {
+    id: 'library',
+    title: '满天星公益图书馆',
+    org: '满天星青少年公益发展中心',
+    imgUrl: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=800&q=80',
+    tags: ['已建212所', '月定期审计', '进度周更'],
+    years: 8,
+    friendsCount: 2,
+    progress: 76,
+    progressText: '还差 4,280 / 20,000 元',
+    amounts: [10, 20, 50],
+    amountUnit: '元 ≈ 2 本课外书',
+    primaryAmount: 20,
+    deep: {
+      summary: '项目方在乡村建设图书角，每月更新落地进展和购书清单。基金会年报在公众号公开，新图书角平均 3 个月落地。',
+      beneficiary: '3 个月',
+      beneficiaryLabel: '新图书角落地',
+      duration: '每月',
+      durationLabel: '进展更新',
+      efficiency: '电子票据',
+      efficiencyLabel: '捐赠可追溯',
+      regions: {
+        count: '9 个省份',
+        desc: '以云南、广西、甘肃等乡村为主，在建和已建合计 212 所',
+        list: ['云南', '广西', '甘肃', '贵州', '四川', '青海', '湖南', '江西', '河北']
+      },
+      orgInfo: {
+        logo: '满天星',
+        fullName: '满天星青少年公益发展中心',
+        badges: ['4A级机构', '地方民政注册', '专注儿童阅读'],
+        desc: '深耕乡村儿童阅读 12 年的专业机构，自主研发书目体系和阅读课程，长期与地方教育部门合作。'
+      },
+      comments: [
+        { name: 'L*', amount: 50, time: '5 分钟前', text: '小时候我也是从一本课外书开始喜欢上读书的。' },
+        { name: '小*', amount: 20, time: '40 分钟前', text: '每个孩子都该有一整面墙的书。' },
+        { name: '王*', amount: 100, time: '2 小时前', text: '希望图书角早日落地。' }
+      ],
+      commentsTotal: '共 1,942 条留言'
+    }
+  },
+  warmth: {
+    id: 'warmth',
+    title: '山区孩子的冬天',
+    org: '爱德基金会',
+    imgUrl: 'https://images.unsplash.com/photo-1604881988758-f76ad2f7aac1?auto=format&fit=crop&w=800&q=80',
+    tags: ['冬季应急', '定向发放', '有影像留档'],
+    years: 6,
+    friendsCount: 1,
+    progress: 88,
+    progressText: '还差 1,580 / 12,000 元',
+    amounts: [10, 20, 50],
+    amountUnit: '元 ≈ 一副保暖手套',
+    primaryAmount: 20,
+    deep: {
+      summary: '冬季应急项目，物资定向发放到高原牧区孩子手上。每批发放都有影像留档，基金会年报公开。',
+      beneficiary: '10-15 天',
+      beneficiaryLabel: '物资送到孩子手上',
+      duration: '每批',
+      durationLabel: '发放有影像留档',
+      efficiency: '电子票据',
+      efficiencyLabel: '捐赠可追溯',
+      regions: {
+        count: '6 个高寒地区',
+        desc: '集中在青藏高原和西北牧区，冬季气温常低于 -20℃',
+        list: ['青海玉树', '西藏那曲', '甘肃甘南', '四川甘孜', '新疆阿勒泰', '内蒙锡林郭勒']
+      },
+      orgInfo: {
+        logo: '爱德',
+        fullName: '爱德基金会',
+        badges: ['5A级基金会', '公募资质', '1985 年成立'],
+        desc: '中国最早的民间公益组织之一，40 年专注教育、助老、赈灾、社会发展，在全国多个省份有常驻项目点。'
+      },
+      comments: [
+        { name: '赵*', amount: 20, time: '15 分钟前', text: '北方人知道冷是什么滋味。' },
+        { name: '杜*', amount: 50, time: '1 小时前', text: '希望每个孩子冬天都有厚衣服穿。' }
+      ],
+      commentsTotal: '共 876 条留言'
+    }
+  },
+  elderly: {
+    id: 'elderly',
+    title: '为困境老人送一餐热饭',
+    org: '中华社会救助基金会',
+    imgUrl: 'https://images.unsplash.com/photo-1581579438747-104c53e7c8c4?auto=format&fit=crop&w=800&q=80',
+    tags: ['每日配送', '覆盖12城', '志愿者打卡'],
+    years: 5,
+    friendsCount: 1,
+    progress: 82,
+    progressText: '还差 2,100 / 10,000 元',
+    amounts: [10, 20, 50],
+    amountUnit: '元 ≈ 一份热饭',
+    primaryAmount: 20,
+    deep: {
+      summary: '跨 12 个城市的社区送餐网络，志愿者每天送餐上门并在小程序打卡。基金会年报公开。',
+      beneficiary: '12 个',
+      beneficiaryLabel: '城市覆盖',
+      duration: '每日',
+      durationLabel: '志愿者打卡',
+      efficiency: '电子票据',
+      efficiencyLabel: '捐赠可追溯',
+      regions: {
+        count: '12 个城市',
+        desc: '在社区层面和当地居委会合作，目前集中在东部及中部城市',
+        list: ['北京', '上海', '南京', '杭州', '合肥', '武汉', '长沙', '西安', '成都', '重庆', '郑州', '济南']
+      },
+      orgInfo: {
+        logo: '救助',
+        fullName: '中华社会救助基金会',
+        badges: ['5A级基金会', '公募资质', '2008 年成立'],
+        desc: '国务院批准的全国性公募基金会，聚焦困境群体救助，运营"善行者""大爱之行"等长期公益品牌。'
+      },
+      comments: [
+        { name: '文*', amount: 50, time: '刚刚', text: '希望爷爷奶奶们都有人陪。' },
+        { name: '苏**', amount: 30, time: '20 分钟前', text: '我爷爷去年走了，替他做点事。' }
+      ],
+      commentsTotal: '共 1,204 条留言'
+    }
+  },
+  animal: {
+    id: 'animal',
+    title: '让它们有饭吃',
+    org: '上海市小动物保护协会',
+    imgUrl: 'https://images.unsplash.com/photo-1583337130417-3346a1be7dee?auto=format&fit=crop&w=800&q=80',
+    tags: ['每周更新', '基地直连', '已救助1200+'],
+    years: 4,
+    friendsCount: 2,
+    progress: 67,
+    progressText: '还差 2,640 / 8,000 元',
+    amounts: [10, 20, 50],
+    amountUnit: '元 ≈ 一周狗粮',
+    primaryAmount: 20,
+    deep: {
+      summary: '上海本地救助基地，每周四固定在小程序更新动物照片和健康状况。支持领养和长期捐助。',
+      beneficiary: '每周四',
+      beneficiaryLabel: '更新动物近况',
+      duration: '基地',
+      durationLabel: '可实地探访',
+      efficiency: '电子票据',
+      efficiencyLabel: '捐赠可追溯',
+      regions: {
+        count: '上海本地',
+        desc: '基地位于上海青浦，面向上海及周边的流浪动物救助和领养',
+        list: ['上海青浦', '上海松江', '嘉兴周边']
+      },
+      orgInfo: {
+        logo: '动保',
+        fullName: '上海市小动物保护协会',
+        badges: ['地方注册', '4A级机构', '1992 年成立'],
+        desc: '全国成立较早的小动物保护机构，常年承担流浪动物救助、医治、领养、科普工作。'
+      },
+      comments: [
+        { name: '喵*', amount: 20, time: '7 分钟前', text: '家里两只也是领养的。' },
+        { name: '小*', amount: 50, time: '2 小时前', text: '希望它们都能找到家。' }
+      ],
+      commentsTotal: '共 512 条留言'
+    }
+  }
+};
+
+function projectCard(projId, story, changeBtnText) {
+  const p = PROJECTS[projId];
+  // 信任贴片（模式4）：平台时长 + 可追溯 + 朋友社交证据
+  const trustChips = `
+    <span class="trust-chip">平台${p.years || 10}年</span>
+    <span class="trust-chip">善款追溯</span>
+    <span class="trust-chip">${p.friendsCount || 3} 位朋友帮过</span>
+  `;
+
+  return `
+    <div class="proj-card">
+      <div class="proj-hero">
+        <img class="proj-hero-img" src="${p.imgUrl}" alt="${p.title}" loading="lazy" />
+        <div class="proj-hero-overlay">
+          <div class="proj-org-badge">${p.org}</div>
+        </div>
+      </div>
+      <div class="proj-body">
+        ${story ? `
+          <div class="story-lead">${story}<span class="story-more" onclick="openDeepCard('${projId}')">（详细看看 ›）</span></div>
+        ` : ''}
+        <div class="proj-title-row">
+          <div class="proj-title-small">${p.title}</div>
+        </div>
+        <div class="trust-chips">${trustChips}</div>
+        <div class="proj-progress">
+          <div class="prog-row">
+            <span>已筹 <span class="prog-pct">${p.progress}%</span></span>
+            <span class="prog-remain">${p.progressText}</span>
+          </div>
+          <div class="prog-bar"><div class="prog-fill" style="width:${p.progress}%"></div></div>
+        </div>
+        <button class="help-btn" onclick="openDonate('${projId}')">我想帮一下</button>
+        ${changeBtnText ? `<button class="change-btn" onclick="changeProject('${projId}')">${changeBtnText.replace(/🔄\s*/, '')}</button>` : ''}
+      </div>
+    </div>
+  `;
+}
+
+function progressCard() {
+  return `
+    <div class="prog-card">
+      <div class="prog-card-header">
+        <div class="prog-card-thumb">👧🏻</div>
+        <div class="prog-card-text">
+          <div class="prog-card-name">春蕾计划她们想上学</div>
+          <div class="prog-card-meta">你在 2025-12-01 捐了 20 元</div>
+        </div>
+      </div>
+      <div class="prog-update">
+        <div class="prog-update-badge">NEW</div>
+        <div class="prog-update-date">📍 2026年4月15日</div>
+        <div class="prog-update-text">你的 20 元随第 38 批助学金拨付至云南临沧，帮到了一位困境女童本学期学费。</div>
+      </div>
+      <div class="prog-stats">
+        <div class="prog-stat">
+          <div class="prog-stat-label">项目进度</div>
+          <div class="prog-stat-value">94.5%</div>
+        </div>
+        <div class="prog-stat">
+          <div class="prog-stat-label">本期受益</div>
+          <div class="prog-stat-value">67 人</div>
+        </div>
+      </div>
+      <div class="prog-actions">
+        <button class="prog-action-btn" onclick="openHalf('progressOverlay')">看完整时间线</button>
+        <button class="prog-action-btn primary" onclick="onTapDonateAgain()">再帮一下</button>
+      </div>
+    </div>
+  `;
+}
+
+// 项目最近在做什么（不是"你的钱去哪了"——而是项目方此前真实反馈）
+function recentActionCard(projId) {
+  const contentMap = {
+    chunlei: {
+      date: '2026年4月15日 · 上个月',
+      scene: '云南临沧 · 第38批助学金拨款',
+      text: '67 名困境女童已收到本学期学费。张老师拍了一张现场照片：签到表、孩子们、基金会工作人员。',
+      photoTag: '📸 拨款现场（基金会提供）',
+      photoClass: 'receipt'
+    },
+    library: {
+      date: '2026年4月3日',
+      scene: '贵州黔南 · 第22批图书送达',
+      text: '268 本新书送到惠水县苗族小学，已整理上架。图书角的孩子们这两天开心得合不上嘴。',
+      photoTag: '📸 图书角开箱',
+      photoClass: 'letter'
+    },
+    warmth: {
+      date: '2026年4月10日',
+      scene: '青海玉树 · 第18批冬季物资',
+      text: '帽子 120 顶、手套 230 副、保暖内衣 85 套已发到牧区孩子手上。这里四月还在下雪。',
+      photoTag: '📸 发放现场',
+      photoClass: 'receipt'
+    },
+    elderly: {
+      date: '昨天 · 2026年4月28日',
+      scene: '上海虹口 · 昨日送餐',
+      text: '志愿者昨天给 42 位独居老人送了热饭。张奶奶说今天的红烧肉特别好吃。',
+      photoTag: '📸 昨日送餐',
+      photoClass: 'letter'
+    },
+    animal: {
+      date: '本周四 · 2026年4月24日',
+      scene: '上海闵行 · 本周更新',
+      text: '豆豆这周胖了 1.2 斤，秃的地方开始长毛了。基金会发了对比照片。',
+      photoTag: '📸 豆豆最新照片',
+      photoClass: 'receipt'
+    }
+  };
+  const c = contentMap[projId] || contentMap.chunlei;
+  return `
+    <div class="prog-card">
+      <div class="prog-update" style="margin-bottom:10px;">
+        <div class="prog-update-badge" style="background:#07c160;">最近</div>
+        <div class="prog-update-date">📍 ${c.date}</div>
+        <div class="prog-update-text" style="font-weight:600;margin-bottom:4px;">${c.scene}</div>
+        <div class="prog-update-text" style="font-weight:normal;">${c.text}</div>
+      </div>
+      <div class="tl-photo ${c.photoClass}">${c.photoTag}</div>
+    </div>
+  `;
+}
+
+function doneCard(amount, projectTitle, whichBatch, nextPromise) {
+  return `
+    <div class="done-card">
+      <div class="done-mark">
+        <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="28" cy="28" r="27" stroke="#e8413c" stroke-width="1" fill="#fff5f5"/>
+          <path d="M19 28.5L25.5 35L37.5 21.5" stroke="#e8413c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="done-title">好事做成了</div>
+      <div class="done-amount">¥${amount}</div>
+      <div class="done-where">→ ${projectTitle}</div>
+
+      <!-- 资金流向预告：模式2 工具透明 -->
+      <div class="fund-flow">
+        <div class="fund-flow-label">你的钱接下来会去哪</div>
+        <div class="fund-step">
+          <div class="fund-step-dot active"></div>
+          <div class="fund-step-text">
+            <div class="fund-step-main">已托管至腾讯公益</div>
+            <div class="fund-step-sub">今天</div>
+          </div>
+        </div>
+        <div class="fund-step">
+          <div class="fund-step-dot"></div>
+          <div class="fund-step-text">
+            <div class="fund-step-main">拨付到执行机构</div>
+            <div class="fund-step-sub">约 3 天</div>
+          </div>
+        </div>
+        <div class="fund-step">
+          <div class="fund-step-dot"></div>
+          <div class="fund-step-text">
+            <div class="fund-step-main">采购物资，落实执行</div>
+            <div class="fund-step-sub">约 2 周</div>
+          </div>
+        </div>
+        <div class="fund-step last">
+          <div class="fund-step-dot"></div>
+          <div class="fund-step-text">
+            <div class="fund-step-main">你会收到执行进展</div>
+            <div class="fund-step-sub">约 1 个月</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="done-promise">
+        <div>${nextPromise}</div>
+      </div>
+
+      <button class="done-btn-main" onclick="openFlowerStatus()">
+        把这朵花带到我的状态
+      </button>
+      <div class="done-btn-row">
+        <button class="done-btn-sub" onclick="openCertificate()">
+          看捐赠证书
+        </button>
+        <button class="done-btn-sub" onclick="onSubscribeProject()">
+          订阅项目进展
+        </button>
+      </div>
+      <div class="done-refund">
+        <a onclick="onClickRefund()">24 小时内可无理由撤回 ›</a>
+      </div>
+    </div>
+  `;
+}
+
+// ========================= 路径 1：模糊意图 =========================
+async function startFuzzy() {
+  await wait(400);
+  await addUserBubble('我想做点好事');
+  await addAgentBubble('好的，先确认下方向——想帮哪类？', 900);
+  addQuickGroup([
+    { label: '困境儿童', value: 'kid' },
+    { label: '孤寡老人', value: 'elderly' },
+    { label: '流浪动物', value: 'animal' },
+    { label: '随便推一个', value: 'any' }
+  ], async (pick) => {
+    state.target = pick.value;
+    await addUserBubble(pick.label);
+
+    if (pick.value === 'kid' || pick.value === 'any') {
+      await addAgentBubble('给你看一个本月还在筹的。', 1100);
+      state.currentProject = 'chunlei';
+      const story = `云南临沧有个叫<span class="highlight">小卓玛</span>（化名）的女童，开学快两个月了学费还没凑齐。她家里<b>只差最后 ¥20</b>——就能拿到这学期的助学金。<br><br>这个项目腾讯公益做了 10 年，上个月刚给 67 个像她这样的孩子拨了学费。`;
+      await addCard(projectCard('chunlei', story, '这个不合适，换一个'));
+    } else if (pick.value === 'elderly') {
+      await addAgentBubble('老人类目前这个项目在做：', 1000);
+      state.currentProject = 'elderly';
+      const story = `上海虹口有位<span class="highlight">张奶奶</span>，76 岁独居，腿脚不便不下楼做饭。项目方的志愿者每天送一餐热饭到她家，<b>今天的热饭还差一份没凑齐</b>。<br><br>基金会每天在小程序打卡，你可以看到是谁送的、送到哪。`;
+      await addCard(projectCard('elderly', story, '换一个看看'));
+    } else if (pick.value === 'animal') {
+      await addAgentBubble('动物类刚好有一只：', 1000);
+      state.currentProject = 'animal';
+      const story = `上海闵行救助基地上周救回一只被遗弃的<span class="highlight">土狗"豆豆"</span>，皮毛一小块一小块秃了。<b>它这周的狗粮还没凑够。</b><br><br>救助基地每周在小程序更新照片，能看到它一点一点变胖。`;
+      await addCard(projectCard('animal', story, '换一个看看'));
+    }
+  }, { question: '想帮哪类？' });
+}
+
+// 换一个项目
+async function changeProject(currentId) {
+  const alternates = {
+    chunlei: 'library',
+    library: 'warmth',
+    warmth: 'chunlei',
+    elderly: 'warmth',
+    animal: 'elderly'
+  };
+  const nextId = alternates[currentId] || 'chunlei';
+  state.currentProject = nextId;
+  await addUserBubble('换一个看看');
+  await addAgentBubble('同类里再换一个：', 1000);
+  const storyMap = {
+    library: `贵州黔南有个<span class="highlight">乡村小学</span>，全校 180 个孩子，图书角只有 37 本书。这些书的寿命都超过 10 年了。<br><br>项目方把新书一批批寄过去，<b>下一批就差最后一点资助</b>。`,
+    warmth: `青海玉树的冬天还没完全过去，四月还会下雪。项目方发的第 19 批物资<b>还缺最后一小部分</b>，里面有几副手套就要送到牧区孩子手上。`,
+    chunlei: `回到春蕾——<span class="highlight">小卓玛</span>开学两个月学费还没凑齐，还差最后一份就能补齐。腾讯公益做了 10 年，资金透明。`,
+    elderly: `换个视角——上海有位<span class="highlight">张奶奶</span>，76 岁独居。志愿者每天送一餐热饭，<b>今天的还差一份</b>。`
+  };
+  await addCard(projectCard(nextId, storyMap[nextId], '🔄 再换一个'));
+}
+
+// 点"我想帮一下" → 打开支付半屏（不问金额，直接默认主金额）
+async function openDonate(projId) {
+  state.currentProject = projId;
+  state.currentAmount = 20;
+  const p = PROJECTS[projId];
+  const storyMap = {
+    chunlei: '≈ 帮一位女童补齐这学期学费',
+    library: '≈ 2本课外书寄到乡村小学',
+    warmth: '≈ 一副保暖手套送到山区',
+    elderly: '≈ 一份热饭送到独居老人家',
+    animal: '≈ 一只流浪动物一周的狗粮'
+  };
+  document.getElementById('payProject').textContent = p.title;
+  document.getElementById('payOrg').textContent = '由 ' + p.org + ' 执行';
+  document.getElementById('payAmount').textContent = '¥20';
+  document.getElementById('payAmountSub').textContent = storyMap[projId] || '≈ 帮一件真实的事';
+  document.getElementById('payBtnAmount').textContent = '¥20';
+  state.monthlyMode = false;
+
+  // 重置金额按钮副标题（根据当前项目）
+  document.getElementById('apDesc10').textContent = amountDescFor(projId, 10);
+  document.getElementById('apDesc20').textContent = amountDescFor(projId, 20);
+  document.getElementById('apDesc50').textContent = amountDescFor(projId, 50);
+  document.getElementById('apDesc100').textContent = amountDescFor(projId, 100);
+
+  // 重置按钮状态
+  document.querySelectorAll('.ap-btn').forEach(b => b.classList.remove('ap-active'));
+  const def = document.getElementById('apDefault');
+  if (def) def.classList.add('ap-active');
+  // 恢复主按钮
+  const btn = document.querySelector('.pay-btn');
+  if (btn) btn.innerHTML = '确认帮这个忙 <span id="payBtnAmount">¥20</span>';
+  // 重置月捐勾选
+  const toggle = document.querySelector('.monthly-toggle');
+  const check = document.getElementById('monthlyCheck');
+  if (toggle) toggle.classList.remove('checked');
+  if (check) check.textContent = '☐';
+  openHalf('payOverlay');
+}
+
+function openAmountPicker() {
+  document.getElementById('amountPicker').classList.toggle('open');
+}
+
+function toggleMonthly() {
+  const toggle = document.querySelector('.monthly-toggle');
+  const check = document.getElementById('monthlyCheck');
+  const btn = document.querySelector('.pay-btn');
+  state.monthlyMode = !state.monthlyMode;
+
+  if (state.monthlyMode) {
+    toggle.classList.add('checked');
+    check.textContent = '☑';
+    btn.innerHTML = `每月持续帮 <span id="payBtnAmount">¥${state.currentAmount}/月</span>`;
+    // 把副标题换掉
+    document.getElementById('payAmountSub').textContent = `每月 ¥${state.currentAmount} · 随时可停`;
+  } else {
+    toggle.classList.remove('checked');
+    check.textContent = '☐';
+    btn.innerHTML = `确认帮这个忙 <span id="payBtnAmount">¥${state.currentAmount}</span>`;
+    // 恢复副标题
+    setAmount(state.currentAmount);
+  }
+}
+
+// 根据项目+金额返回等价物文案（给按钮副标题用）
+function amountDescFor(projId, n) {
+  const map = {
+    chunlei: { 10: '半份助学金', 20: '一位女童', 50: '帮她+同学', 100: '5 位女童' },
+    library: { 10: '1 本书', 20: '2 本课外书', 50: '5 本书', 100: '一个班的读物' },
+    warmth: { 10: '一顶帽子', 20: '一副手套', 50: '一整套冬装', 100: '5 个孩子过冬' },
+    elderly: { 10: '半份热饭', 20: '一份热饭', 50: '一周热饭', 100: '半个月热饭' },
+    animal: { 10: '3 天狗粮', 20: '一周狗粮', 50: '半月狗粮', 100: '一个月狗粮' }
+  };
+  return (map[projId] && map[projId][n]) || '一件好事';
+}
+
+function setAmount(n) {
+  state.currentAmount = n;
+  document.querySelectorAll('.ap-btn').forEach(b => b.classList.remove('ap-active'));
+  if (event && event.currentTarget) event.currentTarget.classList.add('ap-active');
+  document.getElementById('payAmount').textContent = '¥' + n;
+  document.getElementById('payBtnAmount').textContent = '¥' + n + (state.monthlyMode ? '/月' : '');
+
+  const projId = state.currentProject;
+  const subMap = {
+    chunlei: { 10: '≈ 半份助学金', 20: '≈ 帮一位女童补齐这学期学费', 50: '≈ 帮她 + 她的同学', 100: '≈ 帮 5 位女童一学期' },
+    library: { 10: '≈ 1 本书', 20: '≈ 2 本书寄到乡村小学', 50: '≈ 5 本书', 100: '≈ 一整个班的读物' },
+    warmth: { 10: '≈ 一顶帽子', 20: '≈ 一副保暖手套', 50: '≈ 一整套保暖装备', 100: '≈ 帮 5 个孩子过冬' },
+    elderly: { 10: '≈ 半份热饭', 20: '≈ 一份热饭', 50: '≈ 一周热饭', 100: '≈ 半个月热饭' },
+    animal: { 10: '≈ 3 天狗粮', 20: '≈ 一周狗粮', 50: '≈ 半月狗粮', 100: '≈ 一个月狗粮' }
+  };
+  const sub = (subMap[projId] && subMap[projId][n]) || '≈ 一件真实的好事';
+  document.getElementById('payAmountSub').textContent = state.monthlyMode ? `每月 ¥${n} · 随时可停` : sub;
+}
+
+function setAmountCustom() {
+  setAmount(66);
+  document.getElementById('payAmountSub').textContent = '（演示：实际会弹键盘让你填任意数字）';
+}
+
+// 兼容老调用：pickAmount 保留但直接走 openDonate
+async function pickAmount(projId, amount) {
+  await openDonate(projId);
+}
+
+// 完成支付
+async function doPay() {
+  closeHalf('payOverlay');
+  await wait(400);
+  const amount = state.currentAmount;
+  const projId = state.currentProject;
+  const isMonthly = state.monthlyMode;
+  const p = PROJECTS[projId] || { title: '让它们有饭吃' };
+
+  // 像真实微信一样：支付后用户这边自动发出一条消息
+  if (isMonthly) {
+    await addUserBubble(`已开通每月 ¥${amount}`);
+    await addAgentBubble('月捐开通。每月 1 号会自动扣 ¥' + amount + '，在微信支付-服务里可以随时停。', 700);
+  } else {
+    await addUserBubble(`已支付 ¥${amount}`);
+    await addAgentBubble('好了，已经捐到「' + (p.title || '项目') + '」。', 600);
+  }
+
+  let promise = '';
+  if (projId === 'chunlei') {
+    promise = '小卓玛拿到助学金，我会来告诉你她是谁。项目方每学期有一次回信。';
+  } else if (projId === 'library') {
+    promise = '图书寄到小学后，我会把图书角的照片发你。大概 2-3 周。';
+  } else if (projId === 'warmth') {
+    promise = '物资送到孩子手上，我会把发放照片发你。大概 10 天。';
+  } else if (projId === 'elderly') {
+    promise = '志愿者每天会送餐打卡，每周挑一张最暖的照片发你。';
+  } else {
+    promise = '救助基地每周四更新照片，到时候推给你。';
+  }
+
+  await addCard(doneCard(amount, p.title || '让它们有饭吃', 39, promise), 900);
+
+  // 后续引导 1：项目最近在做什么
+  await wait(2200);
+  await addAgentBubble('这个月跟你一起帮它的还有 <b>2,847 人</b>。这是上个月的一次拨款：', 1400);
+  await addCard(recentActionCard(projId), 1100);
+
+  // 后续引导 2：等待提醒
+  await wait(1500);
+  const waitMsgMap = {
+    chunlei: '小卓玛的助学金 2-3 周内拨下来，到时候告诉你。你也可以随时问我"春蕾有进展吗"。',
+    library: '下一批图书月底寄出，图书角的照片到了我推给你。',
+    warmth: '物资这几天就会发到孩子手上，我第一时间推给你。',
+    elderly: '送餐每天都在发生，下周一挑一张照片发你。',
+    animal: '救助基地每周四更新照片，到时候推给你。'
+  };
+  await addAgentBubble(waitMsgMap[projId] || '有进展我会告诉你。', 1200);
+}
+
+function shareCard() {
+  addAgentBubble('（这里会弹微信分享面板，可以分享到朋友圈 / 聊天 / 生成图片）', 400);
+}
+
+// ========================= 路径 2：清晰意图 =========================
+async function startClear() {
+  await wait(400);
+  await addUserBubble('我想捐一些钱给山区女童读书');
+  await addAgentBubble('山区女童学费类，目前这个最匹配：', 1200);
+  state.currentProject = 'chunlei';
+  const story = `云南临沧有个叫<span class="highlight">小卓玛</span>的女童，开学快两个月了学费还没凑齐。项目方每学期都帮她这样的女童补齐学费。<br><br><b>你提到的"山区女童读书"，说的就是她们</b>。腾讯公益做了 10 年的项目，资金走向透明可查。`;
+  await addCard(projectCard('chunlei', story, '看看其他类似的'));
+}
+
+// ========================= 路径 3a：老用户主动问进展 =========================
+async function startReturnProgress() {
+  await wait(400);
+  await addUserBubble('我上次捐的那个项目怎么样了');
+  await addAgentBubble('你上次捐的是<b>春蕾计划</b>，有新进展：', 1200);
+  await addCard(progressCard(), 900);
+  await wait(500);
+  await addAgentBubble('9 天前，你那 20 元随第 38 批助学金到了云南临沧。完整的 5 个月流向在时间线里。', 1300);
+}
+
+// ========================= 路径 3b：老用户说再做好事，Agent 附带进展 =========================
+async function startReturnDonate() {
+  await wait(400);
+  await addUserBubble('我想再做点好事');
+  await addAgentBubble('先说一下——<b>你上次帮的春蕾 9 天前有新进展</b>：', 1300);
+  await addCard(progressCard(), 900);
+  await wait(500);
+  await addAgentBubble('要继续春蕾，还是换个看看？', 1000);
+  addQuickGroup([
+    { label: '继续帮春蕾', value: 'same' },
+    { label: '看看类似的', value: 'similar' },
+    { label: '换个类型', value: 'different' }
+  ], async (pick) => {
+    await addUserBubble(pick.label);
+    if (pick.value === 'same') {
+      state.currentProject = 'chunlei';
+      const story = `你去年帮过一位女童凑学费。这学期新学期又到了，<span class="highlight">小卓玛</span>的学费还没凑齐，<b>就差最后一份</b>。`;
+      await addCard(projectCard('chunlei', story, ''));
+    } else if (pick.value === 'similar') {
+      state.currentProject = 'library';
+      const story = `你上次帮的是女童学费——<b>贵州那所小学的图书角就有你帮过的那些女童</b>。学校图书角只剩 37 本旧书，新书就差最后一批寄到。`;
+      await addCard(projectCard('library', story, '🔄 换一个'));
+    } else {
+      state.currentProject = 'elderly';
+      const story = `你一直在帮孩子，换个视角？上海虹口的<span class="highlight">张奶奶</span>，76 岁独居，志愿者每天送一餐热饭，<b>今天的还差一份</b>。`;
+      await addCard(projectCard('elderly', story, '🔄 换一个'));
+    }
+  }, { question: '要怎么帮？' });
+}
+
+// ========================= 让用户"说话"触发下一步 =========================
+async function userSay(text) {
+  await addUserBubble(text);
+  await addAgentBubble('好，稍等。', 800);
+}
+
+async function onTapDonateAgain() {
+  // 用户点"再帮一下"按钮
+  await addUserBubble('再帮一下');
+  await addAgentBubble('要继续春蕾，还是换个看看？', 900);
+  addQuickGroup([
+    { label: '继续帮春蕾', value: 'same' },
+    { label: '看看类似的', value: 'similar' },
+    { label: '换个类型', value: 'different' }
+  ], async (pick) => {
+    await addUserBubble(pick.label);
+    if (pick.value === 'same') {
+      state.currentProject = 'chunlei';
+      const story = `你去年帮过一位女童凑学费。这学期又到了新学期，<span class="highlight">小卓玛</span>的学费<b>还差最后一份</b>就能补齐。`;
+      await addCard(projectCard('chunlei', story, ''));
+    } else if (pick.value === 'similar') {
+      state.currentProject = 'library';
+      const story = `从"帮她交学费"到"帮她有书看"——<b>贵州那所小学的图书角就有你帮过的那些女童</b>。新一批书就差最后一点资助。`;
+      await addCard(projectCard('library', story, '🔄 换一个'));
+    } else {
+      state.currentProject = 'elderly';
+      const story = `换个视角——上海虹口的<span class="highlight">张奶奶</span>，76 岁独居。志愿者每天送一餐热饭，<b>今天的还差一份</b>。`;
+      await addCard(projectCard('elderly', story, '🔄 换一个'));
+    }
+  }, { question: '要怎么帮？' });
+}
+
+// ========================= 项目深度卡 =========================
+function openDeepCard(projId) {
+  const p = PROJECTS[projId];
+  if (!p || !p.deep) return;
+  state.currentProject = projId;
+
+  document.getElementById('deepTitle').textContent = '关于「' + p.title + '」';
+  document.getElementById('deepOrg').textContent = '由 ' + p.org + ' 执行 · 已运营 ' + p.years + ' 年';
+
+  document.getElementById('deepBeneficiary').textContent = p.deep.beneficiary;
+  document.getElementById('deepBeneficiaryLabel').textContent = p.deep.beneficiaryLabel;
+  document.getElementById('deepDuration').textContent = p.deep.duration;
+  document.getElementById('deepDurationLabel').textContent = p.deep.durationLabel;
+  document.getElementById('deepEfficiency').textContent = p.deep.efficiency;
+  document.getElementById('deepEfficiencyLabel').textContent = p.deep.efficiencyLabel;
+
+  // 推荐逻辑（根据用户情境动态生成）
+  const whyMap = {
+    chunlei: [
+      '匹配你提到的「想帮孩子读书」',
+      '在腾讯公益运营 ' + p.years + ' 年',
+      '你的 ' + p.friendsCount + ' 个微信好友捐过',
+      '每月公示资助进展，可在小程序查到'
+    ],
+    library: [
+      '匹配你提到的「想帮孩子读书」',
+      '在腾讯公益运营 ' + p.years + ' 年',
+      '项目方每月更新落地进展',
+      '基金会年报在公众号可查'
+    ],
+    warmth: [
+      '冬季应急项目，当下时效强',
+      '在腾讯公益运营 ' + p.years + ' 年',
+      '每批发放都有影像留档',
+      '基金会年报在公众号可查'
+    ],
+    elderly: [
+      '匹配你提到的「想帮老人」',
+      '覆盖 12 个城市，送餐到家',
+      '志愿者每日打卡可查',
+      '在腾讯公益运营 ' + p.years + ' 年'
+    ],
+    animal: [
+      '匹配你提到的「想帮小动物」',
+      '本地救助基地直连',
+      '每周更新动物照片',
+      '在腾讯公益运营 ' + p.years + ' 年'
+    ]
+  };
+  const whyList = whyMap[projId] || whyMap.chunlei;
+  document.getElementById('deepWhy').innerHTML = whyList.map(w => '<div>· ' + w + '</div>').join('');
+
+  // 执行地区
+  if (p.deep.regions) {
+    document.getElementById('deepRegionCount').textContent = p.deep.regions.count;
+    document.getElementById('deepRegionDesc').textContent = p.deep.regions.desc;
+    document.getElementById('deepRegionExtra').textContent = '共 ' + p.deep.regions.list.length + ' 地';
+    document.getElementById('deepRegionList').innerHTML = p.deep.regions.list
+      .map(r => '<span class="deep-regions-tag">' + r + '</span>').join('');
+  }
+
+  // 机构情况
+  if (p.deep.orgInfo) {
+    document.getElementById('deepOrgLogo').textContent = p.deep.orgInfo.logo;
+    document.getElementById('deepOrgFullName').textContent = p.deep.orgInfo.fullName;
+    document.getElementById('deepOrgBadges').innerHTML = p.deep.orgInfo.badges
+      .map(b => '<span class="deep-org-badge">' + b + '</span>').join('');
+    document.getElementById('deepOrgDesc').textContent = p.deep.orgInfo.desc;
+  }
+
+  // 爱心留言
+  if (p.deep.comments) {
+    const commentsHtml = p.deep.comments.map(c => {
+      const initial = c.name.charAt(0);
+      return `
+        <div class="deep-comment-item">
+          <div class="deep-comment-avatar">${initial}</div>
+          <div class="deep-comment-body">
+            <div class="deep-comment-meta">
+              <span class="deep-comment-name">${c.name}</span>
+              <span class="deep-comment-amount">捐了 ¥${c.amount}</span>
+              <span class="deep-comment-time">${c.time}</span>
+            </div>
+            <div class="deep-comment-text">${c.text}</div>
+          </div>
+        </div>
+      `;
+    }).join('');
+    document.getElementById('deepComments').innerHTML = commentsHtml +
+      (p.deep.commentsTotal ? '<div class="deep-comments-total">' + p.deep.commentsTotal + '</div>' : '');
+    document.getElementById('deepCommentsExtra').textContent = p.deep.commentsTotal || '';
+  }
+
+  openHalf('deepOverlay');
+}
+
+function deepToHelp() {
+  closeHalf('deepOverlay');
+  setTimeout(() => {
+    openDonate(state.currentProject);
+  }, 350);
+}
+
+// ========================= 带花到状态 =========================
+let currentStatusText = '做好事';
+
+function openFlowerStatus() {
+  openHalf('statusOverlay');
+}
+
+async function onSubscribeProject() {
+  await addUserBubble('订阅这个项目的进展');
+  await addAgentBubble('订阅好了。项目方每次更新，我会推给你。', 1100);
+}
+
+// 打开捐赠证书半屏
+function openCertificate() {
+  const projId = state.currentProject;
+  const p = PROJECTS[projId] || PROJECTS.chunlei;
+  const amount = state.currentAmount || 20;
+
+  const certNo = generateCertNo();
+  const now = new Date();
+  const dateStr = `${now.getFullYear()}年${String(now.getMonth()+1).padStart(2,'0')}月${String(now.getDate()).padStart(2,'0')}日`;
+
+  document.getElementById('certNo').textContent = 'NO. ' + certNo;
+  document.getElementById('certProject').textContent = p.title;
+  document.getElementById('certAmount').textContent = '¥' + amount;
+  document.getElementById('certOrgName').textContent = p.org;
+  document.getElementById('certDate').textContent = dateStr;
+
+  openHalf('certOverlay');
+}
+
+function generateCertNo() {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let s = '';
+  for (let i = 0; i < 14; i++) {
+    s += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return s;
+}
+
+async function onClickCertShare() {
+  closeHalf('certOverlay');
+  await wait(400);
+  await addAgentBubble('这里会弹微信分享面板——可以发朋友圈、发给朋友，或保存到相册。', 600);
+}
+
+async function onClickRefund() {
+  await addUserBubble('我想撤回刚才的捐款');
+  await addAgentBubble('可以的。当日内无理由可撤回，<b>¥20 会原路退回到你的微信零钱</b>。要走吗？', 1200);
+}
+
+function pickStatusText(el, text) {
+  document.querySelectorAll('.status-option').forEach(o => o.classList.remove('active'));
+  el.classList.add('active');
+  currentStatusText = text;
+  // 同步更新预览
+  document.querySelector('.status-text').textContent = text;
+}
+
+async function confirmStatus() {
+  closeHalf('statusOverlay');
+  await wait(300);
+
+  // 飞花动画
+  const flower = document.createElement('div');
+  flower.className = 'flower-fly';
+  flower.textContent = '🌸';
+  // 起始点：对话中间
+  const phoneRect = document.querySelector('.phone').getBoundingClientRect();
+  const startX = phoneRect.left + phoneRect.width / 2 - 16;
+  const startY = phoneRect.top + phoneRect.height / 2;
+  flower.style.left = startX + 'px';
+  flower.style.top = startY + 'px';
+  // 飞到导航栏右上角
+  flower.style.setProperty('--fly-x', (phoneRect.right - startX - 60) + 'px');
+  flower.style.setProperty('--fly-y', (phoneRect.top - startY + 40) + 'px');
+  document.body.appendChild(flower);
+  setTimeout(() => flower.remove(), 1500);
+
+  await wait(1300);
+  await addAgentBubble(`花已带到你的状态："${currentStatusText}"。`, 1000);
+}
+
+// ========================= 我的花园 =========================
+async function onAskGarden() {
+  await addUserBubble('我有多少小红花了？');
+  await addAgentBubble('你一共有 48 朵小红花。最近的在这里：', 1100);
+  // 半屏展示花园
+  setTimeout(() => openHalf('gardenOverlay'), 400);
+}
+
+function toGardenFull() {
+  closeHalf('gardenOverlay');
+  setTimeout(() => {
+    addAgentBubble('这是你的花园入口，点开看：<span style="color:#576b95;">腾讯公益花园 ›</span>', 600);
+  }, 400);
+}
+
+// ========================= 半屏控制 =========================
+function openHalf(id) {
+  document.getElementById(id).classList.add('active');
+}
+
+function closeHalf(id) {
+  document.getElementById(id).classList.remove('active');
+}
+
+// 初始加载
+loadPath('fuzzy');
+</script>
+
+</body>
+</html>
