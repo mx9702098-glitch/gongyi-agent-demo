@@ -880,6 +880,15 @@ body {
   line-height: 1.5;
 }
 
+.prog-fund-hint {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px dashed #e5e5e5;
+  font-size: 12px;
+  color: #888;
+  line-height: 1.5;
+}
+
 .prog-stats {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -3529,6 +3538,7 @@ function recentActionCard(projId) {
         <div class="prog-update-text" style="font-weight:normal;">${c.text}</div>
       </div>
       <div class="tl-photo ${c.photoClass}">${c.photoTag}</div>
+      <div class="prog-fund-hint">你这次的 ¥${state.amount || 20} 已托管至腾讯公益，预计 3 天内拨付到执行机构 ›</div>
     </div>
   `;
 }
@@ -3545,39 +3555,6 @@ function doneCard(amount, projectTitle, whichBatch, nextPromise) {
       <div class="done-title">好事做成了</div>
       <div class="done-amount">¥${amount}</div>
       <div class="done-where">→ ${projectTitle}</div>
-
-      <!-- 资金流向预告：模式2 工具透明 -->
-      <div class="fund-flow">
-        <div class="fund-flow-label">你的钱接下来会去哪</div>
-        <div class="fund-step">
-          <div class="fund-step-dot active"></div>
-          <div class="fund-step-text">
-            <div class="fund-step-main">已托管至腾讯公益</div>
-            <div class="fund-step-sub">今天</div>
-          </div>
-        </div>
-        <div class="fund-step">
-          <div class="fund-step-dot"></div>
-          <div class="fund-step-text">
-            <div class="fund-step-main">拨付到执行机构</div>
-            <div class="fund-step-sub">约 3 天</div>
-          </div>
-        </div>
-        <div class="fund-step">
-          <div class="fund-step-dot"></div>
-          <div class="fund-step-text">
-            <div class="fund-step-main">采购物资，落实执行</div>
-            <div class="fund-step-sub">约 2 周</div>
-          </div>
-        </div>
-        <div class="fund-step last">
-          <div class="fund-step-dot"></div>
-          <div class="fund-step-text">
-            <div class="fund-step-main">你会收到执行进展</div>
-            <div class="fund-step-sub">约 1 个月</div>
-          </div>
-        </div>
-      </div>
 
       <div class="done-promise">
         <div>${nextPromise}</div>
