@@ -1406,8 +1406,10 @@ body {
   border-radius: 14px 14px 0 0;
   transform: translateY(100%);
   transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-  max-height: 70%;
+  max-height: 78%;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .half-overlay.active .half-sheet { transform: translateY(0); }
@@ -1443,6 +1445,117 @@ body {
 .hs-body {
   padding: 16px 20px 28px;
 }
+
+/* 项目进展半屏 */
+.prog-meta-bar {
+  background: linear-gradient(135deg,#fff8e6,#fff3d0);
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 18px;
+}
+.prog-meta-label { font-size: 11px; color: #b08800; margin-bottom: 4px; }
+.prog-meta-text { font-size: 13px; color: #4a3c00; line-height: 1.5; }
+
+.prog-section-h {
+  font-size: 12px;
+  color: #999;
+  margin: 8px 0 10px;
+  letter-spacing: 0.5px;
+}
+
+.prog-latest {
+  background: #fffaf0;
+  border: 1px solid #fce8a6;
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 18px;
+}
+.prog-latest-tag {
+  display: inline-block;
+  background: #07c160;
+  color: #fff;
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+.prog-latest-date { font-size: 12px; color: #999; margin-bottom: 4px; }
+.prog-latest-title { font-size: 15px; font-weight: 600; color: #222; margin-bottom: 6px; }
+.prog-latest-text { font-size: 13px; color: #555; line-height: 1.6; margin-bottom: 10px; }
+.prog-latest-photo {
+  height: 120px;
+  border-radius: 8px;
+  background: #ffe9d9 center/cover no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: #b06b3a;
+}
+
+.prog-mine {
+  background: #fff5f5;
+  border: 1px solid #ffd6d4;
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-bottom: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.prog-mine-text { font-size: 13px; color: #555; line-height: 1.5; }
+.prog-mine-num { font-size: 18px; font-weight: 700; color: #e8413c; }
+.prog-mine-num small { font-size: 11px; font-weight: normal; color: #999; margin-left: 2px; }
+
+.hs-footer {
+  position: sticky;
+  bottom: 0;
+  background: #fff;
+  border-top: 0.5px solid #eee;
+  padding: 12px 20px calc(12px + env(safe-area-inset-bottom, 0px));
+  display: flex;
+  gap: 10px;
+}
+.hs-footer-btn {
+  flex: 1;
+  height: 44px;
+  border-radius: 22px;
+  border: none;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.hs-footer-btn.primary {
+  background: #e8413c;
+  color: #fff;
+}
+.hs-footer-btn.primary.subscribed {
+  background: #f5f5f5;
+  color: #999;
+}
+.hs-footer-btn.secondary {
+  background: #fff;
+  color: #555;
+  border: 1px solid #ddd;
+}
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 90px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,0.78);
+  color: #fff;
+  font-size: 13px;
+  padding: 10px 18px;
+  border-radius: 20px;
+  z-index: 9999;
+  opacity: 0;
+  transition: opacity 0.2s;
+  pointer-events: none;
+}
+.toast.show { opacity: 1; }
 
 .pay-row {
   display: flex;
@@ -2992,42 +3105,14 @@ body {
       <div class="half-sheet" onclick="event.stopPropagation()">
         <div class="hs-handle"></div>
         <div class="hs-header">
-          <div class="hs-title">这个项目的完整时间线</div>
+          <div class="hs-title" id="progTitle">项目进展</div>
           <div class="hs-close" onclick="closeHalf('progressOverlay')">×</div>
         </div>
-        <div class="hs-body">
-          <div class="timeline">
-            <div class="tl-item">
-              <div class="tl-dot"></div>
-              <div class="tl-content">
-                <div class="tl-date">今天 · 刚刚</div>
-                <div class="tl-text">你的 20 元 已汇入春蕾计划第 39 批助学金池，正在匹配下一位受助女童。</div>
-              </div>
-            </div>
-            <div class="tl-item">
-              <div class="tl-dot"></div>
-              <div class="tl-content">
-                <div class="tl-date">2026年4月15日</div>
-                <div class="tl-text">第 38 批助学金已拨付至云南临沧，覆盖 67 名困境女童本学期学费。</div>
-                <div class="tl-photo receipt">🧾 拨款凭证（由基金会提供）</div>
-              </div>
-            </div>
-            <div class="tl-item">
-              <div class="tl-dot"></div>
-              <div class="tl-content">
-                <div class="tl-date">2026年3月2日</div>
-                <div class="tl-text">春季学期开学，受助女童小卓玛（化名）回信："谢谢叔叔阿姨，这学期我要学好数学。"</div>
-                <div class="tl-photo letter">✉️ 回信手写稿（匿名处理）</div>
-              </div>
-            </div>
-            <div class="tl-item">
-              <div class="tl-dot"></div>
-              <div class="tl-content">
-                <div class="tl-date">2026年1月18日</div>
-                <div class="tl-text">2025 年度报告发布：全年帮助 1,247 名困境女童完成学业，覆盖 23 个省份。</div>
-              </div>
-            </div>
-          </div>
+        <div class="hs-body" id="progressBody">
+          <!-- JS 动态填充 -->
+        </div>
+        <div class="hs-footer" id="progressFooter">
+          <!-- JS 动态填充：订阅按钮 + 完整项目页 -->
         </div>
       </div>
     </div>
@@ -3567,8 +3652,8 @@ function doneCard(amount, projectTitle, whichBatch, nextPromise) {
         <button class="done-btn-sub" onclick="openCertificate()">
           看捐赠证书
         </button>
-        <button class="done-btn-sub" onclick="onSubscribeProject()">
-          订阅项目进展
+        <button class="done-btn-sub" onclick="openProjectProgress()">
+          查看项目进展
         </button>
       </div>
       <div class="done-refund">
@@ -3988,6 +4073,180 @@ function openFlowerStatus() {
 async function onSubscribeProject() {
   await addUserBubble('订阅这个项目的进展');
   await addAgentBubble('订阅好了。项目方每次更新，我会推给你。', 1100);
+}
+
+// ====== 项目进展半屏：内容数据 ======
+const PROGRESS_DATA = {
+  chunlei: {
+    title: '春蕾计划 · 项目进展',
+    meta: '腾讯公益运营 10 年 · 每月公示账目 · 电子票据可查',
+    latest: {
+      date: '2026年4月3日',
+      title: '贵州黔南 · 第22批图书送达',
+      text: '268 本新书送到惠水县苗族小学，已整理上架。图书角的孩子们这两天开心得合不上嘴。',
+      photo: '📚 图书角开箱'
+    },
+    timeline: [
+      { date: '2026年3月15日', title: '第21批图书启运', text: '云南怒江 · 192 本新书发出，预计 10 天内送达。' },
+      { date: '2026年2月28日', title: '月度资金公示', text: '本月共筹集 ¥38,420，全部用于书籍采购与物流。账目已公示。' },
+      { date: '2026年2月10日', title: '第20批图书送达', text: '四川凉山昭觉县 · 230 本新书入校，孩子们已开始借阅。' }
+    ],
+    mine: { times: 3, total: 60, flowers: 3 }
+  },
+  library: {
+    title: '满天星阅读 · 项目进展',
+    meta: '永真公益基金会运营 · 每月更新 · 电子票据可查',
+    latest: {
+      date: '2026年4月3日',
+      title: '贵州黔南 · 第22批图书送达',
+      text: '268 本新书送到惠水县苗族小学，已整理上架。图书角的孩子们这两天开心得合不上嘴。',
+      photo: '📚 图书角开箱'
+    },
+    timeline: [
+      { date: '2026年3月15日', title: '第21批图书启运', text: '云南怒江 · 192 本新书发出，预计 10 天内送达。' },
+      { date: '2026年2月28日', title: '月度资金公示', text: '本月共筹集 ¥38,420，全部用于书籍采购与物流。账目已公示。' },
+      { date: '2026年2月10日', title: '第20批图书送达', text: '四川凉山昭觉县 · 230 本新书入校。' }
+    ],
+    mine: { times: 1, total: 20, flowers: 1 }
+  },
+  warmth: {
+    title: '山区冬天 · 项目进展',
+    meta: '本地基金会执行 · 每批影像留档 · 电子票据可查',
+    latest: {
+      date: '2026年4月1日',
+      title: '青海玉树 · 第6批棉衣发放',
+      text: '120 件冬装送到玉树州称多县小学，每个孩子都试穿合身。物资清单已公示。',
+      photo: '🧥 棉衣发放现场'
+    },
+    timeline: [
+      { date: '2026年3月18日', title: '第5批棉衣启运', text: '甘肃定西 · 90 件冬装发出。' },
+      { date: '2026年3月1日', title: '月度公示', text: '本月共筹 ¥21,300，全部用于棉衣采购。' },
+      { date: '2026年2月14日', title: '第4批棉衣到位', text: '西藏那曲 · 110 件冬装入校。' }
+    ],
+    mine: { times: 1, total: 20, flowers: 1 }
+  },
+  elderly: {
+    title: '老人热饭 · 项目进展',
+    meta: '12 城覆盖 · 志愿者每日打卡 · 电子票据可查',
+    latest: {
+      date: '2026年5月7日',
+      title: '上海虹口 · 张奶奶今日热饭',
+      text: '志愿者小王送达，张奶奶今天精神不错，饭后聊了 10 分钟。本周打卡已完成 6 次。',
+      photo: '🍲 今日送餐打卡'
+    },
+    timeline: [
+      { date: '2026年5月3日', title: '本周送餐汇总', text: '上海片区共完成 218 次送餐，覆盖 42 位老人。' },
+      { date: '2026年4月20日', title: '新增 1 位老人', text: '杨浦区李爷爷加入项目，志愿者已对接。' },
+      { date: '2026年4月1日', title: '月度公示', text: '本月共筹 ¥15,640，全部用于食材与配送。' }
+    ],
+    mine: { times: 1, total: 20, flowers: 1 }
+  },
+  animal: {
+    title: '流浪动物 · 项目进展',
+    meta: '上海本地基地 · 每周更新 · 可实地探访',
+    latest: {
+      date: '2026年5月2日',
+      title: '小橘的新家',
+      text: '基地救助的小橘已被领养，新主人发来视频，它适应得很快，今天还在窗台晒太阳。',
+      photo: '🐱 小橘的新家'
+    },
+    timeline: [
+      { date: '2026年4月25日', title: '本周救助 3 只', text: '徐汇 1 只成年田园猫、闵行 2 只幼猫，已入基地。' },
+      { date: '2026年4月18日', title: '基地物资公示', text: '本月共筹 ¥8,920，已采购猫粮 200kg、医疗用品若干。' },
+      { date: '2026年4月10日', title: '新一批领养', text: '4 只小猫找到家，目前基地在养 38 只。' }
+    ],
+    mine: { times: 1, total: 20, flowers: 1 }
+  }
+};
+
+// ====== 打开项目进展半屏 ======
+function openProjectProgress() {
+  const projId = state.currentProject || 'chunlei';
+  const data = PROGRESS_DATA[projId] || PROGRESS_DATA.chunlei;
+
+  document.getElementById('progTitle').textContent = data.title;
+
+  const tlHTML = data.timeline.map(t => `
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-content">
+        <div class="tl-date">${t.date}</div>
+        <div class="tl-text"><b>${t.title}</b><br>${t.text}</div>
+      </div>
+    </div>
+  `).join('');
+
+  const mine = data.mine;
+  const mineBlock = mine.times > 0 ? `
+    <div class="prog-mine">
+      <div>
+        <div class="prog-mine-text">你与这个项目</div>
+        <div class="prog-mine-text" style="color:#999;font-size:12px;margin-top:4px;">共捐过 ${mine.times} 次，收到 ${mine.flowers} 朵小红花</div>
+      </div>
+      <div class="prog-mine-num">¥${mine.total}</div>
+    </div>
+  ` : '';
+
+  document.getElementById('progressBody').innerHTML = `
+    <div class="prog-meta-bar">
+      <div class="prog-meta-label">项目背景</div>
+      <div class="prog-meta-text">${data.meta}</div>
+    </div>
+
+    <div class="prog-section-h">最近一次进展</div>
+    <div class="prog-latest">
+      <span class="prog-latest-tag">最近</span>
+      <div class="prog-latest-date">📍 ${data.latest.date}</div>
+      <div class="prog-latest-title">${data.latest.title}</div>
+      <div class="prog-latest-text">${data.latest.text}</div>
+      <div class="prog-latest-photo">${data.latest.photo}</div>
+    </div>
+
+    ${mineBlock}
+
+    <div class="prog-section-h">历史进展</div>
+    <div class="timeline">${tlHTML}</div>
+  `;
+
+  const subscribed = state.subscribedProjects && state.subscribedProjects[projId];
+  document.getElementById('progressFooter').innerHTML = `
+    <button class="hs-footer-btn primary ${subscribed ? 'subscribed' : ''}" id="subBtn" onclick="toggleSubscribe('${projId}')">
+      ${subscribed ? '已订阅 ✓' : '订阅后续进展'}
+    </button>
+    <button class="hs-footer-btn secondary" onclick="goToMiniProgram()">
+      看完整项目页
+    </button>
+  `;
+
+  openHalf('progressOverlay');
+}
+
+function toggleSubscribe(projId) {
+  if (!state.subscribedProjects) state.subscribedProjects = {};
+  if (state.subscribedProjects[projId]) return; // 已订阅不可取消（保持简单）
+  state.subscribedProjects[projId] = true;
+  const btn = document.getElementById('subBtn');
+  btn.classList.add('subscribed');
+  btn.textContent = '已订阅 ✓';
+  showToast('有新进展时给你推送');
+}
+
+function goToMiniProgram() {
+  showToast('跳转到腾讯公益小程序…');
+}
+
+function showToast(msg) {
+  let t = document.getElementById('globalToast');
+  if (!t) {
+    t = document.createElement('div');
+    t.id = 'globalToast';
+    t.className = 'toast';
+    document.body.appendChild(t);
+  }
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove('show'), 1800);
 }
 
 // 打开捐赠证书半屏
