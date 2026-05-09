@@ -2972,6 +2972,41 @@ body {
   padding: 10px 0 0;
 }
 
+/* 气泡内的小程序超链接（模仿微信绿字带图标） */
+.mp-link-wrap {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 0.5px solid #f0f0f0;
+}
+.mp-link-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: #07c160;
+  font-size: 14.5px;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  letter-spacing: 0.01em;
+  border-bottom: 1px solid rgba(7, 193, 96, 0.25);
+  padding-bottom: 1px;
+  line-height: 1.6;
+}
+.mp-link-row:active { opacity: 0.6; }
+.mp-link-icon {
+  display: inline-flex;
+  color: #07c160;
+  flex-shrink: 0;
+}
+.mp-link-text {
+  color: #07c160;
+}
+.mp-link-arrow {
+  color: #07c160;
+  font-size: 13px;
+  margin-left: 1px;
+}
+
 /* ============ 分类菜单卡（startFuzzy 首个问询） ============ */
 .cat-card {
   background: #fff;
@@ -4885,7 +4920,33 @@ function toggleSubscribe(projId) {
   showToast('有新进展时给你推送');
 }
 
-function goToMiniProgram() {
+async function goToMiniProgram() {
+  // 微信 Agent 约束：只能从对话消息中跳小程序，不能在半屏里直跳
+  // 流程：关半屏 → Agent 发一条气泡（文案 + 超链接在同一个气泡里）→ 用户点链接真跳
+  const projId = state.currentProject || 'chunlei';
+  const p = PROJECTS[projId] || PROJECTS.chunlei;
+  closeHalf('progressOverlay');
+  await wait(420);
+  const bubbleHTML = `
+    这里是完整项目页，包括财务报告、机构详情和历史进展：
+    <div class="mp-link-wrap">
+      <a class="mp-link-row" onclick="onOpenMiniProgramLink('${projId}')">
+        <span class="mp-link-icon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="4" y="3" width="16" height="18" rx="2"/>
+            <path d="M8 8h8"/><path d="M8 12h8"/><path d="M8 16h5"/>
+          </svg>
+        </span>
+        <span class="mp-link-text">${p.title}</span>
+        <span class="mp-link-arrow">↗</span>
+      </a>
+    </div>
+  `;
+  await addAgentBubble(bubbleHTML, 900);
+}
+
+// 真正的小程序跳转占位
+function onOpenMiniProgramLink(projId) {
   showToast('跳转到腾讯公益小程序…');
 }
 
