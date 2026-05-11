@@ -3217,6 +3217,44 @@ body {
   padding: 16px 14px 14px;
   width: 280px;
 }
+
+/* 老用户复盘 banner（嵌入分类卡顶部） */
+.cat-recall-banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #fff8e6;
+  border: 0.5px solid #f5e6b8;
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin-bottom: 14px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.cat-recall-banner:active {
+  background: #fff1c8;
+  transform: scale(0.99);
+}
+.cat-recall-bulb {
+  font-size: 14px;
+  flex-shrink: 0;
+}
+.cat-recall-text {
+  flex: 1;
+  font-size: 12.5px;
+  color: #5a4a1a;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+}
+.cat-recall-text b {
+  color: #2d1f00;
+  font-weight: 600;
+}
+.cat-recall-arrow {
+  font-size: 14px;
+  color: #c9a96e;
+  flex-shrink: 0;
+}
 .cat-title {
   font-size: 12px;
   color: #999;
@@ -3537,19 +3575,6 @@ body {
   <div class="ps-title">公益 SKILL · 对话 Demo</div>
   <div class="ps-subtitle">模拟大 Agent 调用公益原子能力后呈现的效果</div>
 
-  <div class="ps-section">快捷气泡实现方式</div>
-  <div style="background:#1a1a1a;border-radius:10px;padding:4px;display:flex;margin-bottom:10px;gap:4px;">
-    <button id="variant-inline" onclick="setVariant('inline')" style="flex:1;background:#07c160;border:none;color:#fff;font-size:11px;padding:8px 4px;border-radius:7px;cursor:pointer;font-weight:500;">
-      版本 A<br><span style="font-weight:400;opacity:0.85;">卡片内按钮</span>
-    </button>
-    <button id="variant-bubble" onclick="setVariant('bubble')" style="flex:1;background:transparent;border:none;color:#888;font-size:11px;padding:8px 4px;border-radius:7px;cursor:pointer;">
-      版本 B<br><span style="opacity:0.8;">外挂气泡⚠️</span>
-    </button>
-  </div>
-  <div id="variantNote" style="font-size:10px;color:#666;margin-bottom:18px;line-height:1.5;padding:0 4px;">
-    版本 A · 选项全部做进卡片，100% 合规
-  </div>
-
   <div class="ps-section">首次用户</div>
   <div class="path-item active" data-path="fuzzy" onclick="loadPath('fuzzy')">
     <div class="pi-label">PATH 1</div>
@@ -3563,20 +3588,20 @@ body {
   </div>
 
   <div class="ps-section">老用户（有捐款历史）</div>
+  <div class="path-item" data-path="fuzzy-returning" onclick="loadPath('fuzzy-returning')">
+    <div class="pi-label">PATH 1·R</div>
+    <div class="pi-title">老用户开口</div>
+    <div class="pi-desc">"我想做点好事" + Agent 顺带提醒上次捐过的项目有进展</div>
+  </div>
   <div class="path-item" data-path="return-progress" onclick="loadPath('return-progress')">
     <div class="pi-label">PATH 3a</div>
     <div class="pi-title">主动问进展</div>
     <div class="pi-desc">"我上次捐的那个怎么样了"</div>
   </div>
-  <div class="path-item" data-path="return-donate" onclick="loadPath('return-donate')">
-    <div class="pi-label">PATH 3b</div>
-    <div class="pi-title">再做点好事</div>
-    <div class="pi-desc">"我想再做点好事" → Agent 附带历史进展</div>
-  </div>
   <div class="path-item" data-path="ask-garden" onclick="loadPath('ask-garden')">
     <div class="pi-label">PATH 3c</div>
     <div class="pi-title">看我的小红花</div>
-    <div class="pi-desc">"我有多少小红花了？" → 弹花园半屏</div>
+    <div class="pi-desc">"我有多少小红花了？"</div>
   </div>
 
   <!-- 规范边界说明 -->
@@ -3994,7 +4019,6 @@ body {
 
 <script>
 let currentPath = 'fuzzy';
-let currentVariant = 'inline'; // 'inline' 版本A | 'bubble' 版本B
 let state = {};
 
 // ========================= 核心渲染工具 =========================
@@ -4056,51 +4080,30 @@ async function addAgentBubble(text, delay = 900) {
 }
 
 async function addQuickGroup(opts, onPick, opts2 = {}) {
-  if (currentVariant === 'inline') {
-    // 版本A：选项做进卡片
-    const btnsHtml = opts.map((o, i) => `
-      <button class="amount-btn" style="flex:1 1 calc(50% - 3px);min-height:46px;flex-direction:column;" data-idx="${i}" onclick="_inlinePick(${i})">
-        <div class="ab-num" style="font-size:13px;color:#111;font-weight:500;line-height:1.2;">${o.label}</div>
-      </button>
-    `).join('');
+  // 选项全部做进卡片（合规）
+  const btnsHtml = opts.map((o, i) => `
+    <button class="amount-btn" style="flex:1 1 calc(50% - 3px);min-height:46px;flex-direction:column;" data-idx="${i}" onclick="_inlinePick(${i})">
+      <div class="ab-num" style="font-size:13px;color:#111;font-weight:500;line-height:1.2;">${o.label}</div>
+    </button>
+  `).join('');
 
-    const html = `
-      <div class="proj-card" style="animation:none;">
-        <div class="proj-body" style="padding:14px;">
-          ${opts2.question ? `<div style="font-size:13px;color:#888;margin-bottom:10px;">${opts2.question}</div>` : ''}
-          <div class="amount-row" style="flex-wrap:wrap;gap:6px;">${btnsHtml}</div>
-        </div>
+  const html = `
+    <div class="proj-card" style="animation:none;">
+      <div class="proj-body" style="padding:14px;">
+        ${opts2.question ? `<div style="font-size:13px;color:#888;margin-bottom:10px;">${opts2.question}</div>` : ''}
+        <div class="amount-row" style="flex-wrap:wrap;gap:6px;">${btnsHtml}</div>
       </div>
-    `;
-    const w = document.createElement('div');
-    w.className = 'card-wrap';
-    w.style.animation = 'cardIn 0.4s cubic-bezier(0.17, 0.67, 0.3, 1) forwards';
-    w.innerHTML = html;
-    // 挂接回调
-    w._onPick = onPick;
-    w._opts = opts;
-    chat().appendChild(w);
-    // 绑定点击
-    window._lastInlineCard = w;
-    scrollBottom();
-    return;
-  }
-
-  // 版本 B：对话流里的浮动气泡 + 标注
-  const g = document.createElement('div');
-  g.className = 'quick-group flagged';
-  g.innerHTML = '<span class="quick-group-flag">待官方确认</span>';
-  opts.forEach(opt => {
-    const b = document.createElement('button');
-    b.className = 'quick-btn';
-    b.textContent = opt.label;
-    b.onclick = () => {
-      g.querySelectorAll('.quick-btn').forEach(x => x.classList.add('used'));
-      onPick(opt);
-    };
-    g.appendChild(b);
-  });
-  chat().appendChild(g);
+    </div>
+  `;
+  const w = document.createElement('div');
+  w.className = 'card-wrap';
+  w.style.animation = 'cardIn 0.4s cubic-bezier(0.17, 0.67, 0.3, 1) forwards';
+  w.innerHTML = html;
+  // 挂接回调
+  w._onPick = onPick;
+  w._opts = opts;
+  chat().appendChild(w);
+  window._lastInlineCard = w;
   scrollBottom();
 }
 
@@ -4128,28 +4131,6 @@ async function addCard(html, delay = 1200) {
   return w;
 }
 
-// ========================= 变体切换 =========================
-function setVariant(v) {
-  currentVariant = v;
-  const inlineBtn = document.getElementById('variant-inline');
-  const bubbleBtn = document.getElementById('variant-bubble');
-  if (v === 'inline') {
-    inlineBtn.style.background = '#07c160';
-    inlineBtn.style.color = '#fff';
-    bubbleBtn.style.background = 'transparent';
-    bubbleBtn.style.color = '#888';
-    document.getElementById('variantNote').textContent = '版本 A · 选项全部做进卡片，100% 合规';
-  } else {
-    bubbleBtn.style.background = '#07c160';
-    bubbleBtn.style.color = '#fff';
-    inlineBtn.style.background = 'transparent';
-    inlineBtn.style.color = '#888';
-    document.getElementById('variantNote').textContent = '版本 B · 更接近 ChatGPT/Claude 的建议回复效果，但微信 Agent 规范里未明确此能力，待官方确认';
-  }
-  // 重载当前路径
-  loadPath(currentPath);
-}
-
 // ========================= 路径切换 =========================
 function loadPath(p) {
   currentPath = p;
@@ -4159,9 +4140,9 @@ function loadPath(p) {
   clearChat();
 
   if (p === 'fuzzy') startFuzzy();
+  if (p === 'fuzzy-returning') startFuzzyReturning();
   if (p === 'clear') startClear();
   if (p === 'return-progress') startReturnProgress();
-  if (p === 'return-donate') startReturnDonate();
   if (p === 'ask-garden') onAskGarden();
 }
 
@@ -4541,15 +4522,24 @@ const CATEGORIES = [
   { key: 'care',    label: '社会关怀', icon: CAT_ICONS.care },
 ];
 
-function categoryCard(onPickCode) {
+function categoryCard(onPickCode, returningBanner) {
   const items = CATEGORIES.map(c => `
     <button class="cat-item" data-cat="${c.key}" onclick="${onPickCode}('${c.key}','${c.label}', this)">
       <svg class="cat-icon" viewBox="0 0 24 24">${c.icon}</svg>
       <span class="cat-label">${c.label}</span>
     </button>
   `).join('');
+  // 老用户复盘 banner（项目名 + 进展时间，可点拉详情半屏）
+  const bannerHTML = returningBanner ? `
+    <div class="cat-recall-banner" onclick="state.currentProject='${returningBanner.projId}'; state.hasDonated=true; openProjectProgress('ppProgressAnchor')">
+      <span class="cat-recall-bulb">💡</span>
+      <span class="cat-recall-text">你上次帮的<b>${returningBanner.projTitle}</b> ${returningBanner.daysAgo} 天前有进展</span>
+      <span class="cat-recall-arrow">›</span>
+    </div>
+  ` : '';
   return `
     <div class="cat-card">
+      ${bannerHTML}
       <div class="cat-title">项目分类</div>
       <div class="cat-grid">${items}</div>
       <div class="cat-footer">
@@ -4602,6 +4592,15 @@ async function startFuzzy() {
   await addUserBubble('我想做点好事');
   await addAgentBubble('嗯——你最近有没有想到某个方向？没有的话，我也可以推。', 900);
   await addCard(categoryCard('onPickCategory'), 600);
+}
+
+// 老用户开口"我想做点好事"——分类卡顶部加复盘 banner（默认提醒上次帮过的春蕾）
+async function startFuzzyReturning() {
+  await wait(400);
+  await addUserBubble('我想做点好事');
+  await addAgentBubble('嗯——这次想试试新的，还是接着帮？', 900);
+  const banner = { projId: 'chunlei', projTitle: '春蕾计划', daysAgo: 9 };
+  await addCard(categoryCard('onPickCategory', banner), 600);
 }
 
 // 换一个项目
@@ -4820,68 +4819,18 @@ async function startReturnProgress() {
   await addAgentBubble('9 天前，你那 20 元随第 38 批助学金到了云南临沧。完整的 5 个月流向在时间线里。', 1300);
 }
 
-// ========================= 路径 3b：老用户说再做好事，Agent 附带进展 =========================
-async function startReturnDonate() {
-  state.hasDonated = true;
-  state.currentProject = 'chunlei';
-  await wait(400);
-  await addUserBubble('我想再做点好事');
-  await addAgentBubble('先说一下——<b>你上次帮的春蕾 9 天前有新进展</b>：', 1300);
-  await addCard(progressCard(), 900);
-  await wait(500);
-  await addAgentBubble('要继续春蕾，还是换个看看？', 1000);
-  addQuickGroup([
-    { label: '继续帮春蕾', value: 'same' },
-    { label: '看看类似的', value: 'similar' },
-    { label: '换个类型', value: 'different' }
-  ], async (pick) => {
-    await addUserBubble(pick.label);
-    if (pick.value === 'same') {
-      state.currentProject = 'chunlei';
-      const story = `为西部山区困境女童提供学费资助。新学期已到，<b>本期还差 ¥328 即可补齐当期助学金</b>。`;
-      await addCard(projectCard('chunlei', story, ''));
-    } else if (pick.value === 'similar') {
-      state.currentProject = 'library';
-      const story = `为乡村小学建设图书角，自主研发书目体系。<b>下一批新书就差最后一点资助</b>，新图书角平均 3 个月落地。`;
-      await addCard(projectCard('library', story, '换一个看看'));
-    } else {
-      state.currentProject = 'elderly';
-      const story = `跨 12 个城市的社区送餐网络，志愿者每日送餐到独居困境老人家中。<b>本期还差 ¥2,100 即可凑齐</b>，每次送餐有打卡留痕。`;
-      await addCard(projectCard('elderly', story, '换一个看看'));
-    }
-  }, { question: '要怎么帮？' });
-}
-
 // ========================= 让用户"说话"触发下一步 =========================
 async function userSay(text) {
   await addUserBubble(text);
   await addAgentBubble('好，稍等。', 800);
 }
 
+// 用户点进展卡 "再帮一下"按钮：复用 startFuzzyReturning 的承接气泡 + 复盘 banner 分类卡
 async function onTapDonateAgain() {
-  // 用户点"再帮一下"按钮
   await addUserBubble('再帮一下');
-  await addAgentBubble('要继续春蕾，还是换个看看？', 900);
-  addQuickGroup([
-    { label: '继续帮春蕾', value: 'same' },
-    { label: '看看类似的', value: 'similar' },
-    { label: '换个类型', value: 'different' }
-  ], async (pick) => {
-    await addUserBubble(pick.label);
-    if (pick.value === 'same') {
-      state.currentProject = 'chunlei';
-      const story = `为西部山区困境女童提供学费资助。新学期已到，<b>本期还差 ¥328 即可补齐当期助学金</b>。`;
-      await addCard(projectCard('chunlei', story, ''));
-    } else if (pick.value === 'similar') {
-      state.currentProject = 'library';
-      const story = `为乡村小学建设图书角，自主研发书目体系。<b>下一批新书就差最后一点资助</b>。`;
-      await addCard(projectCard('library', story, '换一个看看'));
-    } else {
-      state.currentProject = 'elderly';
-      const story = `跨 12 个城市的社区送餐网络，志愿者每日送餐到独居困境老人家中。<b>本期还差 ¥2,100 即可凑齐</b>。`;
-      await addCard(projectCard('elderly', story, '换一个看看'));
-    }
-  }, { question: '要怎么帮？' });
+  await addAgentBubble('嗯——这次想试试新的，还是接着帮？', 900);
+  const banner = { projId: 'chunlei', projTitle: '春蕾计划', daysAgo: 9 };
+  await addCard(categoryCard('onPickCategory', banner), 600);
 }
 
 // ========================= 项目深度卡 =========================
