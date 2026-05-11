@@ -3359,6 +3359,114 @@ body {
   margin-top: 4px;
   letter-spacing: 0.01em;
 }
+.flower-card-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 16px;
+  margin-top: 4px;
+}
+.flower-card-actions-two .flower-card-link {
+  margin-top: 0;
+}
+.flower-card-link-cta {
+  color: #e8413c;
+  font-weight: 600;
+}
+
+/* ============ 做好事菜单卡 ============ */
+.deed-card {
+  background: #fff;
+  border: 0.5px solid #ececec;
+  border-radius: 14px;
+  padding: 16px 14px 12px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  width: 280px;
+}
+.deed-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+.deed-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 4px;
+  border: none;
+  background: #fafafa;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.15s;
+  gap: 7px;
+}
+.deed-item:active {
+  background: #f0f0f0;
+  transform: scale(0.97);
+}
+.deed-item.used {
+  pointer-events: none;
+  opacity: 0.5;
+}
+.deed-icon {
+  width: 22px;
+  height: 22px;
+  color: #555;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.deed-item:active .deed-icon,
+.deed-donate-row:active .deed-icon {
+  color: #07c160;
+}
+.deed-label {
+  font-size: 12.5px;
+  color: #333;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+.deed-divider {
+  height: 0.5px;
+  background: #f0f0f0;
+  margin: 4px 2px 10px;
+}
+.deed-donate-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 10px;
+  border: none;
+  background: #fafafa;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.deed-donate-row:active {
+  background: #f0f0f0;
+  transform: scale(0.98);
+}
+.deed-donate-row.used {
+  pointer-events: none;
+  opacity: 0.5;
+}
+.deed-donate-label {
+  flex: 1;
+  text-align: left;
+  font-size: 13.5px;
+  color: #222;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+.deed-donate-arrow {
+  font-size: 14px;
+  color: #c0c0c0;
+}
 
 /* ============ 小红花完整记录半屏 ============ */
 .flower-sheet {
@@ -5166,7 +5274,7 @@ function openProjectProgress(anchor) {
     `;
   }
 
-  // 拼接半屏正文（执行效果归头部档案区，紧贴机构）
+  // 拼接半屏正文（执行效果独立成区，放在最新进展上面）
   document.getElementById('progressBody').innerHTML = `
     <div class="pp-head-card">
       <div class="pp-head-row">
@@ -5174,13 +5282,14 @@ function openProjectProgress(anchor) {
       </div>
       <div class="pp-head-summary">${data.summary}</div>
       <div class="pp-org-section">${orgHTML}</div>
-      <div class="pp-head-exec">
-        <div class="pp-head-exec-label">执行效果</div>
-        <div class="pp-head-exec-text">${data.execText}</div>
-      </div>
     </div>
 
     ${mineBanner}
+
+    <div class="pp-exec-section">
+      <div class="pp-section-title">执行效果</div>
+      <div class="pp-exec-text">${data.execText}</div>
+    </div>
 
     <div class="pp-section-title" id="ppProgressAnchor">最新进展</div>
     <div class="pp-progress-list" id="ppProgressList">${progressHTML}</div>
@@ -5457,14 +5566,109 @@ function flowerOverviewCard() {
       <span class="flower-card-proj">${r.project}</span>
     </div>
   `).join('');
+  // demo 默认今天未做好事 → 显示"再做一件"链；真机按 state.didGoodToday 判断
+  const didToday = !!state.didGoodToday;
+  const actionRow = didToday ? `
+    <div class="flower-card-actions">
+      <a class="flower-card-link" onclick="event.stopPropagation(); openFlowerOverlay()">看完整记录 ›</a>
+    </div>
+  ` : `
+    <div class="flower-card-actions flower-card-actions-two">
+      <a class="flower-card-link" onclick="event.stopPropagation(); openFlowerOverlay()">看完整记录 ›</a>
+      <a class="flower-card-link flower-card-link-cta" onclick="event.stopPropagation(); onTapDoOneMore()">再做一件 ›</a>
+    </div>
+  `;
   return `
     <div class="flower-card" onclick="openFlowerOverlay()">
       <div class="flower-card-title">你的小红花</div>
       <div class="flower-card-num"><span>${FLOWER_DATA.total}</span><em>朵</em></div>
       <div class="flower-card-list">${recentHTML}</div>
-      <div class="flower-card-link">看完整记录 ›</div>
+      ${actionRow}
     </div>
   `;
+}
+
+// 点"再做一件 ›"：Agent 发气泡 + 做好事菜单卡
+async function onTapDoOneMore() {
+  await addAgentBubble('好，来一件。想做哪种？', 900);
+  await addCard(goodDeedMenuCard(), 700);
+}
+
+// 做好事菜单（5 种不花钱 + 找项目捐一笔）
+const GOOD_DEEDS = [
+  { key: 'step',    label: '捐步',     intro: '一块走里每天走路就能捐，打开给你看看：',       miniName: '一块走 · 捐步' },
+  { key: 'quiz',    label: '答题',     intro: '每日益答有今天的公益题，打开做一下：',           miniName: '每日益答' },
+  { key: 'wild',    label: '野朋友',   intro: '野朋友计划需要志愿者帮忙标注野外动物影像：',     miniName: '野朋友计划' },
+  { key: 'voice',   label: '捐声',     intro: '捐声项目把你的声音变成盲人朋友的有声书：',       miniName: '捐声' },
+  { key: 'book',    label: '捐书',     intro: '闲置的书可以捐给乡村孩子：',                   miniName: '捐书' }
+];
+const DEED_ICONS = {
+  step:  '<path d="M13 3l1 4 4 1-3 3 1 5-4-2-4 2 1-5-3-3 4-1z"/><path d="M8 14l-3 7"/>',
+  quiz:  '<circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 5 0c0 2-2.5 2-2.5 4"/><circle cx="12" cy="17" r="0.6" fill="currentColor"/>',
+  wild:  '<path d="M5 10c0-3 2-5 4-5 1.5 0 2.5 1 2.5 1S12.5 5 14 5c2 0 4 2 4 5 0 4-3 8-6.5 8S5 14 5 10z"/><circle cx="9" cy="10" r="0.6" fill="currentColor"/><circle cx="15" cy="10" r="0.6" fill="currentColor"/>',
+  voice: '<rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11c0 4 3 7 7 7s7-3 7-7"/><path d="M12 18v3"/>',
+  book:  '<path d="M4 5v14l8-2 8 2V5l-8 2z"/><path d="M12 7v14"/>',
+  donate: '<circle cx="12" cy="12" r="9"/><path d="M12 7v10"/><path d="M15 10c0-1.5-1-2.5-3-2.5s-3 1-3 2.5 1 2 3 2.5 3 1 3 2.5-1 2.5-3 2.5-3-1-3-2.5"/>'
+};
+
+function goodDeedMenuCard() {
+  const nonMoneyItems = GOOD_DEEDS.map(d => `
+    <button class="deed-item" onclick="onPickDeed('${d.key}', this)">
+      <svg class="deed-icon" viewBox="0 0 24 24">${DEED_ICONS[d.key]}</svg>
+      <span class="deed-label">${d.label}</span>
+    </button>
+  `).join('');
+  return `
+    <div class="deed-card">
+      <div class="deed-grid">${nonMoneyItems}</div>
+      <div class="deed-divider"></div>
+      <button class="deed-donate-row" onclick="onPickDeedDonate(this)">
+        <svg class="deed-icon" viewBox="0 0 24 24">${DEED_ICONS.donate}</svg>
+        <span class="deed-donate-label">找项目捐一笔</span>
+        <span class="deed-donate-arrow">›</span>
+      </button>
+    </div>
+  `;
+}
+
+// 点单个"不花钱"方式 → Agent 气泡 + 小程序链气泡
+async function onPickDeed(key, btnEl) {
+  if (btnEl) {
+    const card = btnEl.closest('.deed-card');
+    if (card) card.querySelectorAll('button').forEach(b => b.classList.add('used'));
+  }
+  const deed = GOOD_DEEDS.find(d => d.key === key);
+  if (!deed) return;
+  const bubbleHTML = `
+    ${deed.intro}
+    <div class="mp-link-wrap">
+      <a class="mp-link-row" onclick="onOpenDeedMiniLink('${key}')">
+        <span class="mp-link-icon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="4" y="3" width="16" height="18" rx="2"/>
+            <path d="M8 8h8"/><path d="M8 12h8"/><path d="M8 16h5"/>
+          </svg>
+        </span>
+        <span class="mp-link-text">${deed.miniName}</span>
+        <span class="mp-link-arrow">↗</span>
+      </a>
+    </div>
+  `;
+  await addAgentBubble(bubbleHTML, 900);
+}
+
+function onOpenDeedMiniLink(key) {
+  showToast('跳转到腾讯公益小程序…');
+}
+
+// 点"找项目捐一笔" → 走 fuzzy 分类菜单
+async function onPickDeedDonate(btnEl) {
+  if (btnEl) {
+    const card = btnEl.closest('.deed-card');
+    if (card) card.querySelectorAll('button').forEach(b => b.classList.add('used'));
+  }
+  await addAgentBubble('好，想帮哪类？', 900);
+  await addCard(categoryCard('onPickCategory'), 600);
 }
 
 async function onAskGarden() {
