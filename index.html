@@ -3217,44 +3217,6 @@ body {
   padding: 16px 14px 14px;
   width: 280px;
 }
-
-/* 老用户复盘 banner（嵌入分类卡顶部） */
-.cat-recall-banner {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: #fff8e6;
-  border: 0.5px solid #f5e6b8;
-  border-radius: 10px;
-  padding: 10px 12px;
-  margin-bottom: 14px;
-  cursor: pointer;
-  transition: all 0.15s;
-}
-.cat-recall-banner:active {
-  background: #fff1c8;
-  transform: scale(0.99);
-}
-.cat-recall-bulb {
-  font-size: 14px;
-  flex-shrink: 0;
-}
-.cat-recall-text {
-  flex: 1;
-  font-size: 12.5px;
-  color: #5a4a1a;
-  line-height: 1.5;
-  letter-spacing: 0.01em;
-}
-.cat-recall-text b {
-  color: #2d1f00;
-  font-weight: 600;
-}
-.cat-recall-arrow {
-  font-size: 14px;
-  color: #c9a96e;
-  flex-shrink: 0;
-}
 .cat-title {
   font-size: 12px;
   color: #999;
@@ -3588,11 +3550,6 @@ body {
   </div>
 
   <div class="ps-section">老用户（有捐款历史）</div>
-  <div class="path-item" data-path="fuzzy-returning" onclick="loadPath('fuzzy-returning')">
-    <div class="pi-label">PATH 1·R</div>
-    <div class="pi-title">老用户开口</div>
-    <div class="pi-desc">"我想做点好事" + Agent 顺带提醒上次捐过的项目有进展</div>
-  </div>
   <div class="path-item" data-path="return-progress" onclick="loadPath('return-progress')">
     <div class="pi-label">PATH 3a</div>
     <div class="pi-title">主动问进展</div>
@@ -4140,7 +4097,6 @@ function loadPath(p) {
   clearChat();
 
   if (p === 'fuzzy') startFuzzy();
-  if (p === 'fuzzy-returning') startFuzzyReturning();
   if (p === 'clear') startClear();
   if (p === 'return-progress') startReturnProgress();
   if (p === 'ask-garden') onAskGarden();
@@ -4522,24 +4478,15 @@ const CATEGORIES = [
   { key: 'care',    label: '社会关怀', icon: CAT_ICONS.care },
 ];
 
-function categoryCard(onPickCode, returningBanner) {
+function categoryCard(onPickCode) {
   const items = CATEGORIES.map(c => `
     <button class="cat-item" data-cat="${c.key}" onclick="${onPickCode}('${c.key}','${c.label}', this)">
       <svg class="cat-icon" viewBox="0 0 24 24">${c.icon}</svg>
       <span class="cat-label">${c.label}</span>
     </button>
   `).join('');
-  // 老用户复盘 banner（项目名 + 进展时间，可点拉详情半屏）
-  const bannerHTML = returningBanner ? `
-    <div class="cat-recall-banner" onclick="state.currentProject='${returningBanner.projId}'; state.hasDonated=true; openProjectProgress('ppProgressAnchor')">
-      <span class="cat-recall-bulb">💡</span>
-      <span class="cat-recall-text">你上次帮的<b>${returningBanner.projTitle}</b> ${returningBanner.daysAgo} 天前有进展</span>
-      <span class="cat-recall-arrow">›</span>
-    </div>
-  ` : '';
   return `
     <div class="cat-card">
-      ${bannerHTML}
       <div class="cat-title">项目分类</div>
       <div class="cat-grid">${items}</div>
       <div class="cat-footer">
@@ -4592,15 +4539,6 @@ async function startFuzzy() {
   await addUserBubble('我想做点好事');
   await addAgentBubble('嗯——你最近有没有想到某个方向？没有的话，我也可以推。', 900);
   await addCard(categoryCard('onPickCategory'), 600);
-}
-
-// 老用户开口"我想做点好事"——分类卡顶部加复盘 banner（默认提醒上次帮过的春蕾）
-async function startFuzzyReturning() {
-  await wait(400);
-  await addUserBubble('我想做点好事');
-  await addAgentBubble('嗯——这次想试试新的，还是接着帮？', 900);
-  const banner = { projId: 'chunlei', projTitle: '春蕾计划', daysAgo: 9 };
-  await addCard(categoryCard('onPickCategory', banner), 600);
 }
 
 // 换一个项目
@@ -4825,12 +4763,11 @@ async function userSay(text) {
   await addAgentBubble('好，稍等。', 800);
 }
 
-// 用户点进展卡 "再帮一下"按钮：复用 startFuzzyReturning 的承接气泡 + 复盘 banner 分类卡
+// 用户点进展卡 "再帮一下" 按钮：直接复用 Path 1 模糊意图入口
 async function onTapDonateAgain() {
   await addUserBubble('再帮一下');
-  await addAgentBubble('嗯——这次想试试新的，还是接着帮？', 900);
-  const banner = { projId: 'chunlei', projTitle: '春蕾计划', daysAgo: 9 };
-  await addCard(categoryCard('onPickCategory', banner), 600);
+  await addAgentBubble('嗯——你最近有没有想到某个方向？没有的话，我也可以推。', 900);
+  await addCard(categoryCard('onPickCategory'), 600);
 }
 
 // ========================= 项目深度卡 =========================
