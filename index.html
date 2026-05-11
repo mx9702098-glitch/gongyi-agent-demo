@@ -512,36 +512,23 @@ body {
   font-weight: 600;
   color: #111;
   line-height: 1.35;
-  margin-bottom: 8px;
+  margin-bottom: 4px;
   letter-spacing: 0.01em;
-  display: flex;
-  align-items: center;
-  gap: 6px;
 }
 
-/* 项目名右侧 ⓘ：拉起项目详情半屏 */
-.proj-title-info {
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  border: 1px solid #c8c8c8;
-  color: #999;
-  font-size: 10px;
-  font-weight: 500;
+/* 看项目详情 ›（标题下方独立一行绿字链） */
+.proj-detail-link {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  flex-shrink: 0;
-  font-style: normal;
-  font-family: serif;
-  letter-spacing: 0;
-  transition: all 0.15s;
-}
-.proj-title-info:active {
-  border-color: #07c160;
+  gap: 2px;
+  font-size: 12.5px;
   color: #07c160;
+  font-weight: 500;
+  cursor: pointer;
+  margin-bottom: 12px;
+  letter-spacing: 0.01em;
 }
+.proj-detail-link:active { opacity: 0.55; }
 
 /* AI 总结：项目档案性描述 */
 .proj-ai-summary {
@@ -4134,10 +4121,8 @@ function projectCard(projId, aiSummary, changeBtnText) {
         </div>
       </div>
       <div class="proj-body">
-        <div class="proj-title-main">
-          <span>${p.title}</span>
-          <i class="proj-title-info" onclick="state.currentProject='${projId}'; openProjectProgress()">i</i>
-        </div>
+        <div class="proj-title-main">${p.title}</div>
+        <a class="proj-detail-link" onclick="state.currentProject='${projId}'; openProjectProgress()">看项目详情 ›</a>
         ${aiSummary ? `
           <div class="proj-ai-summary">${aiSummary}</div>
         ` : ''}
