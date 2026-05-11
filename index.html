@@ -514,6 +514,33 @@ body {
   line-height: 1.35;
   margin-bottom: 8px;
   letter-spacing: 0.01em;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* 项目名右侧 ⓘ：拉起项目详情半屏 */
+.proj-title-info {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 1px solid #c8c8c8;
+  color: #999;
+  font-size: 10px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  font-style: normal;
+  font-family: serif;
+  letter-spacing: 0;
+  transition: all 0.15s;
+}
+.proj-title-info:active {
+  border-color: #07c160;
+  color: #07c160;
 }
 
 /* AI 总结：项目档案性描述 */
@@ -533,7 +560,7 @@ body {
 }
 
 .proj-ai-summary b {
-  color: #e8413c;
+  color: #111;
   font-weight: 600;
 }
 
@@ -692,7 +719,7 @@ body {
 }
 
 .prog-row .prog-pct {
-  color: #e8413c;
+  color: #3d9e4a;
   font-weight: 600;
   font-size: 13px;
 }
@@ -711,7 +738,7 @@ body {
 
 .prog-fill {
   height: 100%;
-  background: linear-gradient(90deg, #ff8b9a, #e8413c);
+  background: linear-gradient(90deg, #6dd07a, #3d9e4a);
   border-radius: 2px;
   transition: width 1.2s ease-out;
 }
@@ -2863,6 +2890,14 @@ body {
 
 /* 捐赠情况 */
 .pp-donate-section { margin-bottom: 24px; }
+.pp-donate-title-row {
+  display: flex; align-items: baseline; justify-content: space-between;
+  margin-bottom: 10px;
+}
+.pp-donate-cumulative {
+  font-size: 11.5px; color: #999;
+  letter-spacing: 0.01em;
+}
 .pp-donate-header-row {
   display: flex; align-items: baseline; justify-content: space-between;
   margin-bottom: 14px;
@@ -2977,6 +3012,163 @@ body {
   margin-top: 10px;
   padding-top: 10px;
   border-top: 0.5px solid #f0f0f0;
+}
+
+/* ============ 支付半屏 v2（对齐腾讯公益现网） ============ */
+.pay-sheet-v2 {
+  max-height: 80%;
+  display: flex;
+  flex-direction: column;
+  padding: 0 !important;
+}
+.payv2-header {
+  padding: 4px 20px 18px;
+  border-bottom: 0.5px solid #f0f0f0;
+}
+.payv2-title-row {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 14px;
+}
+.payv2-title {
+  font-size: 17px; font-weight: 600; color: #111;
+  letter-spacing: 0.01em;
+}
+.payv2-close {
+  width: 28px; height: 28px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; color: #999; font-weight: 300;
+  cursor: pointer;
+  margin-right: -6px;
+}
+.payv2-amount-line {
+  display: flex; align-items: baseline; flex-wrap: wrap;
+  line-height: 1.3;
+}
+.payv2-amount {
+  font-size: 24px; font-weight: 700; color: #e8413c;
+  letter-spacing: -0.01em;
+}
+.payv2-amount-sub {
+  font-size: 14px; color: #555; font-weight: 400;
+  margin-left: 2px;
+}
+.payv2-body {
+  padding: 18px 20px 12px;
+  flex: 1;
+  overflow-y: auto;
+}
+.payv2-amount-row {
+  display: flex; gap: 8px; margin-bottom: 10px;
+}
+.payv2-amount-btn {
+  flex: 1; height: 50px;
+  border: 1px solid #e5e5e5;
+  background: #fff;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s;
+  padding: 0 4px;
+}
+.payv2-amount-btn:active {
+  background: #fafafa; transform: scale(0.98);
+}
+.payv2-amount-btn.ap-active {
+  border-color: #e8413c;
+  background: #fff5f5;
+}
+.payv2-amount-label {
+  font-size: 13px; color: #333;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  text-align: center;
+}
+.payv2-amount-btn.ap-active .payv2-amount-label {
+  color: #e8413c;
+  font-weight: 600;
+}
+.payv2-custom-row {
+  display: flex; align-items: center; justify-content: space-between;
+  height: 46px;
+  border: 1px solid #e5e5e5;
+  border-radius: 10px;
+  padding: 0 14px;
+  margin-bottom: 18px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.payv2-custom-row:active { background: #fafafa; }
+.payv2-custom-label {
+  font-size: 13px; color: #999;
+}
+.payv2-custom-icon {
+  font-size: 12px; color: #07c160;
+  display: flex; align-items: center; gap: 3px;
+}
+.payv2-options {
+  display: flex; flex-direction: column;
+  gap: 2px;
+}
+.payv2-option {
+  display: flex; align-items: center;
+  padding: 10px 0;
+  cursor: pointer;
+  user-select: none;
+}
+.payv2-check {
+  width: 18px; height: 18px;
+  border: 1.5px solid #d0d0d0;
+  border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 0;
+  margin-right: 10px;
+  flex-shrink: 0;
+  background: #fff;
+  transition: all 0.15s;
+}
+.payv2-check.checked {
+  background: #e8413c;
+  border-color: #e8413c;
+}
+.payv2-check.checked::after {
+  content: '';
+  width: 8px; height: 4px;
+  border-left: 1.5px solid #fff;
+  border-bottom: 1.5px solid #fff;
+  transform: rotate(-45deg) translate(1px, -1px);
+}
+.payv2-option-text {
+  font-size: 14px; color: #333;
+  flex: 1;
+}
+.payv2-option-text span {
+  color: #e8413c; font-weight: 600;
+}
+.payv2-option-info {
+  font-size: 13px; color: #c0c0c0;
+}
+.payv2-footer {
+  padding: 14px 20px calc(20px + env(safe-area-inset-bottom, 0px));
+  border-top: 0.5px solid #f0f0f0;
+  background: #fff;
+}
+.payv2-cta {
+  width: 100%; height: 50px;
+  border: none; border-radius: 25px;
+  background: #e8413c; color: #fff;
+  font-size: 16px; font-weight: 600;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.payv2-cta:active {
+  background: #d4362f; transform: scale(0.99);
+}
+.payv2-safety {
+  text-align: center;
+  font-size: 11px; color: #999;
+  margin-top: 10px;
+  letter-spacing: 0.02em;
 }
 .mp-link-row {
   display: inline-flex;
@@ -3186,68 +3378,58 @@ body {
       <!-- 对话内容动态生成 -->
     </div>
 
-    <!-- 支付半屏：默认金额 + 修改入口 -->
+    <!-- 支付半屏：对齐腾讯公益现网样式 -->
     <div class="half-overlay" id="payOverlay" onclick="closeHalf('payOverlay')">
-      <div class="half-sheet" onclick="event.stopPropagation()">
+      <div class="half-sheet pay-sheet-v2" onclick="event.stopPropagation()">
         <div class="hs-handle"></div>
-        <div class="hs-header">
-          <div>
-            <div class="hs-title">腾讯公益 · 确认帮一下</div>
-            <div class="hs-sub" id="payOrg">由中国儿童少年基金会执行</div>
+        <div class="payv2-header">
+          <div class="payv2-title-row">
+            <div class="payv2-title" id="payTitle">为困境女童捐出</div>
+            <div class="payv2-close" onclick="closeHalf('payOverlay')">×</div>
           </div>
-          <div class="hs-close" onclick="closeHalf('payOverlay')">×</div>
+          <div class="payv2-amount-line">
+            <span class="payv2-amount" id="payAmount">20.00 元</span>
+            <span class="payv2-amount-sub" id="payAmountSub">，相当于一位女童一学期学费</span>
+          </div>
         </div>
-        <div class="hs-body">
-          <div class="pay-amount-display">
-            <div class="pay-amount-main" id="payAmount">¥20</div>
-            <div class="pay-amount-sub" id="payAmountSub">≈ 帮小卓玛补齐这学期学费</div>
+
+        <div class="payv2-body">
+          <!-- 3 档金额 + 自定义金额输入框 -->
+          <div class="payv2-amount-row">
+            <button class="payv2-amount-btn ap-active" onclick="setAmount(10)" data-amount="10" id="apDefault">
+              <span class="payv2-amount-label" id="apDesc10">¥10 · 半份助学金</span>
+            </button>
+            <button class="payv2-amount-btn" onclick="setAmount(20)" data-amount="20">
+              <span class="payv2-amount-label" id="apDesc20">¥20 · 一位女童</span>
+            </button>
+            <button class="payv2-amount-btn" onclick="setAmount(50)" data-amount="50">
+              <span class="payv2-amount-label" id="apDesc50">¥50 · 帮她+同学</span>
+            </button>
+          </div>
+          <div class="payv2-custom-row" onclick="setAmountCustom()">
+            <span class="payv2-custom-label">自定义金额</span>
+            <span class="payv2-custom-icon">⟳ 随缘</span>
           </div>
 
-          <!-- 金额选择：默认展开，不藏 -->
-          <div class="amount-picker-always">
-            <div class="amount-picker-row">
-              <button class="ap-btn" onclick="setAmount(10)" data-amount="10">
-                <div class="ap-num">¥10</div>
-                <div class="ap-desc" id="apDesc10">半份助学金</div>
-              </button>
-              <button class="ap-btn ap-active" onclick="setAmount(20)" id="apDefault" data-amount="20">
-                <div class="ap-num">¥20</div>
-                <div class="ap-desc" id="apDesc20">一位女童</div>
-              </button>
-              <button class="ap-btn" onclick="setAmount(50)" data-amount="50">
-                <div class="ap-num">¥50</div>
-                <div class="ap-desc" id="apDesc50">帮她+同学</div>
-              </button>
-              <button class="ap-btn" onclick="setAmount(100)" data-amount="100">
-                <div class="ap-num">¥100</div>
-                <div class="ap-desc" id="apDesc100">5 位女童</div>
-              </button>
-              <button class="ap-btn ap-custom" onclick="setAmountCustom()">
-                <div class="ap-num">其他</div>
-              </button>
-            </div>
+          <!-- 匿名 / 月捐 两个并列勾选 -->
+          <div class="payv2-options">
+            <label class="payv2-option" onclick="toggleAnonymous()">
+              <span class="payv2-check" id="anonCheck">☐</span>
+              <span class="payv2-option-text">匿名捐助</span>
+              <span class="payv2-option-info">ⓘ</span>
+            </label>
+            <label class="payv2-option" onclick="toggleMonthly()">
+              <span class="payv2-check" id="monthlyCheck">☐</span>
+              <span class="payv2-option-text">每月持续 <span id="monthlyAmtLabel">¥10</span></span>
+              <span class="payv2-option-info">ⓘ</span>
+            </label>
           </div>
+        </div>
 
-          <!-- 月捐勾选框（模式：0摩擦升级，不做Tab切换） -->
-          <div class="monthly-toggle" onclick="toggleMonthly()">
-            <div class="monthly-check" id="monthlyCheck">☐</div>
-            <div class="monthly-text">
-              <div class="monthly-title">每月持续帮一下</div>
-              <div class="monthly-sub" id="monthlySub">一份小承诺，<b>随时可停</b>。月捐人已经帮到了 12,458 位女童。</div>
-            </div>
-          </div>
-
-          <div class="pay-row-simple">
-            <span class="pay-label">捐助项目</span>
-            <span class="pay-value" id="payProject">春蕾计划她们想上学</span>
-          </div>
-          <div class="pay-row-simple">
-            <span class="pay-label">支付方式</span>
-            <span class="pay-method-icon"><span class="wxpay">微</span><span class="pay-value">微信支付</span></span>
-          </div>
-
-          <button class="pay-btn" onclick="doPay()">确认帮这个忙 <span id="payBtnAmount">¥20</span></button>
-          <div class="pay-safety">善款由腾讯公益托管，全程可追溯</div>
+        <!-- 底部大 CTA -->
+        <div class="payv2-footer">
+          <button class="payv2-cta" onclick="doPay()">确认支付 <span id="payBtnAmount">10.00 元</span></button>
+          <div class="payv2-safety">善款由腾讯公益托管 · 全程可追溯</div>
         </div>
       </div>
     </div>
@@ -3952,9 +4134,12 @@ function projectCard(projId, aiSummary, changeBtnText) {
         </div>
       </div>
       <div class="proj-body">
-        <div class="proj-title-main">${p.title}</div>
+        <div class="proj-title-main">
+          <span>${p.title}</span>
+          <i class="proj-title-info" onclick="state.currentProject='${projId}'; openProjectProgress()">i</i>
+        </div>
         ${aiSummary ? `
-          <div class="proj-ai-summary">${aiSummary}<span class="story-more" onclick="state.currentProject='${projId}'; openProjectProgress()">（详细看看 ›）</span></div>
+          <div class="proj-ai-summary">${aiSummary}</div>
         ` : ''}
         <div class="trust-chips">${trustChips}</div>
         <div class="proj-progress">
@@ -4195,104 +4380,128 @@ async function changeProject(currentId) {
 }
 
 // 点"我想帮一下" → 打开支付半屏（不问金额，直接默认主金额）
+// 项目对应的"为 X 捐出"标题文案
+function payTitleFor(projId) {
+  const m = {
+    chunlei: '为困境女童捐出',
+    library: '为乡村孩子捐出',
+    warmth: '为山区孩子捐出',
+    elderly: '为困境老人捐出',
+    animal: '为流浪动物捐出'
+  };
+  return m[projId] || '为这件好事捐出';
+}
+
 async function openDonate(projId) {
   state.currentProject = projId;
-  state.currentAmount = 20;
-  const p = PROJECTS[projId];
-  const storyMap = {
-    chunlei: '≈ 帮一位女童补齐这学期学费',
-    library: '≈ 2本课外书寄到乡村小学',
-    warmth: '≈ 一副保暖手套送到山区',
-    elderly: '≈ 一份热饭送到独居老人家',
-    animal: '≈ 一只流浪动物一周的狗粮'
-  };
-  document.getElementById('payProject').textContent = p.title;
-  document.getElementById('payOrg').textContent = '由 ' + p.org + ' 执行';
-  document.getElementById('payAmount').textContent = '¥20';
-  document.getElementById('payAmountSub').textContent = storyMap[projId] || '≈ 帮一件真实的事';
-  document.getElementById('payBtnAmount').textContent = '¥20';
+  state.currentAmount = 10;
   state.monthlyMode = false;
+  state.anonymousMode = false;
+  const p = PROJECTS[projId];
 
-  // 重置金额按钮副标题（根据当前项目）
-  document.getElementById('apDesc10').textContent = amountDescFor(projId, 10);
-  document.getElementById('apDesc20').textContent = amountDescFor(projId, 20);
-  document.getElementById('apDesc50').textContent = amountDescFor(projId, 50);
-  document.getElementById('apDesc100').textContent = amountDescFor(projId, 100);
+  document.getElementById('payTitle').textContent = payTitleFor(projId);
 
-  // 重置按钮状态
-  document.querySelectorAll('.ap-btn').forEach(b => b.classList.remove('ap-active'));
+  // 重置 3 档金额按钮文案（按项目动态）
+  document.getElementById('apDesc10').textContent = '¥10 · ' + amountDescFor(projId, 10);
+  document.getElementById('apDesc20').textContent = '¥20 · ' + amountDescFor(projId, 20);
+  document.getElementById('apDesc50').textContent = '¥50 · ' + amountDescFor(projId, 50);
+
+  // 重置选中态：默认 ¥10
+  document.querySelectorAll('.payv2-amount-btn').forEach(b => b.classList.remove('ap-active'));
   const def = document.getElementById('apDefault');
   if (def) def.classList.add('ap-active');
-  // 恢复主按钮
-  const btn = document.querySelector('.pay-btn');
-  if (btn) btn.innerHTML = '确认帮这个忙 <span id="payBtnAmount">¥20</span>';
-  // 重置月捐勾选
-  const toggle = document.querySelector('.monthly-toggle');
-  const check = document.getElementById('monthlyCheck');
-  if (toggle) toggle.classList.remove('checked');
-  if (check) check.textContent = '☐';
+
+  // 重置勾选
+  document.getElementById('anonCheck').classList.remove('checked');
+  document.getElementById('monthlyCheck').classList.remove('checked');
+
+  // 默认 ¥10 显示
+  setAmount(10, true);
+
   openHalf('payOverlay');
 }
 
-function openAmountPicker() {
-  document.getElementById('amountPicker').classList.toggle('open');
+function toggleAnonymous() {
+  state.anonymousMode = !state.anonymousMode;
+  const ck = document.getElementById('anonCheck');
+  if (ck) ck.classList.toggle('checked', state.anonymousMode);
 }
 
 function toggleMonthly() {
-  const toggle = document.querySelector('.monthly-toggle');
-  const check = document.getElementById('monthlyCheck');
-  const btn = document.querySelector('.pay-btn');
   state.monthlyMode = !state.monthlyMode;
-
-  if (state.monthlyMode) {
-    toggle.classList.add('checked');
-    check.textContent = '☑';
-    btn.innerHTML = `每月持续帮 <span id="payBtnAmount">¥${state.currentAmount}/月</span>`;
-    // 把副标题换掉
-    document.getElementById('payAmountSub').textContent = `每月 ¥${state.currentAmount} · 随时可停`;
-  } else {
-    toggle.classList.remove('checked');
-    check.textContent = '☐';
-    btn.innerHTML = `确认帮这个忙 <span id="payBtnAmount">¥${state.currentAmount}</span>`;
-    // 恢复副标题
-    setAmount(state.currentAmount);
+  const ck = document.getElementById('monthlyCheck');
+  if (ck) ck.classList.toggle('checked', state.monthlyMode);
+  // 同步 CTA 文案
+  const n = state.currentAmount || 10;
+  const cta = document.querySelector('.payv2-cta');
+  if (cta) {
+    cta.innerHTML = state.monthlyMode
+      ? `开通月捐 <span id="payBtnAmount">¥${n}/月</span>`
+      : `确认支付 <span id="payBtnAmount">${n}.00 元</span>`;
+  }
+  // 同步金额行副标
+  const subEl = document.getElementById('payAmountSub');
+  if (subEl) {
+    subEl.textContent = state.monthlyMode
+      ? '，每月持续帮一下，随时可停'
+      : '，' + amountSubFor(state.currentProject, n);
   }
 }
 
-// 根据项目+金额返回等价物文案（给按钮副标题用）
+// 根据项目+金额返回等价物文案（给金额按钮的副标题）
 function amountDescFor(projId, n) {
   const map = {
-    chunlei: { 10: '半份助学金', 20: '一位女童', 50: '帮她+同学', 100: '5 位女童' },
-    library: { 10: '1 本书', 20: '2 本课外书', 50: '5 本书', 100: '一个班的读物' },
-    warmth: { 10: '一顶帽子', 20: '一副手套', 50: '一整套冬装', 100: '5 个孩子过冬' },
-    elderly: { 10: '半份热饭', 20: '一份热饭', 50: '一周热饭', 100: '半个月热饭' },
-    animal: { 10: '3 天狗粮', 20: '一周狗粮', 50: '半月狗粮', 100: '一个月狗粮' }
+    chunlei: { 10: '半份助学金', 20: '一位女童', 50: '帮她+同学' },
+    library: { 10: '1 本书', 20: '2 本课外书', 50: '5 本书' },
+    warmth: { 10: '一顶帽子', 20: '一副手套', 50: '一整套冬装' },
+    elderly: { 10: '半份热饭', 20: '一份热饭', 50: '一周热饭' },
+    animal: { 10: '3 天狗粮', 20: '一周狗粮', 50: '半月狗粮' }
   };
   return (map[projId] && map[projId][n]) || '一件好事';
 }
 
-function setAmount(n) {
-  state.currentAmount = n;
-  document.querySelectorAll('.ap-btn').forEach(b => b.classList.remove('ap-active'));
-  if (event && event.currentTarget) event.currentTarget.classList.add('ap-active');
-  document.getElementById('payAmount').textContent = '¥' + n;
-  document.getElementById('payBtnAmount').textContent = '¥' + n + (state.monthlyMode ? '/月' : '');
-
-  const projId = state.currentProject;
-  const subMap = {
-    chunlei: { 10: '≈ 半份助学金', 20: '≈ 帮一位女童补齐这学期学费', 50: '≈ 帮她 + 她的同学', 100: '≈ 帮 5 位女童一学期' },
-    library: { 10: '≈ 1 本书', 20: '≈ 2 本书寄到乡村小学', 50: '≈ 5 本书', 100: '≈ 一整个班的读物' },
-    warmth: { 10: '≈ 一顶帽子', 20: '≈ 一副保暖手套', 50: '≈ 一整套保暖装备', 100: '≈ 帮 5 个孩子过冬' },
-    elderly: { 10: '≈ 半份热饭', 20: '≈ 一份热饭', 50: '≈ 一周热饭', 100: '≈ 半个月热饭' },
-    animal: { 10: '≈ 3 天狗粮', 20: '≈ 一周狗粮', 50: '≈ 半月狗粮', 100: '≈ 一个月狗粮' }
+// 顶部金额行副标"，相当于 X"
+function amountSubFor(projId, n) {
+  const map = {
+    chunlei: { 10: '相当于半份助学金', 20: '相当于一位女童一学期学费', 50: '相当于帮她和她的同学' },
+    library: { 10: '相当于 1 本课外书', 20: '相当于 2 本书寄到乡村小学', 50: '相当于 5 本书' },
+    warmth: { 10: '相当于一顶保暖帽', 20: '相当于一副保暖手套', 50: '相当于一整套保暖装备' },
+    elderly: { 10: '相当于半份热饭', 20: '相当于一份热饭送到老人家', 50: '相当于一周热饭' },
+    animal: { 10: '相当于 3 天狗粮', 20: '相当于一周狗粮', 50: '相当于半个月狗粮' }
   };
-  const sub = (subMap[projId] && subMap[projId][n]) || '≈ 一件真实的好事';
-  document.getElementById('payAmountSub').textContent = state.monthlyMode ? `每月 ¥${n} · 随时可停` : sub;
+  return (map[projId] && map[projId][n]) || '相当于一件真实的好事';
+}
+
+function setAmount(n, skipEvent) {
+  state.currentAmount = n;
+  if (!skipEvent) {
+    document.querySelectorAll('.payv2-amount-btn').forEach(b => b.classList.remove('ap-active'));
+    if (event && event.currentTarget) event.currentTarget.classList.add('ap-active');
+  }
+  // 顶部金额
+  document.getElementById('payAmount').textContent = `${n}.00 元`;
+  // 副标
+  const subEl = document.getElementById('payAmountSub');
+  if (subEl) {
+    subEl.textContent = state.monthlyMode
+      ? '，每月持续帮一下，随时可停'
+      : '，' + amountSubFor(state.currentProject, n);
+  }
+  // 月捐勾选项里的金额预览
+  const mAmt = document.getElementById('monthlyAmtLabel');
+  if (mAmt) mAmt.textContent = `¥${n}`;
+  // CTA
+  const cta = document.querySelector('.payv2-cta');
+  if (cta) {
+    cta.innerHTML = state.monthlyMode
+      ? `开通月捐 <span id="payBtnAmount">¥${n}/月</span>`
+      : `确认支付 <span id="payBtnAmount">${n}.00 元</span>`;
+  }
 }
 
 function setAmountCustom() {
-  setAmount(66);
-  document.getElementById('payAmountSub').textContent = '（演示：实际会弹键盘让你填任意数字）';
+  // demo 占位：模拟弹键盘
+  showToast('演示：会弹数字键盘，可填任意金额');
 }
 
 // 兼容老调用：pickAmount 保留但直接走 openDonate
@@ -4317,7 +4526,7 @@ async function doPay() {
     await addUserBubble(`开通月捐 · ¥${amount}/月`);
     await addAgentBubble('月捐开通了。每月 1 号自动续，在微信支付-服务里随时可停。', 700);
   } else {
-    await addUserBubble(`我的爱心 · ¥${amount}`);
+    await addUserBubble(`我的爱心 · ${amount}.00 元`);
     await addAgentBubble('这份心意已经送到「' + (p.title || '项目') + '」。', 600);
   }
 
@@ -4677,6 +4886,15 @@ const PROGRESS_DATA = {
 };
 
 // ====== 打开项目详情半屏（对齐一块走详情页结构） ======
+// 数字格式化：9362411 → 936 万；606346 → 60 万
+function formatShortAmount(numStr) {
+  const n = Number(String(numStr).replace(/,/g, ''));
+  if (isNaN(n)) return numStr;
+  if (n >= 1e8) return (n / 1e8).toFixed(1) + ' 亿';
+  if (n >= 1e4) return Math.round(n / 1e4) + ' 万';
+  return n.toLocaleString();
+}
+
 // anchor 可选：'ppProgressAnchor' 会在半屏动画完成后平滑滚到"最新进展"
 function openProjectProgress(anchor) {
   const projId = state.currentProject || 'chunlei';
@@ -4750,11 +4968,17 @@ function openProjectProgress(anchor) {
     `;
   }).join('');
 
-  // 捐赠情况
+  // 捐赠情况（累计数据收成标题旁一行小字）
   const d = data.donate;
+  // 简化累计金额：9,362,411 → 936 万 ; 606,346 → 60 万
+  const totalShort = formatShortAmount(d.total);
+  const donorsShort = formatShortAmount(d.donors);
   const donateHTML = `
     <div class="pp-donate-section">
-      <div class="pp-section-title">捐赠情况</div>
+      <div class="pp-donate-title-row">
+        <span class="pp-section-title">捐赠情况</span>
+        <span class="pp-donate-cumulative">累计 ${totalShort}元 · ${donorsShort}人次</span>
+      </div>
       <div class="pp-donate-header-row">
         <span class="pp-donate-sub-label">${d.label}</span>
         <div class="pp-donate-filing-inline">募捐备案 ${d.filing}<em>i</em></div>
@@ -4767,16 +4991,6 @@ function openProjectProgress(anchor) {
         <div class="pp-donate-amount-goal">本期目标 ${d.goal}</div>
         <div class="pp-donate-progress-bar">
           <div class="pp-donate-progress-fill" style="width:${d.pctFill}%"></div>
-        </div>
-      </div>
-      <div class="pp-donate-stats-grid">
-        <div class="pp-donate-stat-cell">
-          <span class="pp-donate-stat-num">${d.total}</span>
-          <span class="pp-donate-stat-label">${d.totalLabel}</span>
-        </div>
-        <div class="pp-donate-stat-cell">
-          <span class="pp-donate-stat-num">${d.donors}</span>
-          <span class="pp-donate-stat-label">${d.donorsLabel}</span>
         </div>
       </div>
     </div>
