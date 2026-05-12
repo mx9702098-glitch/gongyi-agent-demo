@@ -730,21 +730,90 @@ body {
   transition: width 1.2s ease-out;
 }
 
-/* 主"我想帮一下"按钮 */
-.help-btn {
+/* ====== v7-rev6：项目推荐卡按图重做 · 1:1 紧凑版 ====== */
+.proj-card-v3 {
+  background: #fff;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.04);
+  border: 0.5px solid rgba(0,0,0,0.06);
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+.proj-card-v3:active { transform: scale(0.995); }
+.proj-card-v3-hero {
+  position: relative;
   width: 100%;
-  height: 46px;
-  margin-top: 8px;
+  height: 158px;
+  background: linear-gradient(135deg, #c4ad7a 0%, #8a6f43 60%, #4d3d22 100%);
+  overflow: hidden;
+}
+.proj-card-v3-hero img {
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+}
+.proj-card-v3-tag {
+  position: absolute; top: 12px; right: 12px;
+  background: rgba(255,255,255,0.92);
+  color: #333; font-size: 11.5px; font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 12px;
+}
+.proj-card-v3-org {
+  position: absolute; bottom: 12px; left: 12px;
+  background: rgba(0,0,0,0.32);
+  color: #fff; font-size: 11px;
+  padding: 3px 9px; border-radius: 12px;
+  display: inline-flex; align-items: center; gap: 4px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+.proj-card-v3-org::before {
+  content: ""; width: 12px; height: 12px;
+  background: #fff; border-radius: 50%;
+  position: relative; flex-shrink: 0;
+  -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='currentColor'><path d='M5 8.5L2.5 6l1-1L5 6.5l3.5-3.5 1 1z'/></svg>") no-repeat center / contain;
+          mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='currentColor'><path d='M5 8.5L2.5 6l1-1L5 6.5l3.5-3.5 1 1z'/></svg>") no-repeat center / contain;
+}
+.proj-card-v3-body {
+  padding: 14px 16px 16px;
+}
+.proj-card-v3-title {
+  font-size: 16px; font-weight: 700; color: #111;
+  line-height: 1.4;
+  margin-bottom: 8px;
+}
+.proj-card-v3-summary {
+  font-size: 13px; color: #666;
+  line-height: 1.65;
+  margin-bottom: 14px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.proj-card-v3-help {
+  width: 100%;
+  height: 44px;
   border: none;
   border-radius: 10px;
-  background: #e8413c;
-  color: #fff;
-  font-size: 15px;
-  font-weight: 500;
+  background: #c43a36; color: #fff;
+  font-size: 15px; font-weight: 500;
   cursor: pointer;
-  letter-spacing: 0.03em;
   transition: all 0.15s;
 }
+.proj-card-v3-help:active { background: #ad2f2c; transform: scale(0.99); }
+.proj-card-v3-change {
+  display: block;
+  width: 100%;
+  text-align: center;
+  font-size: 13px; color: #07c160; font-weight: 500;
+  padding: 10px 0 0;
+  cursor: pointer;
+  background: none; border: none;
+}
+.proj-card-v3-change:active { opacity: 0.6; }
+
 
 .help-btn:active {
   transform: scale(0.99);
@@ -831,145 +900,459 @@ body {
   transform: scale(0.99);
 }
 
-/* 进展卡片 */
+/* 进展卡片（单项目） */
 .prog-card {
   background: #fff;
   border-radius: 10px;
-  padding: 14px;
+  overflow: hidden;
   box-shadow: 0 1px 2px rgba(0,0,0,0.04);
   border: 0.5px solid rgba(0,0,0,0.06);
 }
+.prog-card-hero {
+  height: 80px;
+  background: linear-gradient(135deg, #fff1e6 0%, #ffe0cc 100%);
+  padding: 14px 14px 0;
+  display: flex; align-items: flex-start; gap: 10px;
+}
+.prog-card-emoji { font-size: 28px; }
+.prog-card-head { flex: 1; }
+.prog-card-name { font-size: 14px; font-weight: 700; color: #4a2c00; margin-bottom: 2px; }
+.prog-card-relation { font-size: 11px; color: #b06b3a; }
 
-.prog-card-header {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 12px;
+.prog-card-body { padding: 14px; }
+.prog-card-update {
+  background: #fafafa; border-radius: 8px; padding: 11px 12px; margin-bottom: 10px;
+  border-left: 3px solid #07c160;
+}
+.prog-card-update-title { font-size: 13px; font-weight: 600; color: #222; line-height: 1.5; margin-bottom: 3px; }
+.prog-card-update-excerpt {
+  font-size: 12px; color: #888; line-height: 1.5;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.prog-card-update-time { font-size: 10px; color: #bbb; margin-top: 6px; }
+
+.prog-card-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 14px 14px;
+}
+.prog-card-link {
+  font-size: 12px; color: #07c160; font-weight: 500; cursor: pointer;
+}
+.prog-card-link:active { opacity: 0.7; }
+.prog-card-donate {
+  height: 32px; padding: 0 14px; border-radius: 8px; border: none;
+  background: linear-gradient(135deg, #07c160, #0ab877);
+  color: #fff; font-size: 12px; font-weight: 600; cursor: pointer;
+}
+.prog-card-donate:active { opacity: 0.85; transform: scale(0.97); }
+
+/* 多项目进展列表卡片 */
+.prog-list-card {
+  background: #fff; border-radius: 10px; overflow: hidden;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04); border: 0.5px solid rgba(0,0,0,0.06);
+}
+.prog-list-item {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 13px 14px; cursor: pointer;
+  border-bottom: 0.5px solid #f5f5f5;
+  transition: background 0.1s;
+}
+.prog-list-item:last-of-type { border-bottom: none; }
+.prog-list-item:active { background: #fafafa; }
+.prog-list-item.no-update .prog-list-body { opacity: 0.5; }
+.prog-list-icon {
+  width: 34px; height: 34px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; flex-shrink: 0;
+}
+.prog-list-icon.warm { background: linear-gradient(135deg, #fff1e6, #ffe0cc); }
+.prog-list-icon.blue { background: linear-gradient(135deg, #e6f4ff, #bae0ff); }
+.prog-list-icon.pink { background: linear-gradient(135deg, #fff0f0, #ffd6d6); }
+.prog-list-body { flex: 1; min-width: 0; }
+.prog-list-name { font-size: 13px; font-weight: 600; color: #111; margin-bottom: 2px; }
+.prog-list-summary {
+  font-size: 12px; color: #555; line-height: 1.4;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  margin-bottom: 3px;
+}
+.prog-list-meta { font-size: 10px; color: #bbb; }
+.prog-list-new {
+  font-size: 9px; color: #fff; background: #ff6b40;
+  padding: 1px 5px; border-radius: 4px; font-weight: 600;
+  flex-shrink: 0; margin-top: 4px;
+}
+.prog-list-item.no-update .prog-list-new { display: none; }
+  border: none;
+  font-weight: 500;
 }
 
-.prog-card-thumb {
-  width: 40px;
-  height: 40px;
-  border-radius: 8px;
-  background: linear-gradient(135deg, #ffd89b 0%, #f8a5a5 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 18px;
+/* ===== v7：来信卡（信封 header + hero 图 + 场景 pill + fallback chip） ===== */
+.prog-letter-card {
+  background: #fff; border-radius: 10px; overflow: hidden;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04); border: 0.5px solid rgba(0,0,0,0.06);
+}
+.prog-letter-header {
+  position: relative;
+  background: linear-gradient(135deg, #fff1e6 0%, #ffe0cc 100%);
+  padding: 10px 12px;
+  display: flex; align-items: center; gap: 8px;
+}
+.prog-letter-heart {
+  width: 22px; height: 20px;
+  background: #f5b8b8;
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  opacity: 0.85; flex-shrink: 0;
+}
+.prog-letter-title {
+  font-family: 'STKaiti', 'KaiTi', '楷体', serif;
+  font-size: 14px; color: #d96b6b; font-weight: 500;
+  letter-spacing: 0.02em;
+}
+.prog-letter-stamp {
+  position: absolute; top: 6px; right: 10px;
+  width: 30px; height: 30px;
+  border: 1px dashed #c8a06c; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; color: #8a6230;
+  font-family: 'STKaiti', 'KaiTi', serif;
+}
+.prog-letter-hero {
+  height: 130px;
+  background-color: #b6c4a1;
+  position: relative;
+}
+.prog-letter-hero.single { height: 100px; }
+.prog-letter-scene-inline {
+  display: inline-flex; align-items: center; gap: 3px;
+  font-size: 11.5px; color: #b06b3a;
+  margin-bottom: 6px;
+}
+.prog-letter-scene {
+  position: absolute; bottom: 9px; left: 10px;
+  background: rgba(0,0,0,0.55); color: #fff;
+  font-size: 11px; padding: 4px 9px; border-radius: 4px;
+  display: inline-flex; align-items: center; gap: 4px;
+}
+.prog-letter-body { padding: 11px 12px 12px; }
+.prog-letter-body.single { padding: 12px 13px 13px; }
+.prog-letter-headline {
+  font-size: 13px; font-weight: 600; color: #111;
+  line-height: 1.45; margin-bottom: 5px;
+}
+.prog-letter-headline.single { font-size: 14px; }
+.prog-letter-excerpt {
+  font-size: 12px; color: #888; line-height: 1.55; margin-bottom: 9px;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.prog-letter-meta {
+  font-size: 11px; color: #b06b3a; margin-bottom: 11px;
+}
+.prog-letter-footer {
+  display: flex; justify-content: space-between; align-items: center;
+}
+.prog-letter-expand {
+  font-size: 12px; color: #d96b6b; font-weight: 500; cursor: pointer;
+}
+.prog-letter-expand:active { opacity: 0.7; }
+.prog-letter-donate {
+  height: 28px; padding: 0 16px;
+  border-radius: 14px; border: none;
+  background: #e8413c; color: #fff;
+  font-size: 11px; font-weight: 500; cursor: pointer;
+}
+.prog-letter-donate:active { opacity: 0.85; transform: scale(0.97); }
+
+/* 其他项目 chip（多项目场景用，弱化展示） */
+.prog-other-chips {
+  display: flex; flex-direction: column; gap: 6px;
+  margin-top: 10px;
+}
+.prog-other-chip {
+  background: #fff; border-radius: 8px;
+  padding: 9px 11px; display: flex; align-items: center; gap: 9px;
+  border: 0.5px solid rgba(0,0,0,0.06); cursor: pointer;
+  transition: background 0.1s;
+}
+.prog-other-chip:active { background: #fafafa; }
+.prog-other-chip.no-update { opacity: 0.55; cursor: default; }
+.prog-other-chip-icon {
+  width: 22px; height: 22px; border-radius: 6px;
+  flex-shrink: 0;
+}
+.prog-other-chip-icon.warm { background: linear-gradient(135deg, #fff1e6, #ffe0cc); }
+.prog-other-chip-icon.blue { background: linear-gradient(135deg, #e6f4ff, #bae0ff); }
+.prog-other-chip-icon.pink { background: linear-gradient(135deg, #fff0f0, #ffd6d6); }
+.prog-other-chip-text {
+  flex: 1; min-width: 0; font-size: 12px; color: #333;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.prog-other-chip.no-update .prog-other-chip-text { color: #666; }
+.prog-other-chip-new {
+  font-size: 10px; color: #fff; background: #ff6b40;
+  padding: 1px 6px; border-radius: 4px; font-weight: 600;
   flex-shrink: 0;
 }
 
-.prog-card-text {
-  flex: 1;
-  min-width: 0;
+/* 单项目 fallback chip（"我上次捐的那个"歧义兜底） */
+.prog-fallback-chip {
+  background: #fff; border-radius: 8px;
+  padding: 8px 11px;
+  font-size: 12px; color: #666;
+  line-height: 1.55; cursor: pointer;
+  border: 0.5px solid rgba(0,0,0,0.06);
+  margin-top: 8px;
 }
+.prog-fallback-chip:active { background: #fafafa; }
+.prog-fallback-chip .pf-link { color: #07c160; font-weight: 500; }
 
-.prog-card-name {
-  font-size: 14px;
-  font-weight: 600;
-  color: #111;
-  margin-bottom: 2px;
+/* ===== v7-rev6：进展板块（多项目=列表行 / 单项目=Hero详情卡） ===== */
+
+/* —— 多项目列表卡 —— */
+.proj-list {
+  background: #fff; border-radius: 12px; overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.04);
+  border: 0.5px solid rgba(0,0,0,0.06);
 }
-
-.prog-card-meta {
-  font-size: 11px;
-  color: #888;
+.proj-list-head {
+  padding: 13px 14px 11px;
+  display: flex; justify-content: space-between; align-items: baseline;
 }
-
-.prog-update {
-  background: #fff9e6;
-  border-radius: 8px;
-  padding: 10px 12px;
-  margin-bottom: 12px;
+.proj-list-title {
+  font-size: 14px; font-weight: 700; color: #111;
+}
+.proj-list-meta {
+  font-size: 11.5px; color: #999;
+}
+.proj-list-meta b { color: #3b6d11; font-weight: 500; }
+.proj-row {
+  display: flex; align-items: flex-start; gap: 11px;
+  padding: 12px 14px;
+  border-top: 0.5px solid #f1f1f1;
+  cursor: pointer;
+  transition: background 0.1s;
   position: relative;
 }
-
-.prog-update-badge {
-  position: absolute;
-  top: -6px;
-  right: 10px;
-  background: #ff7e40;
-  color: #fff;
-  font-size: 9px;
-  padding: 2px 6px;
-  border-radius: 8px;
-  font-weight: 600;
+.proj-row:active { background: #fafafa; }
+.proj-row-thumb {
+  width: 56px; height: 56px; border-radius: 8px;
+  flex-shrink: 0;
+  position: relative;
 }
-
-.prog-update-date {
-  font-size: 10px;
-  color: #b08300;
-  font-weight: 600;
+.proj-row-thumb.chunlei { background: linear-gradient(135deg, #f6c8c5, #e89593); }
+.proj-row-thumb.elderly { background: linear-gradient(135deg, #e6d3a8, #c8a76a); }
+.proj-row-thumb.rural   { background: linear-gradient(135deg, #f5d59a, #e3a56a); }
+.proj-row-thumb.library { background: linear-gradient(135deg, #c2d7e2, #92b3c2); }
+.proj-row-thumb.warmth  { background: linear-gradient(135deg, #c9d4b9, #97a87e); }
+.proj-row-tag-new {
+  position: absolute; top: 0; left: 0;
+  background: #2c2c2a; color: #fff;
+  font-size: 9.5px; font-weight: 500;
+  padding: 1px 5px;
+  border-radius: 8px 0 6px 0;
+  letter-spacing: 0.05em;
+}
+.proj-row-body {
+  flex: 1; min-width: 0;
+}
+.proj-row-title {
+  font-size: 14px; font-weight: 600; color: #111;
+  line-height: 1.35;
+  margin-bottom: 3px;
+}
+.proj-row-meta {
+  font-size: 11.5px; color: #999;
   margin-bottom: 4px;
 }
-
-.prog-update-text {
-  font-size: 13px;
-  color: #4a3c00;
-  line-height: 1.5;
+.proj-row-meta b { color: #e8413c; font-weight: 500; }
+.proj-row-status {
+  font-size: 12px; color: #3b6d11;
+  line-height: 1.4;
+}
+.proj-row-arrow {
+  position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+  font-size: 14px; color: #ccc; line-height: 1;
+}
+.proj-list-foot {
+  border-top: 0.5px solid #f1f1f1;
+  padding: 11px 14px;
+  text-align: center;
+}
+.proj-list-foot .pl-link {
+  font-size: 13px; color: #07c160; font-weight: 500;
 }
 
-.prog-fund-hint {
-  margin-top: 12px;
-  padding-top: 10px;
-  border-top: 1px dashed #e5e5e5;
-  font-size: 12px;
-  color: #888;
-  line-height: 1.5;
+/* —— 单项目 Hero 详情卡 —— */
+.proj-detail {
+  background: #fff; border-radius: 12px; overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.04);
+  border: 0.5px solid rgba(0,0,0,0.06);
 }
-
-.prog-stats {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  margin-bottom: 12px;
+.proj-detail-hero {
+  height: 90px;
+  background: linear-gradient(135deg, #c4ad7a 0%, #8a6f43 60%, #4d3d22 100%);
+  padding: 16px 16px 14px;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  color: #fff;
 }
-
-.prog-stat {
-  background: #f8f9fa;
-  border-radius: 6px;
-  padding: 8px 10px;
+.proj-detail-hero-title {
+  font-size: 16px; font-weight: 600; color: #fff;
+  line-height: 1.3;
+  margin-bottom: 3px;
 }
-
-.prog-stat-label {
-  font-size: 10px;
-  color: #999;
-  margin-bottom: 2px;
+.proj-detail-hero-meta {
+  font-size: 11.5px; color: rgba(255,255,255,0.78);
 }
-
-.prog-stat-value {
-  font-size: 15px;
-  font-weight: 600;
+.proj-detail-quote {
+  margin: 14px 14px 12px;
+  padding: 11px 13px;
+  background: #f4f3ee;
+  border-radius: 8px;
+  font-size: 13px; color: #2a2a2a; line-height: 1.7;
+}
+.proj-detail-quote b { color: #111; font-weight: 600; }
+.proj-detail-receipt {
+  margin: 0 14px 14px;
+  padding: 9px 12px;
+  background: #fdf0ee;
+  border-radius: 8px;
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 12.5px;
+}
+.proj-detail-receipt-left { color: #555; }
+.proj-detail-receipt-left b { color: #e8413c; font-weight: 600; }
+.proj-detail-receipt-right { color: #999; font-size: 11.5px; }
+.proj-detail-actions {
+  display: flex; gap: 10px;
+  padding: 0 14px 14px;
+}
+.proj-detail-btn {
+  flex: 1;
+  height: 38px; border-radius: 8px;
+  font-size: 13.5px; font-weight: 500;
+  cursor: pointer;
+  border: none;
+}
+.proj-detail-btn.sub {
+  background: #fff;
+  border: 0.5px solid rgba(0,0,0,0.12);
   color: #333;
 }
-
-.prog-actions {
-  display: flex;
-  gap: 6px;
+.proj-detail-btn.sub:active { background: #f5f5f5; }
+.proj-detail-btn.main {
+  background: #c43a36; color: #fff;
 }
+.proj-detail-btn.main:active { background: #ad2f2c; }
 
-.prog-action-btn {
-  flex: 1;
-  height: 34px;
-  border-radius: 17px;
-  border: 1px solid #e0e0e0;
+/* —— v7：追问气泡（差异化：Agent 是会话，可以继续聊） —— */
+.followup-chips {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  margin-top: 8px;
+}
+.followup-chip {
   background: #fff;
-  color: #555;
+  border: 0.5px solid rgba(0,0,0,0.12);
+  border-radius: 14px;
+  padding: 6px 12px;
   font-size: 12px;
+  color: #333;
   cursor: pointer;
-  transition: all 0.15s;
+  line-height: 1.4;
 }
-
-.prog-action-btn:active {
+.followup-chip:active {
   background: #f5f5f5;
   transform: scale(0.98);
 }
 
-.prog-action-btn.primary {
-  background: linear-gradient(135deg, #07c160, #0ab877);
-  color: #fff;
+/* —— v7：单条来信详情半屏 —— */
+.letter-sheet-body {
+  padding: 0;
+  max-height: 72vh;
+  overflow-y: auto;
+}
+.letter-sheet-hero {
+  position: relative;
+  background: linear-gradient(135deg, #fff1e6 0%, #ffe0cc 100%);
+  padding: 16px 18px 14px;
+}
+.letter-sheet-stamp {
+  position: absolute; top: 14px; right: 16px;
+  width: 38px; height: 38px;
+  border: 1px dashed #c8a06c; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; color: #8a6230;
+  font-family: 'STKaiti', 'KaiTi', serif;
+}
+.letter-sheet-from {
+  font-family: 'STKaiti', serif; font-size: 12px;
+  color: #b06b3a; margin-bottom: 4px;
+}
+.letter-sheet-project {
+  font-family: 'STKaiti', serif;
+  font-size: 17px; color: #d96b6b; font-weight: 500;
+  letter-spacing: 0.02em;
+}
+.letter-sheet-content { padding: 18px 18px 8px; }
+.letter-sheet-headline {
+  font-size: 18px; font-weight: 600; color: #111;
+  line-height: 1.5; margin-bottom: 10px;
+}
+.letter-sheet-scene {
+  display: inline-flex; align-items: center; gap: 4px;
+  background: #f7faf5; color: #2e4a34;
+  font-size: 12px; padding: 5px 10px; border-radius: 12px;
+  margin-bottom: 14px;
+}
+.letter-sheet-photos {
+  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px;
+  margin-bottom: 16px;
+}
+.letter-sheet-photos > div {
+  aspect-ratio: 1/1; border-radius: 6px; cursor: pointer;
+}
+.letter-sheet-photos > div:active { opacity: 0.85; }
+.letter-sheet-body-text {
+  font-size: 14px; color: #333; line-height: 1.8;
+  margin-bottom: 14px;
+  white-space: pre-line;
+}
+.letter-sheet-meta {
+  font-size: 11.5px; color: #999;
+  padding-top: 12px;
+  border-top: 0.5px solid #f0f0f0;
+}
+.letter-sheet-footer {
+  border-top: 0.5px solid #f0f0f0;
+  padding: 10px 18px 14px;
+  background: #fff;
+}
+.letter-mini-link {
+  width: 100%;
+  background: #f7faf5;
+  color: #07c160;
   border: none;
+  font-size: 13px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: center;
+  margin-bottom: 10px;
   font-weight: 500;
 }
+.letter-mini-link:active { opacity: 0.85; }
+.letter-sheet-cta {
+  display: flex; gap: 10px;
+}
+.letter-btn-sub {
+  flex: 1; height: 40px; border-radius: 10px;
+  border: 0.5px solid #e5e5e5; background: #fafafa;
+  color: #666; font-size: 14px; cursor: pointer;
+}
+.letter-btn-main {
+  flex: 1.6; height: 40px; border-radius: 10px;
+  border: none; background: #e8413c;
+  color: #fff; font-size: 14px; font-weight: 500; cursor: pointer;
+}
+.letter-btn-main:active { opacity: 0.85; transform: scale(0.98); }
 
 /* 完成卡 */
 .done-card {
@@ -3307,10 +3690,18 @@ body {
   padding: 18px 16px 14px;
   cursor: pointer;
   transition: all 0.15s;
+  position: relative;
 }
 .flower-card:active { transform: scale(0.99); }
+.flower-card-deco {
+  position: absolute;
+  top: 14px; right: 14px;
+  font-size: 28px;
+  line-height: 1;
+  pointer-events: none;
+}
 .flower-card-title {
-  font-size: 12px;
+  font-size: 12.5px;
   color: #999;
   font-weight: 500;
   margin-bottom: 8px;
@@ -3333,13 +3724,13 @@ body {
   margin-bottom: 8px;
 }
 .flower-card-row {
-  display: flex; align-items: center; gap: 8px;
-  padding: 5px 0;
+  display: flex; align-items: center; gap: 10px;
+  padding: 6px 0;
   font-size: 12.5px;
 }
 .flower-card-date {
   color: #999; flex-shrink: 0;
-  width: 36px;
+  width: 38px;
   letter-spacing: 0.01em;
 }
 .flower-card-type {
@@ -3351,27 +3742,24 @@ body {
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   flex: 1;
 }
+.flower-card-actions {
+  border-top: 0.5px solid #f0f0f0;
+  margin-top: 4px; padding-top: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 32px;
+}
 .flower-card-link {
-  text-align: right;
-  font-size: 12px;
+  font-size: 13px;
   color: #07c160;
   font-weight: 500;
-  margin-top: 4px;
   letter-spacing: 0.01em;
 }
-.flower-card-actions {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 16px;
-  margin-top: 4px;
-}
-.flower-card-actions-two .flower-card-link {
-  margin-top: 0;
-}
+.flower-card-link:active { opacity: 0.6; }
 .flower-card-link-cta {
-  color: #e8413c;
-  font-weight: 600;
+  color: #07c160;
+  font-weight: 500;
 }
 
 /* ============ 做好事菜单卡 ============ */
@@ -3552,7 +3940,12 @@ body {
   <div class="ps-section">老用户（有捐款历史）</div>
   <div class="path-item" data-path="return-progress" onclick="loadPath('return-progress')">
     <div class="pi-label">PATH 3a</div>
-    <div class="pi-title">主动问进展</div>
+    <div class="pi-title">主动问进展（多项目）</div>
+    <div class="pi-desc">"我捐的那些项目怎么样了"</div>
+  </div>
+  <div class="path-item" data-path="return-progress-single" onclick="loadPath('return-progress-single')">
+    <div class="pi-label">PATH 3a-2</div>
+    <div class="pi-title">主动问进展（单项目）</div>
     <div class="pi-desc">"我上次捐的那个怎么样了"</div>
   </div>
   <div class="path-item" data-path="ask-garden" onclick="loadPath('ask-garden')">
@@ -3946,6 +4339,23 @@ body {
         </div>
       </div>
     </div>
+    <!-- v7 新增：单条来信详情半屏（一封信的完整版） -->
+    <div class="half-overlay" id="letterOverlay" onclick="closeHalf('letterOverlay')">
+      <div class="half-sheet" onclick="event.stopPropagation()">
+        <div class="hs-handle"></div>
+        <div class="letter-sheet-body" id="letterBody">
+          <!-- JS 动态填充 -->
+        </div>
+        <div class="letter-sheet-footer">
+          <button class="letter-mini-link" onclick="showToast('跳转小程序「小红花来信」看大家的留言')">看大家给这封信的留言 →</button>
+          <div class="letter-sheet-cta">
+            <button class="letter-btn-sub" onclick="closeHalf('letterOverlay')">先关掉</button>
+            <button class="letter-btn-main" onclick="closeHalf('letterOverlay'); setTimeout(()=>onTapDonateAgain(), 300);">再捐一笔</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- 项目详情半屏（对齐一块走） -->
     <div class="half-overlay" id="progressOverlay" onclick="closeHalf('progressOverlay')">
       <div class="half-sheet" onclick="event.stopPropagation()">
@@ -4099,6 +4509,7 @@ function loadPath(p) {
   if (p === 'fuzzy') startFuzzy();
   if (p === 'clear') startClear();
   if (p === 'return-progress') startReturnProgress();
+  if (p === 'return-progress-single') startReturnProgressSingle();
   if (p === 'ask-garden') onAskGarden();
 }
 
@@ -4303,75 +4714,126 @@ const PROJECTS = {
   }
 };
 
-function projectCard(projId, aiSummary, changeBtnText) {
+function projectCard(projId, aiSummary, changeBtnText, categoryLabel) {
   const p = PROJECTS[projId];
-  // 信任贴片（模式4）：平台时长 + 可追溯 + 朋友社交证据
-  const trustChips = `
-    <span class="trust-chip">平台${p.years || 10}年</span>
-    <span class="trust-chip">善款追溯</span>
-    <span class="trust-chip">${p.friendsCount || 3} 位朋友帮过</span>
-  `;
-
+  // 截短 AI 摘要：去掉 b 标签里的"还差"语，保留场景描述
+  const cleanSummary = (aiSummary || '').replace(/<\/?b>/g, '');
   return `
-    <div class="proj-card">
-      <div class="proj-hero">
-        <img class="proj-hero-img" src="${p.imgUrl}" alt="${p.title}" loading="lazy" />
-        <div class="proj-hero-overlay">
-          <div class="proj-org-badge">${p.org}</div>
-        </div>
+    <div class="proj-card-v3" onclick="if(event.target.tagName==='BUTTON'||event.target.classList.contains('proj-card-v3-change'))return; state.currentProject='${projId}'; openProjectProgress();">
+      <div class="proj-card-v3-hero">
+        <img src="${p.imgUrl}" alt="${p.title}" loading="lazy" onerror="this.style.display='none'" />
+        ${categoryLabel ? `<span class="proj-card-v3-tag">${categoryLabel}</span>` : ''}
+        <span class="proj-card-v3-org">${p.org} · 5A</span>
       </div>
-      <div class="proj-body">
-        <div class="proj-title-main">${p.title}</div>
-        <a class="proj-detail-link" onclick="state.currentProject='${projId}'; openProjectProgress()">看项目详情 ›</a>
-        ${aiSummary ? `
-          <div class="proj-ai-summary">${aiSummary}</div>
-        ` : ''}
-        <div class="trust-chips">${trustChips}</div>
-        <div class="proj-progress">
-          <div class="prog-row">
-            <span>已筹 <span class="prog-pct">${p.progress}%</span></span>
-            <span class="prog-remain">${p.progressText}</span>
-          </div>
-          <div class="prog-bar"><div class="prog-fill" style="width:${p.progress}%"></div></div>
-        </div>
-        <button class="help-btn" onclick="openDonate('${projId}')">我想帮一下</button>
-        ${changeBtnText ? `<button class="change-btn" onclick="changeProject('${projId}')">换一个看看</button>` : ''}
+      <div class="proj-card-v3-body">
+        <div class="proj-card-v3-title">${p.title}</div>
+        <div class="proj-card-v3-summary">${cleanSummary}</div>
+        <button class="proj-card-v3-help" onclick="event.stopPropagation(); openDonate('${projId}')">我想帮一下</button>
+        ${changeBtnText ? `<button class="proj-card-v3-change" onclick="event.stopPropagation(); changeProject('${projId}')">换一个看看 ›</button>` : ''}
       </div>
     </div>
   `;
 }
 
-function progressCard() {
+// 单项目进展卡（v7-rev6：Hero 详情卡 · 红主按钮回归）
+function progressCardSingle() {
   return `
-    <div class="prog-card">
-      <div class="prog-card-header">
-        <div class="prog-card-thumb">👧🏻</div>
-        <div class="prog-card-text">
-          <div class="prog-card-name">春蕾计划她们想上学</div>
-          <div class="prog-card-meta">你在 2025-12-01 捐了 20 元</div>
-        </div>
+    <div class="proj-detail">
+      <div class="proj-detail-hero">
+        <div class="proj-detail-hero-title">为孤寡老人送一份热乎饭</div>
+        <div class="proj-detail-hero-meta">爱德基金会 · 11 月反馈</div>
       </div>
-      <div class="prog-update">
-        <div class="prog-update-badge">NEW</div>
-        <div class="prog-update-date">📍 2026年4月15日</div>
-        <div class="prog-update-text">你的 20 元随第 38 批助学金拨付至云南临沧，帮到了一位困境女童本学期学费。</div>
+      <div class="proj-detail-quote">
+        <b>11 月 12 日：</b>本月已在弥勒县发出 18,420 份热饭。你支持的那一笔，让张奶奶（87 岁）连续 7 天吃上了热饭。
       </div>
-      <div class="prog-stats">
-        <div class="prog-stat">
-          <div class="prog-stat-label">项目进度</div>
-          <div class="prog-stat-value">94.5%</div>
-        </div>
-        <div class="prog-stat">
-          <div class="prog-stat-label">本期受益</div>
-          <div class="prog-stat-value">67 人</div>
-        </div>
+      <div class="proj-detail-receipt">
+        <span class="proj-detail-receipt-left">你 <b>10/26</b> 捐过 <b>¥10</b></span>
+        <span class="proj-detail-receipt-right">捐赠票据可查</span>
       </div>
-      <div class="prog-actions">
-        <button class="prog-action-btn" onclick="state.hasDonated=true; state.currentProject='chunlei'; openProjectProgress('ppProgressAnchor')">看完整时间线</button>
-        <button class="prog-action-btn primary" onclick="onTapDonateAgain()">再帮一下</button>
+      <div class="proj-detail-actions">
+        <button class="proj-detail-btn sub" onclick="state.currentProject='elderly'; openLetterDetail('elderly-11')">看完整反馈</button>
+        <button class="proj-detail-btn main" onclick="state.currentProject='elderly'; onTapDonateAgain()">再捐一笔</button>
       </div>
     </div>
   `;
+}
+
+// 多项目列表卡（v7-rev6：3 行项目，没新进展不显示状态行）
+function progressListCard() {
+  const items = [
+    {
+      projId: 'chunlei',
+      thumbClass: 'chunlei',
+      isNew: true,
+      title: '春蕾计划 · 让乡村女孩留在课堂',
+      donatedAmount: 20,
+      donatedDate: '10/22',
+      status: '2 天前有新反馈'
+    },
+    {
+      projId: 'elderly',
+      thumbClass: 'elderly',
+      isNew: true,
+      title: '为孤寡老人送一份热乎饭',
+      donatedAmount: 10,
+      donatedDate: '10/26',
+      status: '本月送出 18,420 份'
+    },
+    {
+      projId: 'rural',
+      thumbClass: 'rural',
+      isNew: false,
+      title: '山区孩子的一份午餐',
+      donatedAmount: 50,
+      donatedDate: '9/3',
+      status: null
+    }
+  ];
+  const newCount = items.filter(i => i.isNew).length;
+  const rowsHTML = items.map(it => `
+    <div class="proj-row" onclick="state.currentProject='${it.projId}'; onTapPickProject('${it.projId}', '${it.title}')">
+      <div class="proj-row-thumb ${it.thumbClass}">
+        ${it.isNew ? '<span class="proj-row-tag-new">新</span>' : ''}
+      </div>
+      <div class="proj-row-body">
+        <div class="proj-row-title">${it.title}</div>
+        <div class="proj-row-meta">我捐过 <b>¥${it.donatedAmount}</b> · ${it.donatedDate}</div>
+        ${it.status ? `<div class="proj-row-status">${it.status}</div>` : ''}
+      </div>
+      <span class="proj-row-arrow">›</span>
+    </div>
+  `).join('');
+  return `
+    <div class="proj-list">
+      <div class="proj-list-head">
+        <span class="proj-list-title">我参与的项目</span>
+        <span class="proj-list-meta">共 ${items.length} 个 · <b>${newCount} 有新进展</b></span>
+      </div>
+      ${rowsHTML}
+      <div class="proj-list-foot">
+        <span class="pl-link" onclick="onTapViewMoreLetters()">看完整捐赠记录 ›</span>
+      </div>
+    </div>
+  `;
+}
+
+// 用户从列表挑了一个项目 → 用户气泡 + Agent 详情卡
+async function onTapPickProject(projId, title) {
+  const shortName = title.split(' · ')[0];
+  await addUserBubble('看下' + shortName);
+  const dateMap = {
+    chunlei: '10 月 22 日',
+    elderly: '10 月 26 日',
+    rural:   '9 月 3 日'
+  };
+  const orgFeedbackMap = {
+    chunlei: { date: '11 月 14 日', org: '中国儿童少年基金会' },
+    elderly: { date: '11 月 12 日', org: '爱德基金会' },
+    rural:   { date: '10 月 28 日', org: '免费午餐基金' }
+  };
+  const fb = orgFeedbackMap[projId] || orgFeedbackMap.elderly;
+  await addAgentBubble(`好。这是 ${fb.date} 机构刚发的最新反馈，你出的那 ¥XX 也用上了 ↓`, 1000);
+  await addCard(progressCardSingle(), 600);
 }
 
 // 项目最近在做什么（不是"你的钱去哪了"——而是项目方此前真实反馈）
@@ -4462,20 +4924,26 @@ function doneCard(amount, projectTitle, whichBatch, nextPromise) {
 // ========================= 路径 1：模糊意图 =========================
 // 6 类 SVG 线条图标（24×24, viewBox 0 0 24 24, stroke 1.6 round）
 const CAT_ICONS = {
-  edu: '<path d="M3 8l9-4 9 4-9 4-9-4z"/><path d="M7 10v4.5c0 1.5 2.5 2.5 5 2.5s5-1 5-2.5V10"/><path d="M21 8v6"/>',
-  rural: '<path d="M3 20h18"/><path d="M5 20V10l7-5 7 5v10"/><path d="M9 20v-5h6v5"/><path d="M12 4V2"/>',
-  medical: '<rect x="4" y="5" width="16" height="15" rx="2"/><path d="M12 10v6"/><path d="M9 13h6"/><path d="M9 5V3h6v2"/>',
-  rescue: '<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6l8-3z"/><path d="M9 12l2 2 4-4"/>',
-  nature: '<path d="M12 22V9"/><path d="M12 9c0-5 4-7 8-7-1 6-3 9-8 9z"/><path d="M12 13c0-4-3-6-7-6 1 5 3 8 7 8z"/>',
-  care: '<path d="M12 21s-7-4.5-7-10a4.5 4.5 0 0 1 8-3 4.5 4.5 0 0 1 8 3c0 5.5-7 10-7 10"/>',
+  // 扶老：单人轮廓
+  elderly: '<circle cx="12" cy="7" r="3.5"/><path d="M5.5 21v-2.5c0-3 3-5.5 6.5-5.5s6.5 2.5 6.5 5.5V21"/>',
+  // 助学：学士帽
+  edu: '<path d="M3 9l9-4 9 4-9 4-9-4z"/><path d="M7 11v3.5c0 1.5 2.5 2.5 5 2.5s5-1 5-2.5V11"/><path d="M21 9v5.5"/>',
+  // 救灾：盾牌
+  rescue: '<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6l8-3z"/>',
+  // 医疗：十字
+  medical: '<path d="M14 5h-4v5H5v4h5v5h4v-5h5v-4h-5z"/>',
+  // 环保：叶子
+  nature: '<path d="M5 21c0-9 6-15 16-15-1 9-6 16-16 15z"/><path d="M5 21l8-8"/>',
+  // 动物：3 个圆代表爪子
+  animal: '<circle cx="7" cy="13" r="2"/><circle cx="17" cy="13" r="2"/><circle cx="9" cy="7" r="1.6"/><circle cx="15" cy="7" r="1.6"/><ellipse cx="12" cy="18" rx="3.5" ry="2.6"/>',
 };
 const CATEGORIES = [
-  { key: 'edu',     label: '教育助学', icon: CAT_ICONS.edu },
-  { key: 'rural',   label: '乡村振兴', icon: CAT_ICONS.rural },
-  { key: 'medical', label: '医疗救助', icon: CAT_ICONS.medical },
-  { key: 'rescue',  label: '灾害救援', icon: CAT_ICONS.rescue },
-  { key: 'nature',  label: '自然保护', icon: CAT_ICONS.nature },
-  { key: 'care',    label: '社会关怀', icon: CAT_ICONS.care },
+  { key: 'elderly',  label: '扶老', icon: CAT_ICONS.elderly,  projId: 'elderly' },
+  { key: 'edu',      label: '助学', icon: CAT_ICONS.edu,      projId: 'chunlei' },
+  { key: 'rescue',   label: '救灾', icon: CAT_ICONS.rescue,   projId: 'warmth'  },
+  { key: 'medical',  label: '医疗', icon: CAT_ICONS.medical,  projId: 'elderly' },
+  { key: 'nature',   label: '环保', icon: CAT_ICONS.nature,   projId: 'library' },
+  { key: 'animal',   label: '动物', icon: CAT_ICONS.animal,   projId: 'animal' },
 ];
 
 function categoryCard(onPickCode) {
@@ -4487,10 +4955,10 @@ function categoryCard(onPickCode) {
   `).join('');
   return `
     <div class="cat-card">
-      <div class="cat-title">项目分类</div>
+      <div class="cat-title">你最想帮谁</div>
       <div class="cat-grid">${items}</div>
       <div class="cat-footer">
-        <button class="cat-footer-btn" id="catFooterBtn" onclick="${onPickCode}('any','让我来推', this)">让我来推 ›</button>
+        <button class="cat-footer-btn" id="catFooterBtn" onclick="${onPickCode}('any','还没想好', this)">还没想好，给我推荐一个</button>
       </div>
     </div>
   `;
@@ -4498,12 +4966,12 @@ function categoryCard(onPickCode) {
 
 // 类目 → 项目映射（story 是 AI 总结：项目本身做什么 + 透明度证据 + 当下进度）
 const CATEGORY_TO_PROJECT = {
-  edu:     { projId: 'chunlei', intro: '给你看一个本月还在筹的：', story: `为西部山区困境女童提供学费资助，<b>本月还差 ¥328 即可补齐当期助学金</b>。资助名单每月在小程序公示，可追溯到具体受助女童。`, changeBtn: '换一个看看' },
-  rural:   { projId: 'library', intro: '乡村类刚好有这个：', story: `为乡村小学建设图书角，自主研发书目体系。<b>下一批新书就差最后一点资助</b>，新图书角平均 3 个月落地。`, changeBtn: '换一个看看' },
-  medical: { projId: 'elderly', intro: '医疗/救助类这个在做：', story: `跨 12 个城市的社区送餐网络，志愿者每日送餐到独居困境老人家中。<b>本期还差 ¥2,100 即可凑齐</b>，每次送餐有打卡留痕。`, changeBtn: '换一个看看' },
-  rescue:  { projId: 'warmth',  intro: '灾害/应急类这个在做：', story: `冬季应急保暖项目，物资定向发放到高原牧区孩子手上。<b>第 19 批物资还差最后一小部分</b>，每批发放都有影像留档。`, changeBtn: '换一个看看' },
-  nature:  { projId: 'animal',  intro: '自然/动物类刚好有这个：', story: `上海本地基地的流浪动物救助，每周更新动物照片和健康状况。<b>本期还差 ¥2,640 即可凑齐</b>，可领养、可实地探访。`, changeBtn: '换一个看看' },
-  care:    { projId: 'elderly', intro: '关怀类目前这个在做：', story: `跨 12 个城市的社区送餐网络，志愿者每日送餐到独居困境老人家中。<b>本期还差 ¥2,100 即可凑齐</b>，每次送餐有打卡留痕。`, changeBtn: '换一个看看' },
+  elderly: { projId: 'elderly', intro: '扶老类这个在做：', story: `跨 12 个城市的社区送餐网络，志愿者每日送餐到独居困境老人家中。<b>本期还差 ¥2,100 即可凑齐</b>，每次送餐有打卡留痕。`, changeBtn: '换一个看看' },
+  edu:     { projId: 'chunlei', intro: '助学类有个本月还在筹的：', story: `为西部山区困境女童提供学费资助，<b>本月还差 ¥328 即可补齐当期助学金</b>。资助名单每月在小程序公示，可追溯到具体受助女童。`, changeBtn: '换一个看看' },
+  rescue:  { projId: 'warmth',  intro: '救灾类这个在做：', story: `冬季应急保暖项目，物资定向发放到高原牧区孩子手上。<b>第 19 批物资还差最后一小部分</b>，每批发放都有影像留档。`, changeBtn: '换一个看看' },
+  medical: { projId: 'elderly', intro: '医疗类这个在做：', story: `跨 12 个城市的社区送餐网络，志愿者每日送餐到独居困境老人家中。<b>本期还差 ¥2,100 即可凑齐</b>，每次送餐有打卡留痕。`, changeBtn: '换一个看看' },
+  nature:  { projId: 'library', intro: '环保乡村类这个还差一点：', story: `为乡村小学建设图书角，自主研发书目体系。<b>下一批新书就差最后一点资助</b>，新图书角平均 3 个月落地。`, changeBtn: '换一个看看' },
+  animal:  { projId: 'animal',  intro: '动物保护类刚好有这个：', story: `上海本地基地的流浪动物救助，每周更新动物照片和健康状况。<b>本期还差 ¥2,640 即可凑齐</b>，可领养、可实地探访。`, changeBtn: '换一个看看' },
   any:     { projId: 'chunlei', intro: '那我帮你挑一个——本月还在筹的：', story: `为西部山区困境女童提供学费资助，<b>本月还差 ¥328 即可补齐当期助学金</b>。资助名单每月在小程序公示。`, changeBtn: '换一个看看' },
 };
 
@@ -4520,17 +4988,19 @@ async function onPickCategory(catKey, catLabel, btnEl) {
   state.target = catKey;
   const m = CATEGORY_TO_PROJECT[catKey] || CATEGORY_TO_PROJECT.any;
   state.currentProject = m.projId;
+  // 记录当前类目 label（catLabel），换一个项目时复用
+  state.currentCatLabel = (catKey === 'any') ? '' : catLabel;
 
   if (catKey === 'any') {
     // 用户点"让我来推"——这是 UI 操作不是发言，不追加用户气泡
     // 但 Agent 需要一句承接"那我帮你挑一个"，让卡片出现自然
     await addAgentBubble('好，那我帮你挑一个——本月还在筹的：', 1000);
-    await addCard(projectCard(m.projId, m.story, m.changeBtn));
+    await addCard(projectCard(m.projId, m.story, m.changeBtn, ''));
   } else {
     // 用户表达了具体意图——追加用户气泡
     await addUserBubble(catLabel);
     await addAgentBubble(m.intro, 1000);
-    await addCard(projectCard(m.projId, m.story, m.changeBtn));
+    await addCard(projectCard(m.projId, m.story, m.changeBtn, catLabel));
   }
 }
 
@@ -4561,7 +5031,7 @@ async function changeProject(currentId) {
     chunlei: `为西部山区困境女童提供学费资助，<b>本月还差 ¥328 即可补齐当期助学金</b>。资助名单每月在小程序公示。`,
     elderly: `跨 12 个城市的社区送餐网络，志愿者每日送餐到独居困境老人家中。<b>本期还差 ¥2,100 即可凑齐</b>。`
   };
-  await addCard(projectCard(nextId, storyMap[nextId], '换一个看看'));
+  await addCard(projectCard(nextId, storyMap[nextId], '换一个看看', state.currentCatLabel || ''));
 }
 
 // 点"我想帮一下" → 打开支付半屏（不问金额，直接默认主金额）
@@ -4745,16 +5215,124 @@ async function startClear() {
   await addCard(projectCard('chunlei', story, '换一个看看'));
 }
 
-// ========================= 路径 3a：老用户主动问进展 =========================
+// ========================= v7：来信样板数据 =========================
+const LETTERS = {
+  'chunlei-38': {
+    project: '春蕾计划',
+    from: '中国儿童少年基金会 · 张老师',
+    date: '2026/04/15',
+    scene: '云南临沧 · 第 38 批助学金拨款',
+    headline: '从受助到助人、从迷茫到坚定',
+    photoColors: ['#c9d4b9', '#b6c4a1', '#6e3a5a'],
+    photoTags: ['拨款现场签到表', '67 名女童合影', '张老师与孩子'],
+    body: '67 名困境女童本学期的学费已经全部拨付到位。今天去临沧的路上下了雨，到了学校刚好放晴。\n\n张老师把签到表拍给我看——名字、年级、签名，密密麻麻一整张。她说有几个孩子写名字的时候手在抖，是太用力了。\n\n这一批里有 3 个女孩是去年的助学对象，她们今年成绩进了全县前 50。其中珍珠生小朋友——你之前关注过的那个名字——已经申请到了高中助学金，她说想读师范。\n\n后续我们会按月给你同步她们的学习进展。',
+    meta: '你支持了 3 次 · 累计 ¥60 · 项目方 2 天前发布'
+  },
+  'library-22': {
+    project: '乡村图书角',
+    from: '满天星公益 · 阿吉',
+    date: '2026/04/03',
+    scene: '贵州黔南 · 第 22 批新书送达',
+    headline: '268 本新书到惠水县苗族小学了',
+    photoColors: ['#a8c8d8', '#7da8c0', '#d6c194'],
+    photoTags: ['图书角开箱', '孩子们读书', '老师签收'],
+    body: '268 本新书送到惠水县苗族小学。从贵阳出发开了 5 个多小时山路，过了 3 个隧道才到。\n\n图书角的孩子们这两天开心得合不上嘴——我们出去的时候，已经有十几个孩子在新书前面排队等着借了。\n\n这一批里 60% 是科普类，孩子们最喜欢《十万个为什么》和《地球的秘密》。剩下是文学和绘本。',
+    meta: '你支持了 1 次 · 累计 ¥20 · 项目方 9 天前发布'
+  }
+};
+
+// 打开单条来信详情（卡片"展开来信"的合法 tap 动作 → openDetailPage）
+function openLetterDetail(letterId) {
+  const L = LETTERS[letterId] || LETTERS['chunlei-38'];
+  state.currentLetterId = letterId;
+
+  const photosHTML = L.photoTags.map((t, i) => `
+    <div onclick="showToast('预览图片：${t}')" style="background: ${L.photoColors[i] || '#ccc'};"></div>
+  `).join('');
+
+  document.getElementById('letterBody').innerHTML = `
+    <div class="letter-sheet-hero">
+      <div class="letter-sheet-stamp">益</div>
+      <div class="letter-sheet-from">${L.from} · ${L.date}</div>
+      <div class="letter-sheet-project">${L.project} · 来信</div>
+    </div>
+    <div class="letter-sheet-content">
+      <div class="letter-sheet-headline">${L.headline}</div>
+      <div class="letter-sheet-scene">📍 ${L.scene}</div>
+      <div class="letter-sheet-photos">${photosHTML}</div>
+      <div class="letter-sheet-body-text">${L.body}</div>
+      <div class="letter-sheet-meta">${L.meta}</div>
+    </div>
+  `;
+  openHalf('letterOverlay');
+}
+
+// 卡片下方追问气泡：核心差异化——Agent 是会话，小程序只能看
+function letterFollowupChips() {
+  return `
+    <div class="followup-chips">
+      <div class="followup-chip" onclick="onAskFollowup('为什么这批是云南临沧？')">为什么这批是云南临沧？</div>
+      <div class="followup-chip" onclick="onAskFollowup('下一批什么时候拨款？')">下一批什么时候拨款？</div>
+      <div class="followup-chip" onclick="onAskFollowup('我能去探访吗？')">我能去探访吗？</div>
+    </div>
+  `;
+}
+
+// 点追问气泡 → sendFollowUpMessage 上行（demo 里直接模拟 Agent 回答）
+async function onAskFollowup(text) {
+  await addUserBubble(text);
+  const answers = {
+    '为什么这批是云南临沧？': '云南临沧是这次新增的资助点，本学期有 67 个名额——张老师 4 月初提交的名单，本月刚批下来。',
+    '下一批什么时候拨款？': '基金会每月 15 号定期拨款，下一批是 5/15，预计资助甘肃陇南的 50 多个孩子。到时我再给你来信。',
+    '我能去探访吗？': '春蕾目前不开放个人探访，但每年 9 月开学季基金会会组织资助人见证活动。要我帮你登记下意向吗？'
+  };
+  await addAgentBubble(answers[text] || '好，我帮你查一下。', 1100);
+}
+
+// ========================= 路径 3a：老用户主动问进展（多项目） =========================
 async function startReturnProgress() {
   state.hasDonated = true;
-  state.currentProject = 'chunlei';
   await wait(400);
-  await addUserBubble('我上次捐的那个项目怎么样了');
-  await addAgentBubble('你上次捐的是<b>春蕾计划</b>，有新进展：', 1200);
-  await addCard(progressCard(), 900);
-  await wait(500);
-  await addAgentBubble('9 天前，你那 20 元随第 38 批助学金到了云南临沧。完整的 5 个月流向在时间线里。', 1300);
+  await addUserBubble('我之前捐的那些项目，现在怎么样了？');
+  await addAgentBubble('我帮你梳理了一下。你一共参与过 3 个项目，2 个有新进展 ↓', 1000);
+  await addCard(progressListCard(), 600);
+}
+
+// ========================= 路径 3a-2：老用户主动问进展（单项目） =========================
+async function startReturnProgressSingle() {
+  state.hasDonated = true;
+  state.currentProject = 'elderly';
+  await wait(400);
+  await addUserBubble('我上次捐的那个孤寡老人怎么样了？');
+  await addAgentBubble('你说的是 10 月 26 日捐的「为孤寡老人送一餐热饭」吧。', 900);
+  await addAgentBubble('刚拿到机构 11 月 12 日的进展，给你看下 👇', 800);
+  await addCard(progressCardSingle(), 600);
+}
+
+// 「查看更多项目进展 ›」点击 → 合规跳「小红花来信」（Agent 气泡 + 绿字超链气泡）
+async function onTapViewMoreLetters() {
+  await addUserBubble('查看更多项目进展');
+  const bubbleHTML = `
+    完整清单在「小红花来信」，包括你支持过的所有项目最新动态：
+    <div class="mp-link-wrap">
+      <a class="mp-link-row" onclick="showToast('跳转小程序「小红花来信」')">
+        <span class="mp-link-icon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="4" y="3" width="16" height="18" rx="2"/>
+            <path d="M8 8h8"/><path d="M8 12h8"/><path d="M8 16h5"/>
+          </svg>
+        </span>
+        <span class="mp-link-text">小红花来信</span>
+        <span class="mp-link-arrow">↗</span>
+      </a>
+    </div>
+  `;
+  await addAgentBubble(bubbleHTML, 900);
+}
+
+// 旧名兼容（fallback 路径，仍有外部调用）
+async function onFallbackToMulti() {
+  return onTapViewMoreLetters();
 }
 
 // ========================= 让用户"说话"触发下一步 =========================
@@ -4763,11 +5341,11 @@ async function userSay(text) {
   await addAgentBubble('好，稍等。', 800);
 }
 
-// 用户点进展卡 "再帮一下" 按钮：直接复用 Path 1 模糊意图入口
+// 用户点进展卡 "再捐一笔" 按钮：直接对当前项目发起支付
 async function onTapDonateAgain() {
-  await addUserBubble('再帮一下');
-  await addAgentBubble('嗯——你最近有没有想到某个方向？没有的话，我也可以推。', 900);
-  await addCard(categoryCard('onPickCategory'), 600);
+  await addUserBubble('再捐一笔');
+  await addAgentBubble('好，还是春蕾计划👇', 800);
+  openHalf('payOverlay');
 }
 
 // ========================= 项目深度卡 =========================
@@ -5422,10 +6000,11 @@ async function confirmStatus() {
 // 数据：每条记录可点的"做好事记录"
 const FLOWER_DATA = {
   total: 128,
+  year: 2025,
   recent: [
-    { date: '5/10', type: '捐步',     project: '一块走 · 村校厨房', projId: 'elderly' },
-    { date: '5/09', type: '捐款 ¥20', project: '春蕾计划',         projId: 'chunlei' },
-    { date: '5/08', type: '答题',     project: '每日益答',          projId: null }
+    { date: '11/12', type: '捐赠',     project: '为孤寡老人送一餐热饭', projId: 'elderly' },
+    { date: '10/22', type: '捐赠',     project: '春蕾计划 · 助学',     projId: 'chunlei' },
+    { date: '9/03',  type: '月捐',     project: '山区孩子的一份午餐', projId: 'rural' }
   ],
   // 完整流水（半屏列表用）
   history: [
@@ -5452,24 +6031,16 @@ function flowerOverviewCard() {
       <span class="flower-card-proj">${r.project}</span>
     </div>
   `).join('');
-  // demo 默认今天未做好事 → 显示"再做一件"链；真机按 state.didGoodToday 判断
-  const didToday = !!state.didGoodToday;
-  const actionRow = didToday ? `
-    <div class="flower-card-actions">
-      <a class="flower-card-link" onclick="event.stopPropagation(); openFlowerOverlay()">看完整记录 ›</a>
-    </div>
-  ` : `
-    <div class="flower-card-actions flower-card-actions-two">
-      <a class="flower-card-link" onclick="event.stopPropagation(); openFlowerOverlay()">看完整记录 ›</a>
-      <a class="flower-card-link flower-card-link-cta" onclick="event.stopPropagation(); onTapDoOneMore()">再做一件 ›</a>
-    </div>
-  `;
   return `
     <div class="flower-card" onclick="openFlowerOverlay()">
-      <div class="flower-card-title">你的小红花</div>
+      <div class="flower-card-deco">🌸</div>
+      <div class="flower-card-title">我的小红花 · ${FLOWER_DATA.year}</div>
       <div class="flower-card-num"><span>${FLOWER_DATA.total}</span><em>朵</em></div>
       <div class="flower-card-list">${recentHTML}</div>
-      ${actionRow}
+      <div class="flower-card-actions">
+        <a class="flower-card-link" onclick="event.stopPropagation(); openFlowerOverlay()">更多记录</a>
+        <a class="flower-card-link flower-card-link-cta" onclick="event.stopPropagation(); onTapDoOneMore()">再做一件</a>
+      </div>
     </div>
   `;
 }
