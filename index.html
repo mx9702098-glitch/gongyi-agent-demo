@@ -2707,10 +2707,97 @@ body {
   font-weight: 600;
 }
 
-/* ── 执行动态 · 反馈卡组（内嵌段） ── */
+/* ── 执行动态 · 反馈 Timeline（融合方案 1+5） ── */
 .deep-v3-feedback {
-  padding: 16px 0 12px;
+  padding: 16px 16px 12px;
 }
+.deep-v3-tl-row {
+  display: flex;
+  gap: 12px;
+  position: relative;
+}
+.deep-v3-tl-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 12px;
+  flex-shrink: 0;
+}
+.deep-v3-tl-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #e0e0e0;
+  flex-shrink: 0;
+  margin-top: 4px;
+  z-index: 1;
+}
+.deep-v3-tl-dot.latest {
+  background: #e8413c;
+  box-shadow: 0 0 0 3px rgba(232, 65, 60, 0.15);
+}
+.deep-v3-tl-line {
+  width: 1px;
+  flex: 1;
+  background: #eee;
+  margin-top: 2px;
+}
+.deep-v3-tl-item {
+  flex: 1;
+  padding-bottom: 18px;
+}
+.deep-v3-tl-item.last {
+  padding-bottom: 0;
+}
+.deep-v3-tl-meta {
+  font-size: 11px;
+  color: #888;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.deep-v3-tl-meta .loc {
+  color: #666;
+}
+.deep-v3-tl-meta .sep {
+  color: #ddd;
+}
+.deep-v3-tl-stamp {
+  display: inline-block;
+  font-size: 9px;
+  padding: 1px 6px;
+  border-radius: 3px;
+  background: #f5f5f5;
+  color: #888;
+  letter-spacing: 0.2px;
+  font-weight: 500;
+}
+.deep-v3-tl-stamp.latest {
+  background: #e8413c;
+  color: #fff;
+}
+.deep-v3-tl-body {
+  font-size: 13px;
+  line-height: 1.65;
+  color: #1f1f1f;
+}
+.deep-v3-tl-more {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-size: 12px;
+  color: #07c160;
+  padding: 14px 0 4px;
+  margin-top: 4px;
+  border-top: 0.5px solid #eee;
+  cursor: pointer;
+}
+.deep-v3-tl-more:active { opacity: 0.55; }
+
+/* ── 旧横滑卡组 · 废弃，保留样式以兼容其他引用（如无可日后清理） ── */
 .deep-v3-feedback-head {
   display: flex;
   align-items: center;
@@ -2907,6 +2994,35 @@ body {
   flex-shrink: 0;
   width: 14px;
 }
+
+/* ── 帮扶方案（机构提供的段落文本） ── */
+.deep-v3-trust-aid {
+  font-size: 13px;
+  line-height: 1.75;
+  color: #46433A;
+}
+.deep-v3-trust-aid-p {
+  margin: 0 0 10px;
+}
+.deep-v3-trust-aid-p:last-child {
+  margin-bottom: 0;
+}
+.deep-v3-trust-aid.aid-collapsed .deep-v3-trust-aid-p:nth-of-type(n+4) {
+  display: none;
+}
+.deep-v3-trust-aid-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-size: 12px;
+  color: #07c160;
+  padding: 12px 0 0;
+  margin-top: 10px;
+  border-top: 0.5px solid #f0f0f0;
+  cursor: pointer;
+}
+.deep-v3-trust-aid-toggle:active { opacity: 0.55; }
 .deep-v3-trust-exec {
   background: #faf7f1;
   border-radius: 8px;
@@ -4757,10 +4873,6 @@ body {
             <div class="deep-v3-feedback" id="deepV3LetterWrap"><!-- JS 渲染 · 来自一线的反馈 --></div>
           </div>
 
-          <!-- 爱心留言 -->
-          <div class="deep-v3-section-label"><span class="accent"></span>爱心留言</div>
-          <div class="deep-v3-card" id="deepV3Comments"></div>
-
           <!-- 机构详情 -->
           <div class="deep-v3-section-label"><span class="accent"></span>机构详情</div>
           <div class="deep-v3-card deep-v3-trust" id="deepV3Trust"><!-- JS 渲染 --></div>
@@ -5106,6 +5218,7 @@ const PROJECTS = {
         '钱从腾讯公益直接拨给中国儿童少年基金会，再由基金会按学期发到学校。每一笔的去向都在小程序公示，资助名单可追溯到具体的孩子。'
       ],
       execText: '过去 10 年累计资助 <b>14 个省份</b> 困境女童 <b>23 万人次</b>，近半数升入初中/高中，<b>600+</b> 进入大学。',
+      aidPlan: '执行地点：云南、贵州、甘肃、四川等 14 个省份\n\n受益对象：家庭困境的乡村女童\n\n受益对象筛选标准：1、家庭年收入低于当地贫困线 2、学业成绩合格、有继续就读意愿 3、未获得其他同类助学资助\n\n帮扶模式：学费资助、生活费补贴、学习用品配发、成长陪伴\n\n执行计划：\n\n1、困境女童助学方面：\nA、每学期按学生名单将助学金直接拨付至所在学校对公账户，由学校财务代为保管并按月发放给学生。\nB、每学期由项目执行小组走访受助学生家庭及学校，形成走访记录与影像留档。\n\n2、教育陪伴方面：\nA、为受助女童建立成长档案，记录学业及生活状况变化，作为续资评估依据。\nB、连接心理支持志愿者与受助女童结对陪伴，每月至少一次线上交流。',
       letter: {
         stamp: '第 38 封',
         from: '来自怒江第三中学 · 5月10日',
@@ -5191,6 +5304,7 @@ const PROJECTS = {
         '资金从腾讯公益直拨到执行方，按图书角批次专款专用。每一所图书角的位置、配书清单、落成照片在小程序公示。'
       ],
       execText: '过去 12 年累计建成 <b>212 所</b>乡村图书角，覆盖 <b>9 个省份</b>，惠及乡村儿童约 <b>13 万人</b>。',
+      aidPlan: '执行地点：云南、广西、甘肃、贵州等 9 个省份\n\n受益对象：乡村小学在校学生（低、中、高年级）\n\n帮扶模式：图书角建设、图书配发、阅读课程支持、教师培训\n\n执行计划：\n\n1、图书角建设方面：\nA、每所图书角由 3 位儿童阅读专家共同评议配书，按低/中/高年级分梯度，覆盖文学、自然、科普三大方向，平均每所配书 800-1000 册。\nB、与当地教育局共建管理机制，由学校指定教师负责日常运维。\n\n2、阅读推广方面：\nA、每月由学校老师反馈使用情况、补充损耗图书。\nB、项目方每季度开展走访，采集阅读课程开展情况、学生借阅数据，形成季度报告。',
       letter: {
         stamp: '第 22 封',
         from: '来自广西百色平果县 · 5月8日',
@@ -5275,6 +5389,7 @@ const PROJECTS = {
         '资金从腾讯公益直拨到爱德基金会，由项目组按发放批次报账，物资清单和发放照片在公众号定期公示。'
       ],
       execText: '过去 6 年累计为 <b>6 个高寒地区</b> 共 <b>2.8 万名</b>孩子送达冬装，物资清单与发放影像每批留档。',
+      aidPlan: '执行地点：青海、西藏、甘肃、四川、新疆、内蒙等 6 个高寒地区\n\n受益对象：家庭困境的牧区在校学生\n\n受益对象筛选标准：1、地处海拔 3,000 米以上或冬季气温低于 -15℃ 地区 2、家庭困境、缺乏过冬衣物 3、由当地教育局/村委会共同推荐\n\n帮扶模式：冬季御寒物资定向发放（棉衣、保暖手套、防滑棉鞋三件套）\n\n执行计划：\n\n1、需求排查与物资采购：\nA、每年 9 月起与当地教育局、村委会合作排查需求，按家庭困境程度优先级建册。\nB、统一采购后按批次发往各地点。\n\n2、发放与留档：\nA、志愿者入户/进校发放，每件物资编号入册、签收回执影像留档。\nB、每批次发放完毕后 7 日内完成账目公示。',
       letter: {
         stamp: '第 18 封',
         from: '来自青海玉树囊谦县 · 5月6日',
@@ -5358,6 +5473,7 @@ const PROJECTS = {
         '资金按城市批次拨付到地方公益组织，餐费、配送、志愿者补贴明细每月公示。'
       ],
       execText: '过去 <b>5 年</b>跨 <b>12 个城市</b>累计送达餐次 <b>26 万份</b>，覆盖独居困境老人 <b>1,800+</b> 位。',
+      aidPlan: '执行地点：北京、上海、杭州、南京、成都等 12 个城市\n\n受益对象：社区内独居困境老人\n\n受益对象筛选标准：1、60 周岁以上独居 2、家庭缺乏日常照料、经济困难 3、由居委会推荐并完成上门家访评估\n\n帮扶模式：社区志愿者定期送餐、健康状况观察、紧急情况上报\n\n执行计划：\n\n1、送餐服务：\nA、根据老人身体状况、家庭情况分级匹配志愿者，每周固定时段送餐 3-5 次。\nB、志愿者每次送餐时在小程序打卡留证、记录老人状态。\n\n2、陪伴与应急：\nA、送餐之外志愿者每次多停留 5 分钟，观察健康状况。\nB、发现异常及时联系家属或社区，项目组有专人跟进应急上报。',
       letter: {
         stamp: '第 142 封',
         from: '来自上海虹口社区 · 5月11日',
@@ -5441,6 +5557,7 @@ const PROJECTS = {
         '基地全年对外开放预约探访，捐赠人可以来基地看望救助过的动物。每月开支、医疗清单、领养记录小程序公示。'
       ],
       execText: '过去 5 年累计救助 <b>1,200+</b> 只<b>流浪猫狗</b>，其中 <b>800+ 已被领养</b>，基地全年对外预约探访。',
+      aidPlan: '执行地点：上海青浦基地（覆盖上海及周边）\n\n受益对象：流浪猫狗\n\n帮扶模式：救助站管理（救助、医治、领养三段式）\n\n执行计划：\n\n1、救助与医治：\nA、收到市民或志愿者上报后 24 小时内响应上门。\nB、入站动物统一编号建档，完成体检、驱虫、绝育、疫苗等基础医疗。\n\n2、领养对接：\nA、健康评估合格后进入领养通道，通过公众号、小红书等发布领养信息。\nB、领养人需经过 3 道审核：生活环境核验、领养责任告知、定期回访承诺。\n\n3、长期照料：\nA、未被领养的老弱伤残动物进入基地长期照料区。\nB、基地全年对外开放预约探访，捐赠人可来基地看望救助过的动物。',
       letter: {
         stamp: '第 64 封',
         from: '来自上海青浦基地 · 5月9日',
@@ -6211,21 +6328,8 @@ function openDeepCard(projId) {
   renderExecSummary(p);
   renderFeedback(p);
 
-  // 机构与信任区
+  // 机构详情（执行机构 + 帮扶方案）
   renderTrustSection(p);
-
-  // 支持者留言
-  if (p.deep.comments) {
-    const html = p.deep.comments.map(c => {
-      // 把 "小*" 这种匿名格式美化成更人格化的展示
-      const display = c.displayName || c.name;
-      const loc = c.location || '匿名';
-      return `<div class="deep-v3-comment">"${c.text}"
-        <div class="deep-v3-comment-from">${display}<span class="deep-v3-dot"></span>${loc}</div>
-      </div>`;
-    }).join('');
-    document.getElementById('deepV3Comments').innerHTML = html;
-  }
 
   openHalf('deepOverlay');
 }
@@ -6251,7 +6355,7 @@ function toggleStoryExpand() {
   }
 }
 
-// 渲染项目进度概览（执行动态第一个卡片）
+// 渲染执行结果（执行动态第一段）
 function renderExecSummary(p) {
   const el = document.getElementById('deepV3ExecSummary');
   if (!el) return;
@@ -6266,14 +6370,14 @@ function renderExecSummary(p) {
   el.style.display = '';
   el.innerHTML = `
     <div class="deep-v3-exec-summary-head">
-      <span class="deep-v3-exec-summary-title">项目进度概览</span>
+      <span class="deep-v3-exec-summary-title">执行结果</span>
       <span class="deep-v3-exec-summary-date">${dateLabel}</span>
     </div>
     <div class="deep-v3-exec-summary-body">${execText}</div>
   `;
 }
 
-// 渲染反馈卡组（执行动态第二个卡片）
+// 渲染一线反馈 Timeline（执行动态第二段）
 function renderFeedback(p) {
   const wrap = document.getElementById('deepV3LetterWrap');
   if (!wrap) return;
@@ -6288,14 +6392,16 @@ function renderFeedback(p) {
   }
   wrap.style.display = '';
 
-  // 最多展示 5 封
-  const visibleLetters = allLetters.slice(0, 5);
+  // 默认显示前 3 条，超过部分折叠
+  const initialCount = 3;
+  const totalCount = allLetters.length;
+  const hasMore = totalCount > initialCount;
 
-  const cardsHTML = visibleLetters.map((l, i) => {
+  const rowHTML = (l, i, isLast) => {
     const isLatest = (i === 0);
-    const stampClass = isLatest ? 'deep-v3-letter-stamp latest' : 'deep-v3-letter-stamp';
+    const stampClass = isLatest ? 'deep-v3-tl-stamp latest' : 'deep-v3-tl-stamp';
     const stampText = isLatest ? '最新' : (l.stamp || ('第 ' + (i + 1) + ' 封'));
-    // 从 from 字段拆出地点和日期（格式："来自怒江第三中学 · 5月10日"）
+    // 拆出 location / date
     let location = '';
     let date = '';
     const fromStr = l.from || '';
@@ -6307,55 +6413,108 @@ function renderFeedback(p) {
       location = fromStr.replace(/^来自/, '');
       date = l.date || '';
     }
+    const dotClass = isLatest ? 'deep-v3-tl-dot latest' : 'deep-v3-tl-dot';
+    const itemClass = isLast ? 'deep-v3-tl-item last' : 'deep-v3-tl-item';
     return `
-      <div class="deep-v3-letter">
-        <div class="deep-v3-letter-top">
-          <span class="${stampClass}">${stampText}</span>
-          ${date ? `<span class="deep-v3-letter-date">${date}</span>` : ''}
+      <div class="deep-v3-tl-row">
+        <div class="deep-v3-tl-col">
+          <span class="${dotClass}"></span>
+          ${isLast ? '' : '<span class="deep-v3-tl-line"></span>'}
         </div>
-        ${location ? `
-          <div class="deep-v3-letter-h">
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            <span>${location}</span>
+        <div class="${itemClass}">
+          <div class="deep-v3-tl-meta">
+            <span class="${stampClass}">${stampText}</span>
+            ${date ? `<span>${date}</span>` : ''}
+            ${date && location ? '<span class="sep">·</span>' : ''}
+            ${location ? `<span class="loc">${location}</span>` : ''}
           </div>
-        ` : ''}
-        <div class="deep-v3-letter-b">${l.body || '—'}</div>
-        <div class="deep-v3-letter-sign">— 项目执行小组</div>
+          <div class="deep-v3-tl-body">${l.body || '—'}</div>
+        </div>
       </div>
     `;
+  };
+
+  const visibleLetters = allLetters.slice(0, initialCount);
+  const hiddenLetters = allLetters.slice(initialCount);
+
+  const visibleHTML = visibleLetters.map((l, i) => {
+    const isLast = !hasMore && i === visibleLetters.length - 1;
+    return rowHTML(l, i, isLast);
   }).join('');
 
-  const dotsHTML = visibleLetters.map((_, i) =>
-    `<span class="deep-v3-letter-dot${i === 0 ? ' active' : ''}"></span>`
-  ).join('');
+  const hiddenHTML = hiddenLetters.map((l, i) => {
+    const realIdx = i + initialCount;
+    const isLast = i === hiddenLetters.length - 1;
+    return rowHTML(l, realIdx, isLast);
+  }).join('');
 
   wrap.innerHTML = `
-    <div class="deep-v3-feedback-head">
-      <span class="deep-v3-feedback-title">来自一线的反馈</span>
-      <span class="deep-v3-feedback-count">共 ${visibleLetters.length} 封</span>
-    </div>
-    <div class="deep-v3-letter-swipe" id="deepV3LetterSwipe">
-      ${cardsHTML}
-    </div>
-    <div class="deep-v3-letter-dots" id="deepV3LetterDots">${dotsHTML}</div>
+    ${visibleHTML}
+    ${hasMore ? `<div class="deep-v3-tl-hidden" id="deepV3TlHidden" style="display:none;">${hiddenHTML}</div>` : ''}
+    ${hasMore ? `
+      <div class="deep-v3-tl-more" id="deepV3TlMore" onclick="toggleFeedbackExpand()">
+        <span id="deepV3TlMoreText">展开剩余 ${totalCount - initialCount} 条</span>
+        <svg id="deepV3TlMoreIcon" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+    ` : ''}
   `;
 
-  // scroll → 更新小圆点
-  const swipe = document.getElementById('deepV3LetterSwipe');
-  const dots = document.getElementById('deepV3LetterDots');
-  if (swipe && dots && swipe.firstElementChild) {
-    swipe.addEventListener('scroll', () => {
-      const cardW = swipe.firstElementChild.offsetWidth + 10;
-      const idx = Math.round(swipe.scrollLeft / cardW);
-      const ds = dots.children;
-      for (let i = 0; i < ds.length; i++) {
-        ds[i].classList.toggle('active', i === idx);
-      }
-    }, { passive: true });
+  // 展开后要把 visible 最后一条的 last 类去掉（因为还有更多）
+  // —— 实现上 visible 已经根据 hasMore 动态带 last，切换时直接改 DOM
+}
+
+// 展开/收起剩余反馈
+function toggleFeedbackExpand() {
+  const hidden = document.getElementById('deepV3TlHidden');
+  const moreText = document.getElementById('deepV3TlMoreText');
+  const moreIcon = document.getElementById('deepV3TlMoreIcon');
+  const wrap = document.getElementById('deepV3LetterWrap');
+  if (!hidden || !moreText || !moreIcon || !wrap) return;
+  if (hidden.style.display === 'none') {
+    hidden.style.display = '';
+    moreText.textContent = '收起';
+    moreIcon.innerHTML = '<polyline points="18 15 12 9 6 15"/>';
+    // visible 区最后一条连接线要显示（因为后面还有）
+    const visibleItems = wrap.querySelectorAll('.deep-v3-tl-row');
+    // 展开后所有 row 重新计算 line：最后一个不带 line，其他带
+    resetLineVisibility(wrap);
+  } else {
+    hidden.style.display = 'none';
+    moreText.textContent = `展开剩余 ${hidden.children.length} 条`;
+    moreIcon.innerHTML = '<polyline points="6 9 12 15 18 9"/>';
+    resetLineVisibility(wrap);
   }
 }
 
-// 渲染机构详情区
+// 重新计算 timeline 每一行的连接线（只有最后可见的那一行不带 line）
+function resetLineVisibility(wrap) {
+  const hidden = document.getElementById('deepV3TlHidden');
+  const hiddenVisible = hidden && hidden.style.display !== 'none';
+  // 所有顶层 .deep-v3-tl-row（不包括 hidden 容器里的）
+  const directRows = Array.from(wrap.children).filter(n => n.classList && n.classList.contains('deep-v3-tl-row'));
+  const hiddenRows = hidden ? Array.from(hidden.children).filter(n => n.classList && n.classList.contains('deep-v3-tl-row')) : [];
+  const allRows = hiddenVisible ? [...directRows, ...hiddenRows] : directRows;
+  allRows.forEach((row, idx) => {
+    const col = row.querySelector('.deep-v3-tl-col');
+    if (!col) return;
+    // 清理旧 line
+    const oldLine = col.querySelector('.deep-v3-tl-line');
+    if (oldLine) oldLine.remove();
+    // 最后一个不加；否则加
+    if (idx < allRows.length - 1) {
+      const line = document.createElement('span');
+      line.className = 'deep-v3-tl-line';
+      col.appendChild(line);
+    }
+    // 同步 item last 类
+    const item = row.querySelector('.deep-v3-tl-item');
+    if (item) {
+      item.classList.toggle('last', idx === allRows.length - 1);
+    }
+  });
+}
+
+// 渲染机构详情区（执行机构 + 帮扶方案）
 function renderTrustSection(p) {
   const el = document.getElementById('deepV3Trust');
   if (!el) return;
@@ -6365,12 +6524,25 @@ function renderTrustSection(p) {
   const orgBadges = (org.badges && org.badges.length) ? org.badges : ['民政部备案'];
   const orgMeta = orgBadges.join(' · ');
 
-  // 财务披露条目
-  const discloseItems = p.deep.discloseItems || [
-    '电子捐赠票据 · 即捐即开',
-    '月度资金公示 · 小程序可查',
-    '善款流向可追溯到具体执行点'
-  ];
+  // 帮扶方案（一段机构提供的长文本，支持 \n\n 分段）
+  const aidPlan = p.deep.aidPlan || '';
+  const aidParas = aidPlan ? aidPlan.split('\n\n').map(s => s.trim()).filter(Boolean) : [];
+  const hasAidPlan = aidParas.length > 0;
+
+  const aidHTML = hasAidPlan ? `
+    <div class="deep-v3-trust-row">
+      <div class="deep-v3-trust-head">帮扶方案</div>
+      <div class="deep-v3-trust-aid aid-collapsed" id="deepV3AidPlan">
+        ${aidParas.map(para => `<p class="deep-v3-trust-aid-p">${para.replace(/\n/g, '<br>')}</p>`).join('')}
+      </div>
+      ${aidParas.length > 3 ? `
+        <div class="deep-v3-trust-aid-toggle" id="deepV3AidToggle" onclick="toggleAidPlan()">
+          <span id="deepV3AidToggleText">展开全部</span>
+          <svg id="deepV3AidToggleIcon" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+      ` : ''}
+    </div>
+  ` : '';
 
   el.innerHTML = `
     <div class="deep-v3-trust-row">
@@ -6383,18 +6555,25 @@ function renderTrustSection(p) {
         </div>
       </div>
     </div>
-    <div class="deep-v3-trust-row">
-      <div class="deep-v3-trust-head">财务披露</div>
-      <div class="deep-v3-trust-disclose">
-        ${discloseItems.map(t => `
-          <div class="deep-v3-trust-item">
-            <span class="check">✓</span>
-            <span>${t}</span>
-          </div>
-        `).join('')}
-      </div>
-    </div>
+    ${aidHTML}
   `;
+}
+
+// 展开/收起帮扶方案
+function toggleAidPlan() {
+  const body = document.getElementById('deepV3AidPlan');
+  const text = document.getElementById('deepV3AidToggleText');
+  const icon = document.getElementById('deepV3AidToggleIcon');
+  if (!body || !text || !icon) return;
+  if (body.classList.contains('aid-collapsed')) {
+    body.classList.remove('aid-collapsed');
+    text.textContent = '收起';
+    icon.innerHTML = '<polyline points="18 15 12 9 6 15"/>';
+  } else {
+    body.classList.add('aid-collapsed');
+    text.textContent = '展开全部';
+    icon.innerHTML = '<polyline points="6 9 12 15 18 9"/>';
+  }
 }
 
 // 前往小程序查看更多（合规跳转：关半屏 → 用户指令气泡 → Agent 单条文字+超链气泡）
