@@ -1358,7 +1358,7 @@ body {
 .done-card {
   background: #fff;
   border-radius: 12px;
-  padding: 28px 18px 18px;
+  padding: 22px 18px 16px;
   text-align: center;
   box-shadow: 0 1px 2px rgba(0,0,0,0.04);
   border: 0.5px solid rgba(0,0,0,0.06);
@@ -1366,7 +1366,7 @@ body {
 }
 
 .done-mark {
-  margin-bottom: 16px;
+  margin-bottom: 10px;
   animation: doneMarkIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s both;
   display: flex;
   justify-content: center;
@@ -1386,32 +1386,29 @@ body {
 }
 
 .done-title {
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 600;
   color: #111;
-  margin-bottom: 14px;
+  margin-bottom: 6px;
   letter-spacing: 0.02em;
 }
 
 .done-amount-label {
-  font-size: 11.5px;
-  color: #999;
-  margin-bottom: 4px;
-  letter-spacing: 0.06em;
+  display: none;
 }
 
 .done-amount {
-  font-size: 28px;
+  font-size: 26px;
   font-weight: 700;
   color: #e8413c;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   letter-spacing: 0.01em;
 }
 
 .done-where {
   font-size: 12.5px;
   color: #666;
-  margin-bottom: 14px;
+  margin-bottom: 4px;
   line-height: 1.5;
 }
 
@@ -1424,6 +1421,22 @@ body {
   color: #2e4a34;
   line-height: 1.6;
   text-align: left;
+}
+
+/* v7-rev6：订阅本项目进展（文字链 · 服务号订阅，不是 Agent push） */
+.done-subscribe-link {
+  display: inline-block;
+  margin: 12px 0 10px;
+  font-size: 13px;
+  color: #07c160;
+  font-weight: 500;
+  cursor: pointer;
+  letter-spacing: 0.01em;
+}
+.done-subscribe-link:active { opacity: 0.6; }
+.done-subscribe-link.subscribed {
+  color: #999;
+  pointer-events: none;
 }
 
 .done-promise-icon {
@@ -1446,12 +1459,12 @@ body {
 /* 主按钮：把花带到状态（粉橙渐变） */
 .done-btn-main {
   width: 100%;
-  padding: 14px 16px;
+  padding: 11px 16px;
   border: none;
-  border-radius: 24px;
+  border-radius: 22px;
   background: linear-gradient(135deg, #ff9a8b 0%, #ff6a88 50%, #ff99ac 100%);
   color: #fff;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
   letter-spacing: 0.02em;
   cursor: pointer;
@@ -1476,15 +1489,15 @@ body {
   pointer-events: none;
 }
 
-/* 次按钮：看项目进展（中性灰底） */
+/* 次按钮：我的捐赠证书（中性灰底） */
 .done-btn-sub {
   width: 100%;
-  padding: 11px 12px;
+  padding: 9px 12px;
   border: 1px solid #e8e8e8;
-  border-radius: 12px;
+  border-radius: 11px;
   background: #fff;
   color: #555;
-  font-size: 13.5px;
+  font-size: 13px;
   font-weight: 400;
   cursor: pointer;
   transition: all 0.15s;
@@ -2441,358 +2454,536 @@ body {
 }
 
 /* 项目深度卡半屏 */
-.deep-ai-block {
-  background: linear-gradient(135deg, #f8faf8 0%, #f0f7f4 100%);
-  border-left: 2px solid #07c160;
-  padding: 12px 14px;
-  border-radius: 0 8px 8px 0;
-  margin-bottom: 20px;
+/* ============================================================
+ * 项目深度页 v3 · 对齐腾讯公益设计系统
+ * tokens: brand #ED3142 / wine #7A1A25 / gold #FCE36D / page #F2F2F2
+ * 替代 v1/v2 的 stats+why+regions+org 的功能化布局
+ * 新结构：封面+title+tags+进度 → 故事 → 来信 → 留言 → 折叠区 → CTA
+ * ============================================================ */
+
+/* 在 deep-v3 模式下，覆盖 hs-* 通用样式 */
+.deep-v3 .hs-handle { display: none; }
+.deep-v3 .hs-header { display: none !important; }
+.deep-v3 .hs-body {
+  padding: 0;
+  background: #F2F2F2;
+}
+/* deep-v3 半屏顶部更大的圆角，更现代 */
+.half-sheet.deep-v3 { border-radius: 16px 16px 0 0; max-height: 88%; }
+
+/* ── 半屏拖动条（替代旧 navbar） ── */
+.deep-v3-handle {
+  width: 36px;
+  height: 4px;
+  background: #d9d9d9;
+  border-radius: 2px;
+  margin: 8px auto 4px;
 }
 
-.deep-ai-label {
-  font-size: 11px;
-  color: #07c160;
-  font-weight: 600;
-  margin-bottom: 6px;
-  letter-spacing: 0.04em;
-}
-
-.deep-ai-text {
-  font-size: 13.5px;
-  color: #1a3326;
-  line-height: 1.6;
-}
-
-.deep-stats {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-  margin-bottom: 20px;
-}
-
-.deep-stat-item {
-  background: #fafafa;
-  border-radius: 10px;
-  padding: 14px 8px;
-  text-align: center;
-  border: 0.5px solid #eee;
-}
-
-.deep-stat-value {
-  font-size: 17px;
-  font-weight: 700;
-  color: #111;
-  line-height: 1.1;
-  margin-bottom: 4px;
-  letter-spacing: -0.01em;
-}
-
-.deep-stat-label {
-  font-size: 10.5px;
-  color: #888;
-  line-height: 1.3;
-}
-
-.deep-why {
-  background: #fff9f0;
-  border-radius: 10px;
-  padding: 14px;
-  margin-bottom: 20px;
-  border: 0.5px solid #fde4a6;
-}
-
-.deep-why-title {
-  font-size: 12.5px;
-  color: #92400e;
-  font-weight: 600;
-  margin-bottom: 8px;
-}
-
-.deep-why-list div {
-  font-size: 12.5px;
-  color: #4a3c00;
-  line-height: 1.7;
-}
-
-.deep-why-note {
-  font-size: 10.5px;
-  color: #b45309;
-  margin-top: 10px;
-  padding-top: 8px;
-  border-top: 0.5px dashed rgba(180, 83, 9, 0.3);
-  line-height: 1.5;
-}
-
-/* 深度卡 · 模块通用标题 */
-.deep-section {
-  margin-bottom: 20px;
-}
-
-.deep-section-title {
-  font-size: 13px;
-  font-weight: 600;
-  color: #333;
-  margin-bottom: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.deep-section-title-extra {
-  font-size: 11px;
-  color: #999;
-  font-weight: 400;
-}
-
-/* 深度卡 · 执行地区覆盖 */
-.deep-regions {
-  background: #fafafa;
-  border-radius: 10px;
-  padding: 14px;
-  border: 0.5px solid #eee;
-}
-
-.deep-regions-map {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 10px;
-}
-
-.deep-regions-visual {
-  width: 72px;
-  height: 72px;
-  flex-shrink: 0;
-  border-radius: 8px;
-  background: linear-gradient(135deg, #fff5f2, #ffe8e3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #e8413c;
-}
-
-.deep-regions-summary {
-  flex: 1;
-}
-
-.deep-regions-count {
-  font-size: 20px;
-  font-weight: 700;
-  color: #111;
-  line-height: 1.1;
-  margin-bottom: 4px;
-  letter-spacing: -0.01em;
-}
-
-.deep-regions-desc {
-  font-size: 11.5px;
-  color: #888;
-  line-height: 1.5;
-}
-
-.deep-regions-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  padding-top: 10px;
-  border-top: 0.5px dashed #e5e5e5;
-}
-
-.deep-regions-tag {
-  font-size: 11px;
-  color: #555;
-  background: #fff;
-  border: 0.5px solid #e5e5e5;
-  border-radius: 10px;
-  padding: 3px 8px;
-}
-
-/* 深度卡 · 机构情况 */
-.deep-org-card {
-  background: #fafafa;
-  border-radius: 10px;
-  padding: 14px;
-  border: 0.5px solid #eee;
-}
-
-.deep-org-header {
-  display: flex;
-  gap: 12px;
-  align-items: flex-start;
-  margin-bottom: 10px;
-}
-
-.deep-org-logo {
-  width: 44px;
+/* ── 顶部 navbar ── */
+.deep-v3-nav {
   height: 44px;
-  border-radius: 10px;
-  background: linear-gradient(135deg, #fef7ed, #fde4a6);
+  background: #FFFFFF;
   display: flex;
   align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  color: #b45309;
+  padding: 0 16px;
+  position: relative;
+  border-bottom: 0.5px solid #EDEDED;
+}
+.deep-v3-nav-back {
+  font-size: 22px;
+  color: #232019;
+  width: 24px;
+  cursor: pointer;
+  line-height: 1;
+}
+.deep-v3-nav-title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 16px;
   font-weight: 700;
-  font-size: 13px;
+  color: #232019;
 }
-
-.deep-org-meta {
-  flex: 1;
-  min-width: 0;
-}
-
-.deep-org-name {
-  font-size: 13.5px;
-  font-weight: 600;
-  color: #222;
-  margin-bottom: 4px;
-  line-height: 1.3;
-}
-
-.deep-org-badges {
+.deep-v3-nav-right {
+  margin-left: auto;
   display: flex;
-  flex-wrap: wrap;
+  gap: 14px;
+  color: #232019;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* ── 封面图 ── */
+.deep-v3-cover {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4/3;
+  overflow: hidden;
+  background: linear-gradient(135deg, #FAEEDA, #F2EAD9);
+}
+.deep-v3-cover-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.deep-v3-cover-fallback {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: #BE954D;
+  font-size: 12px;
+  letter-spacing: 1px;
+  background: linear-gradient(135deg, #FFFAF1, #FAEEDA);
+}
+.deep-v3-cover-tag {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: linear-gradient(135deg, #FCE36D, #FCC800);
+  color: #7A1A25;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 4px 10px 4px 8px;
+  border-radius: 0 0 8px 0;
+}
+.deep-v3-cover-time {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 8px 12px;
+  background: linear-gradient(180deg, transparent, rgba(0,0,0,0.55));
+  color: #fff;
+  font-size: 10px;
+  display: flex;
+  align-items: center;
   gap: 4px;
 }
 
-.deep-org-badge {
-  font-size: 10px;
-  color: #b45309;
-  background: #fef7ed;
-  border: 0.5px solid #fde4a6;
-  border-radius: 8px;
-  padding: 2px 6px;
+/* ── 卡片通用 ── */
+.deep-v3-card {
+  background: #FFFFFF;
+  margin: 8px 16px 0;
+  border-radius: 12px;
+  padding: 16px;
+}
+.deep-v3-card.flush-top { margin-top: -16px; position: relative; z-index: 2; border-radius: 16px 16px 12px 12px; }
+
+/* ── 项目标题 + tags + 进度 ── */
+.deep-v3-ptitle {
+  font-size: 18px;
+  font-weight: 700;
+  color: #232019;
   line-height: 1.4;
+  margin-bottom: 8px;
 }
-
-.deep-org-desc {
-  font-size: 12px;
-  color: #555;
-  line-height: 1.6;
-  padding-top: 10px;
-  border-top: 0.5px dashed #e5e5e5;
-}
-
-/* 深度卡 · 爱心留言 */
-.deep-comments {
-  background: #fafafa;
-  border-radius: 10px;
-  padding: 14px;
-  border: 0.5px solid #eee;
-}
-
-.deep-comment-item {
+.deep-v3-ptags {
   display: flex;
-  gap: 10px;
-  padding: 10px 0;
-  border-bottom: 0.5px dashed #ececec;
+  gap: 6px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
 }
-
-.deep-comment-item:first-child {
-  padding-top: 0;
+.deep-v3-ptag {
+  font-size: 11px;
+  line-height: 16px;
+  color: #595959;
+  background: #f5f5f5;
+  padding: 3px 9px;
+  border-radius: 4px;
+  letter-spacing: 0.2px;
 }
-
-.deep-comment-item:last-child {
-  border-bottom: none;
-  padding-bottom: 0;
+.deep-v3-progress-bar {
+  height: 6px;
+  background: #F2F2F2;
+  border-radius: 3px;
+  overflow: hidden;
+  margin: 4px 0 8px;
 }
-
-.deep-comment-avatar {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: #e8e8e8;
-  flex-shrink: 0;
+.deep-v3-progress-fill {
+  height: 100%;
+  background: linear-gradient(315deg, #ED3142, #F9BDC3);
+  border-radius: 3px;
+}
+.deep-v3-progress-stats {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   font-size: 12px;
-  color: #888;
-  font-weight: 500;
+  color: #827D76;
+}
+.deep-v3-progress-stats .num {
+  color: #232019;
+  font-weight: 700;
+  font-size: 14px;
 }
 
-.deep-comment-body {
-  flex: 1;
-  min-width: 0;
-}
-
-.deep-comment-meta {
+/* ── section 标题 ── */
+.deep-v3-section-label {
+  font-size: 12px;
+  color: #827D76;
+  font-weight: 700;
+  margin: 20px 16px 8px;
   display: flex;
   align-items: center;
   gap: 6px;
-  margin-bottom: 3px;
+}
+.deep-v3-section-label .accent {
+  width: 3px;
+  height: 12px;
+  background: #ED3142;
+  border-radius: 1.5px;
 }
 
-.deep-comment-name {
-  font-size: 11.5px;
-  color: #555;
+/* ── 项目故事 ── */
+.deep-v3-story {
+  font-size: 15px;
+  line-height: 1.85;
+  color: #46433A;
+  margin: 0 0 12px;
+}
+.deep-v3-story:last-of-type { margin-bottom: 0; }
+.story-collapsed .deep-v3-story:nth-of-type(n+4) { display: none; }
+
+/* ── 折叠链接（卡片底部） ── */
+.deep-v3-fold {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-size: 13px;
+  color: #827D76;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 0.5px solid #EDEDED;
+  cursor: pointer;
+}
+.deep-v3-fold.no-border {
+  border-top: none;
+  padding-top: 14px;
+}
+
+/* ── 执行动态 · 整体卡（内部两段用分隔线） ── */
+.deep-v3-exec-card {
+  padding: 0;
+  overflow: hidden;
+}
+.deep-v3-exec-divider {
+  height: 0.5px;
+  background: #ededed;
+  margin: 0 16px;
+}
+
+/* ── 执行动态 · 项目进度概览（内嵌段） ── */
+.deep-v3-exec-summary {
+  padding: 16px;
+}
+.deep-v3-exec-summary-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.deep-v3-exec-summary-title {
+  font-size: 13px;
+  color: #1f1f1f;
   font-weight: 500;
 }
-
-.deep-comment-amount {
-  font-size: 10.5px;
-  color: #e8413c;
-  background: #fff5f2;
-  border-radius: 6px;
-  padding: 1px 5px;
-}
-
-.deep-comment-time {
-  font-size: 10.5px;
-  color: #aaa;
-  margin-left: auto;
-}
-
-.deep-comment-text {
-  font-size: 12.5px;
-  color: #333;
-  line-height: 1.55;
-}
-
-.deep-comments-total {
+.deep-v3-exec-summary-date {
   font-size: 11px;
-  color: #888;
-  text-align: center;
-  padding-top: 10px;
-  margin-top: 2px;
-  border-top: 0.5px dashed #e5e5e5;
+  color: #827D76;
 }
-
-.deep-actions {
-  display: flex;
-  gap: 8px;
-  margin-top: 8px;
+.deep-v3-exec-summary-body {
+  font-size: 13.5px;
+  line-height: 1.8;
+  color: #46433A;
 }
-
-.deep-btn-sub {
-  flex: 1;
-  height: 44px;
-  border: 1px solid #e0e0e0;
-  background: #fff;
-  border-radius: 22px;
-  font-size: 14px;
-  color: #666;
-  cursor: pointer;
-}
-
-.deep-btn-sub:active {
-  background: #f5f5f5;
-}
-
-.deep-btn-main {
-  flex: 2;
-  height: 44px;
-  border: none;
-  border-radius: 22px;
-  background: linear-gradient(135deg, #ff8b9a, #e8413c);
-  color: #fff;
-  font-size: 14px;
+.deep-v3-exec-summary-body b {
+  color: #e8413c;
   font-weight: 600;
-  cursor: pointer;
-  box-shadow: 0 2px 8px rgba(232,65,60,0.2);
 }
 
-.deep-btn-main:active {
+/* ── 执行动态 · 反馈卡组（内嵌段） ── */
+.deep-v3-feedback {
+  padding: 16px 0 12px;
+}
+.deep-v3-feedback-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  margin-bottom: 12px;
+}
+.deep-v3-feedback-title {
+  font-size: 13px;
+  color: #1f1f1f;
+  font-weight: 500;
+}
+.deep-v3-feedback-count {
+  font-size: 11px;
+  color: #827D76;
+}
+
+/* 横滑卡组容器 */
+.deep-v3-letter-swipe {
+  padding: 0 16px 4px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  display: flex;
+  gap: 10px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.deep-v3-letter-swipe::-webkit-scrollbar { display: none; }
+
+/* 反馈卡（白底现代化） */
+.deep-v3-letter {
+  flex: 0 0 calc(100% - 40px);
+  scroll-snap-align: start;
+  background: #ffffff;
+  border: 0.5px solid #ededed;
+  border-radius: 10px;
+  padding: 14px;
+  position: relative;
+}
+.deep-v3-letter-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.deep-v3-letter-stamp {
+  display: inline-block;
+  font-size: 10px;
+  color: #827D76;
+  background: #f5f5f5;
+  padding: 2px 7px;
+  border-radius: 3px;
+  letter-spacing: 0.2px;
+  font-weight: 500;
+}
+.deep-v3-letter-stamp.latest {
+  background: #e8413c;
+  color: #ffffff;
+}
+.deep-v3-letter-date {
+  font-size: 11px;
+  color: #999;
+}
+.deep-v3-letter-h {
+  font-size: 12px;
+  color: #827D76;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  letter-spacing: 0.2px;
+}
+.deep-v3-letter-b {
+  font-size: 13.5px;
+  line-height: 1.7;
+  color: #1f1f1f;
+}
+.deep-v3-letter-sign {
+  margin-top: 10px;
+  font-size: 11px;
+  color: #999;
+  text-align: right;
+}
+
+/* 小圆点指示器 */
+.deep-v3-letter-dots {
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+  padding: 12px 0 0;
+}
+.deep-v3-letter-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #e0dcd3;
+  transition: background 0.2s, width 0.2s;
+}
+.deep-v3-letter-dot.active {
+  background: #BE954D;
+  width: 14px;
+  border-radius: 3px;
+}
+
+/* ── 支持者留言 ── */
+.deep-v3-comment {
+  padding: 12px 0;
+  font-size: 14px;
+  line-height: 1.7;
+  color: #46433A;
+}
+.deep-v3-comment:first-of-type { padding-top: 0; }
+.deep-v3-comment + .deep-v3-comment {
+  border-top: 0.5px solid #EDEDED;
+}
+.deep-v3-comment-from {
+  color: #827D76;
+  font-size: 11px;
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.deep-v3-dot {
+  width: 2px;
+  height: 2px;
+  background: #827D76;
+  border-radius: 50%;
+}
+
+/* ── 机构与信任区 ── */
+.deep-v3-trust {
+  padding: 0;
+  overflow: hidden;
+}
+.deep-v3-trust-row {
+  padding: 14px 16px;
+  border-bottom: 0.5px solid #EDEDED;
+}
+.deep-v3-trust-row:last-child { border-bottom: none; }
+.deep-v3-trust-head {
+  font-size: 11px;
+  color: #999;
+  margin-bottom: 8px;
+  letter-spacing: 0.3px;
+}
+.deep-v3-trust-org {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.deep-v3-trust-org-logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #ffe8e8, #ffd3d3);
+  color: #e8413c;
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  letter-spacing: 0;
+}
+.deep-v3-trust-org-body {
+  flex: 1;
+  min-width: 0;
+}
+.deep-v3-trust-org-name {
+  font-size: 14px;
+  color: #1f1f1f;
+  font-weight: 600;
+  line-height: 1.4;
+}
+.deep-v3-trust-org-meta {
+  font-size: 12px;
+  color: #827D76;
+  margin-top: 3px;
+  line-height: 1.5;
+}
+.deep-v3-trust-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #46433A;
+  line-height: 1.8;
+}
+.deep-v3-trust-item .check {
+  color: #07c160;
+  font-size: 14px;
+  flex-shrink: 0;
+  width: 14px;
+}
+.deep-v3-trust-exec {
+  background: #faf7f1;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 13px;
+  line-height: 1.7;
+  color: #46433A;
+  margin-bottom: 10px;
+}
+.deep-v3-trust-exec b {
+  color: #e8413c;
+  font-weight: 600;
+}
+.deep-v3-trust-disclose {
+  padding-top: 2px;
+}
+
+/* ── 前往小程序文字链 ── */
+.deep-v3-mp-link {
+  text-align: center;
+  font-size: 13px;
+  color: #07c160;
+  padding: 18px 16px 8px;
+  cursor: pointer;
+}
+.deep-v3-mp-link:active { opacity: 0.55; }
+
+/* ── 折叠区列表 ── */
+.deep-v3-fold-list { padding: 4px 0; }
+.deep-v3-fold-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0;
+  font-size: 14px;
+  color: #46433A;
+  cursor: pointer;
+}
+.deep-v3-fold-item + .deep-v3-fold-item {
+  border-top: 0.5px solid #EDEDED;
+}
+.deep-v3-fold-item-l {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.deep-v3-fold-item-l .icon {
+  font-size: 16px;
+  color: #827D76;
+}
+
+/* ── 底部 CTA ── */
+.deep-v3-spacer { height: 16px; }
+.deep-v3-cta-bar {
+  background: #FFFFFF;
+  padding: 12px 16px 24px;
+  border-top: 0.5px solid #EDEDED;
+  position: sticky;
+  bottom: 0;
+}
+.deep-v3-cta {
+  background: #ED3142;
+  color: #FFFFFF;
+  border-radius: 999px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  width: 100%;
+}
+.deep-v3-cta:active {
+  background: #D81325;
   transform: scale(0.98);
 }
 
@@ -3213,6 +3404,398 @@ body {
 
 /* 模块标题 */
 .pp-section-title { font-size: 15px; font-weight: 700; color: #111; margin-bottom: 10px; }
+
+/* ============ v7-rev6：深度页 v2 · 故事卡 + 简化注释 ============ */
+.pp-v2-summary {
+  font-size: 13.5px; color: #444; line-height: 1.7;
+  padding: 14px 16px 4px;
+}
+.pp-v2-section-title {
+  font-size: 13px; color: #888; font-weight: 500;
+  letter-spacing: 0.06em;
+  display: flex; align-items: center; gap: 10px;
+  padding: 16px 16px 10px;
+}
+.pp-v2-section-title::before,
+.pp-v2-section-title::after {
+  content: ""; flex: 1; height: 0.5px; background: #e8e8e8;
+}
+.pp-story-card {
+  background: #fff;
+  border-radius: 10px;
+  margin: 0 16px 10px;
+  border: 0.5px solid #ececec;
+  overflow: hidden;
+  transition: background 0.15s;
+}
+.pp-story-hero {
+  height: 108px;
+  position: relative;
+  display: flex; align-items: flex-end;
+  padding: 0 10px 10px;
+  background: linear-gradient(135deg, #c8c4b6, #8d8775);
+}
+.pp-story-hero img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.pp-story-caption {
+  position: relative;
+  z-index: 1;
+  font-size: 11px; color: #fff;
+  background: rgba(0,0,0,0.4);
+  padding: 2px 8px; border-radius: 3px;
+  line-height: 1.5;
+}
+.pp-story-body-wrap {
+  padding: 11px 13px 12px;
+}
+.pp-story-meta {
+  font-size: 11.5px; color: #999;
+  display: flex; flex-wrap: wrap; align-items: center; gap: 6px;
+  margin-bottom: 5px;
+}
+.pp-story-meta .stage {
+  display: inline-block;
+  background: #f3faf4; color: #3b7a44;
+  padding: 1px 7px; border-radius: 9px;
+  font-size: 10.5px; line-height: 1.4;
+  border: 0.5px solid #d8ead8;
+}
+.pp-story-title {
+  font-size: 14px; color: #111; font-weight: 600;
+  line-height: 1.4;
+  margin-bottom: 5px;
+}
+.pp-story-body {
+  font-size: 12.5px; color: #444; line-height: 1.65;
+  white-space: pre-line;
+}
+.pp-story-body.collapsed {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.pp-story-toggle {
+  font-size: 12px; color: #07c160; font-weight: 500;
+  margin-top: 6px;
+  cursor: pointer;
+  display: inline-block;
+}
+.pp-story-toggle:active { opacity: 0.6; }
+
+.pp-v2-recent {
+  margin: 0 16px 12px;
+}
+.pp-v2-recent-item {
+  padding: 9px 0;
+  border-bottom: 0.5px solid #f0f0f0;
+  font-size: 12.5px; color: #555;
+  line-height: 1.55;
+  display: flex; gap: 10px;
+}
+.pp-v2-recent-item:last-child { border-bottom: none; }
+.pp-v2-recent-date {
+  color: #999; flex-shrink: 0;
+  width: 64px;
+  font-size: 11.5px;
+}
+.pp-v2-recent-text { flex: 1; }
+.pp-v2-recent-more {
+  font-size: 12.5px; color: #07c160; font-weight: 500;
+  margin-top: 6px;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.pp-v2-org-foot {
+  font-size: 11.5px; color: #999;
+  padding: 16px 16px 18px;
+  line-height: 1.6;
+  border-top: 0.5px solid #f0f0f0;
+  margin-top: 4px;
+}
+.pp-v2-org-foot .pp-v2-org-link {
+  color: #07c160;
+  cursor: pointer;
+  margin-left: 4px;
+}
+
+/* ============ v7-rev8：深度页 v4 · 极简版（B+C 混合） ============ */
+.pp4-cover {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background: #f5f5f5;
+  overflow: hidden;
+}
+.pp4-cover-img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+}
+.pp4-cover-mask {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  height: 50%;
+  background: linear-gradient(to top, rgba(0,0,0,0.5), rgba(0,0,0,0));
+  pointer-events: none;
+}
+.pp4-cover-title {
+  position: absolute;
+  left: 16px; right: 16px; bottom: 16px;
+  font-size: 22px; font-weight: 600;
+  color: #ffffff; line-height: 1.35;
+  letter-spacing: 0.5px;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.3);
+}
+.pp4-cover-sub {
+  position: absolute;
+  left: 16px; right: 16px; bottom: 56px;
+  font-size: 12px; color: rgba(255,255,255,0.85);
+  letter-spacing: 0.5px;
+}
+
+.pp4-status {
+  padding: 16px 16px 14px;
+  border-bottom: 0.5px solid #ededed;
+}
+.pp4-status-row {
+  display: flex; justify-content: space-between;
+  font-size: 12.5px; color: #595959;
+  line-height: 1.5;
+  margin-bottom: 8px;
+}
+.pp4-status-row b { color: #1f1f1f; font-weight: 600; font-size: 13px; }
+.pp4-status-bar {
+  height: 4px; background: #f5f5f5;
+  border-radius: 2px; overflow: hidden;
+}
+.pp4-status-fill {
+  height: 100%; background: #e8413c;
+  border-radius: 2px;
+}
+
+.pp4-story-sec {
+  padding: 22px 16px 18px;
+}
+.pp4-story-h {
+  font-size: 14px; color: #1f1f1f; font-weight: 600;
+  margin-bottom: 14px;
+}
+.pp4-story-para {
+  font-size: 14.5px; color: #1f1f1f;
+  line-height: 1.9;
+  margin: 0 0 12px;
+  letter-spacing: 0.2px;
+}
+.pp4-story-para:last-of-type { margin-bottom: 0; }
+.pp4-story-collapsed .pp4-story-para:nth-of-type(n+3) {
+  display: none;
+}
+.pp4-story-toggle {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 13px; color: #07c160;
+  font-weight: 500;
+  margin-top: 14px;
+  cursor: pointer;
+}
+.pp4-story-toggle:active { opacity: 0.6; }
+
+.pp4-row-link {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 16px;
+  border-top: 0.5px solid #ededed;
+  cursor: pointer;
+  transition: background 0.1s;
+}
+.pp4-row-link:active { background: #fafafa; }
+.pp4-row-link-left {
+  font-size: 13.5px; color: #1f1f1f;
+  line-height: 1.5;
+  flex: 1; min-width: 0;
+}
+.pp4-row-link-left .sub {
+  display: block;
+  font-size: 12px; color: #999;
+  margin-top: 2px;
+  font-weight: 400;
+}
+.pp4-row-link-arrow {
+  color: #d0d0d0; font-size: 16px;
+  margin-left: 12px;
+  flex-shrink: 0;
+}
+
+/* ============ v7-rev7：深度页 v3 · 按 SSV 规范 + gongyi_half_screen_v2 视觉 ============ */
+/* SSV token 翻译：
+   --gy-text-color-primary    → #1F1F1F
+   --gy-text-color-secondary  → #595959
+   --gy-text-color-tertiary   → #999999
+   --gy-bg-color-container    → #FFFFFF
+   --gy-bg-color-page         → #F5F5F5
+   --gy-component-border      → #EDEDED
+   --gy-radius-default        → 12px
+   --gy-radius-medium         → 6px
+   --gy-radius-large          → 8px
+   --gy-brand-color           → #E8413C
+   --gy-warning-bg            → #FFF7E6
+   --gy-warning-text          → #B45309
+*/
+
+#progressOverlay .half-sheet { background: #ffffff; }
+
+.pp3-cover {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  background: #f5f5f5;
+  border-bottom: 0.5px solid #ededed;
+  overflow: hidden;
+}
+.pp3-cover-img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+}
+.pp3-cover-title {
+  position: absolute;
+  left: 16px; right: 16px; bottom: 14px;
+  font-size: 18px; font-weight: 500;
+  color: #1f1f1f; line-height: 1.4;
+  background: rgba(255,255,255,0.88);
+  padding: 8px 12px;
+  border-radius: 8px;
+  letter-spacing: 0.5px;
+}
+
+.pp3-status {
+  padding: 14px 16px;
+  border-bottom: 0.5px solid #ededed;
+}
+.pp3-status-bar {
+  height: 3px; background: #f5f5f5;
+  border-radius: 2px; overflow: hidden;
+  margin-bottom: 8px;
+}
+.pp3-status-fill {
+  height: 100%; background: #e8413c;
+  border-radius: 2px;
+}
+.pp3-status-row {
+  display: flex; justify-content: space-between;
+  font-size: 12px; color: #595959;
+  line-height: 1.5;
+}
+.pp3-status-row b { color: #1f1f1f; font-weight: 500; }
+
+.pp3-sec {
+  padding: 22px 16px;
+  border-top: 0.5px solid #ededed;
+}
+.pp3-sec:first-of-type { border-top: none; }
+.pp3-label {
+  font-size: 11px; color: #999;
+  letter-spacing: 2px;
+  margin-bottom: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.pp3-story {
+  font-size: 14.5px; color: #1f1f1f;
+  line-height: 1.9;
+  margin: 0 0 12px;
+  letter-spacing: 0.2px;
+}
+.pp3-story:last-of-type { margin-bottom: 0; }
+.pp3-story-collapsed .pp3-story:nth-of-type(n+3) {
+  display: none;
+}
+
+.pp3-fold-link {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 13px; color: #595959;
+  margin-top: 14px;
+  cursor: pointer;
+}
+.pp3-fold-link:active { opacity: 0.6; }
+.pp3-fold-link::after {
+  content: "›";
+  font-size: 14px;
+  transform: rotate(90deg);
+  display: inline-block;
+}
+.pp3-fold-link.is-open::after {
+  transform: rotate(-90deg);
+}
+
+.pp3-letter {
+  background: #fff7e6;
+  border-radius: 6px;
+  padding: 16px;
+  border-top: 0.5px dashed #d4a866;
+}
+.pp3-letter-h {
+  font-size: 11px; color: #b45309;
+  margin-bottom: 12px;
+  display: flex; justify-content: space-between;
+  align-items: center;
+  letter-spacing: 0.5px;
+}
+.pp3-letter-from {
+  display: inline-flex; align-items: center; gap: 5px;
+}
+.pp3-letter-icon {
+  width: 12px; height: 12px;
+  display: inline-flex;
+  flex-shrink: 0;
+}
+.pp3-letter-b {
+  font-size: 13.5px; color: #1f1f1f;
+  line-height: 1.8;
+}
+
+.pp3-comment {
+  padding: 14px 0;
+  font-size: 13.5px; color: #1f1f1f;
+  line-height: 1.65;
+}
+.pp3-comment:first-child { padding-top: 0; }
+.pp3-comment + .pp3-comment {
+  border-top: 0.5px solid #ededed;
+}
+.pp3-comment-from {
+  color: #999; font-size: 11px;
+  margin-top: 6px;
+  display: flex; align-items: center; gap: 6px;
+}
+.pp3-comment-dot {
+  width: 2px; height: 2px;
+  background: #999; border-radius: 50%;
+}
+
+.pp3-fold-item {
+  display: flex; align-items: center;
+  justify-content: space-between;
+  padding: 14px 0;
+  font-size: 13.5px; color: #595959;
+  cursor: pointer;
+}
+.pp3-fold-item + .pp3-fold-item {
+  border-top: 0.5px solid #ededed;
+}
+.pp3-fold-item-icon {
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.pp3-fold-item-icon svg {
+  width: 14px; height: 14px;
+  color: #595959;
+  flex-shrink: 0;
+}
+.pp3-fold-item-arrow {
+  color: #d0d0d0; font-size: 14px;
+}
 
 /* 执行效果 */
 .pp-exec-section { margin-bottom: 24px; }
@@ -4127,101 +4710,76 @@ body {
       </div>
     </div>
 
-    <!-- 项目深度卡半屏 -->
+    <!-- 项目深度卡半屏 v3 · 对齐腾讯公益设计系统 -->
     <div class="half-overlay" id="deepOverlay" onclick="closeHalf('deepOverlay')">
-      <div class="half-sheet" onclick="event.stopPropagation()">
-        <div class="hs-handle"></div>
-        <div class="hs-header">
-          <div>
-            <div class="hs-title" id="deepTitle">关于这个项目</div>
-            <div class="hs-sub" style="font-size:12px;color:#999;" id="deepOrg">执行机构</div>
-          </div>
-          <div class="hs-close" onclick="closeHalf('deepOverlay')">×</div>
-        </div>
+      <div class="half-sheet deep-v3" onclick="event.stopPropagation()">
+        <!-- v3: 不用 hs-handle 和 hs-header，自己做 navbar；deepTitle 隐藏在 sr-only 保留可达性 -->
+        <div class="hs-title" id="deepTitle" style="position:absolute;left:-9999px;">关于这个项目</div>
         <div class="hs-body">
-          <!-- 3 组关键数据（保留） -->
-          <div class="deep-stats">
-            <div class="deep-stat-item">
-              <div class="deep-stat-value" id="deepBeneficiary">—</div>
-              <div class="deep-stat-label" id="deepBeneficiaryLabel">—</div>
-            </div>
-            <div class="deep-stat-item">
-              <div class="deep-stat-value" id="deepDuration">—</div>
-              <div class="deep-stat-label" id="deepDurationLabel">—</div>
-            </div>
-            <div class="deep-stat-item">
-              <div class="deep-stat-value" id="deepEfficiency">—</div>
-              <div class="deep-stat-label" id="deepEfficiencyLabel">—</div>
+
+          <!-- 半屏拖动条（替代原 navbar） -->
+          <div class="deep-v3-handle"></div>
+
+          <!-- 封面 -->
+          <div class="deep-v3-cover">
+            <img class="deep-v3-cover-img" id="deepV3Cover" src="" alt="" onerror="this.style.display='none'; var fb=document.getElementById('deepV3CoverFallback'); if(fb) fb.style.display='flex';">
+            <div class="deep-v3-cover-fallback" id="deepV3CoverFallback" style="display:none;">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              <span>项目封面</span>
             </div>
           </div>
 
-          <!-- 为什么推荐给你（保留，这是 AI 的合理合法输出） -->
-          <div class="deep-why">
-            <div class="deep-why-title">为什么给你推这个</div>
-            <div class="deep-why-list" id="deepWhy">
-              <div>· 你之前关注过类似话题</div>
-              <div>· 平台运营 10 年，信用等级 A+</div>
-              <div>· 你有 3 个朋友捐过</div>
-              <div>· 剩 17 天，筹款还差最后一点</div>
+          <!-- 项目标题 + tags + 进度 -->
+          <div class="deep-v3-card flush-top">
+            <div class="deep-v3-ptitle" id="deepV3Title">—</div>
+            <div class="deep-v3-ptags" id="deepV3Tags"></div>
+            <div class="deep-v3-progress-bar">
+              <div class="deep-v3-progress-fill" id="deepV3ProgressFill" style="width:0%"></div>
             </div>
-            <div class="deep-why-note">推荐不受付费影响，你可以随时说"换一个"</div>
-          </div>
-
-          <!-- 执行地区覆盖 -->
-          <div class="deep-section">
-            <div class="deep-section-title">
-              <span>全国执行地区</span>
-              <span class="deep-section-title-extra" id="deepRegionExtra"></span>
-            </div>
-            <div class="deep-regions">
-              <div class="deep-regions-map">
-                <div class="deep-regions-visual">
-                  <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
-                    <circle cx="12" cy="10" r="3"/>
-                  </svg>
-                </div>
-                <div class="deep-regions-summary">
-                  <div class="deep-regions-count" id="deepRegionCount">—</div>
-                  <div class="deep-regions-desc" id="deepRegionDesc">—</div>
-                </div>
-              </div>
-              <div class="deep-regions-list" id="deepRegionList"></div>
+            <div class="deep-v3-progress-stats">
+              <span><span class="num" id="deepV3Raised">—</span> / <span id="deepV3Goal">—</span></span>
+              <span><span class="num" id="deepV3Supporters">—</span> 人已支持</span>
             </div>
           </div>
 
-          <!-- 执行机构情况 -->
-          <div class="deep-section">
-            <div class="deep-section-title">
-              <span>关于执行机构</span>
-              <span class="deep-section-title-extra">民政部备案</span>
-            </div>
-            <div class="deep-org-card">
-              <div class="deep-org-header">
-                <div class="deep-org-logo" id="deepOrgLogo">—</div>
-                <div class="deep-org-meta">
-                  <div class="deep-org-name" id="deepOrgFullName">—</div>
-                  <div class="deep-org-badges" id="deepOrgBadges"></div>
-                </div>
-              </div>
-              <div class="deep-org-desc" id="deepOrgDesc">—</div>
-            </div>
+          <!-- 爱心故事 -->
+          <div class="deep-v3-section-label"><span class="accent"></span>爱心故事</div>
+          <div class="deep-v3-card">
+            <div id="deepV3Story" class="story-collapsed"></div>
+            <div class="deep-v3-fold" id="deepV3StoryToggle" onclick="toggleStoryExpand()">展开看完整故事 ›</div>
+          </div>
+
+          <!-- 执行动态（一个整体卡，内部分两段） -->
+          <div class="deep-v3-section-label"><span class="accent"></span>执行动态</div>
+          <div class="deep-v3-card deep-v3-exec-card">
+            <div class="deep-v3-exec-summary" id="deepV3ExecSummary"><!-- JS 渲染 · 项目进度概览 --></div>
+            <div class="deep-v3-exec-divider"></div>
+            <div class="deep-v3-feedback" id="deepV3LetterWrap"><!-- JS 渲染 · 来自一线的反馈 --></div>
           </div>
 
           <!-- 爱心留言 -->
-          <div class="deep-section">
-            <div class="deep-section-title">
-              <span>爱心留言</span>
-              <span class="deep-section-title-extra" id="deepCommentsExtra"></span>
-            </div>
-            <div class="deep-comments" id="deepComments"></div>
+          <div class="deep-v3-section-label"><span class="accent"></span>爱心留言</div>
+          <div class="deep-v3-card" id="deepV3Comments"></div>
+
+          <!-- 机构详情 -->
+          <div class="deep-v3-section-label"><span class="accent"></span>机构详情</div>
+          <div class="deep-v3-card deep-v3-trust" id="deepV3Trust"><!-- JS 渲染 --></div>
+
+          <!-- 跳小程序查看更多（底部文字链） -->
+          <div class="deep-v3-mp-link" onclick="goToProjectMiniProgram()">
+            前往小程序查看更多项目详情 ›
           </div>
 
-          <!-- 操作 -->
-          <div class="deep-actions">
-            <button class="deep-btn-sub" onclick="closeHalf('deepOverlay')">再想想</button>
-            <button class="deep-btn-main" onclick="deepToHelp()">我想帮一下</button>
+          <div class="deep-v3-spacer"></div>
+
+          <!-- 底部 CTA -->
+          <div class="deep-v3-cta-bar">
+            <button class="deep-v3-cta" onclick="deepToHelp()">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+              我想帮一下
+            </button>
           </div>
+
         </div>
       </div>
     </div>
@@ -4360,15 +4918,18 @@ body {
     <div class="half-overlay" id="progressOverlay" onclick="closeHalf('progressOverlay')">
       <div class="half-sheet" onclick="event.stopPropagation()">
         <div class="hs-handle"></div>
-        <!-- 顶部项目主图（动态填充渐变 + 标签） -->
-        <div class="pp-hero" id="ppHero">
-          <span class="pp-hero-tag" id="ppHeroTag">公益项目</span>
+        <!-- 顶部封面：4:3 大图 + 标题白字叠遮罩底部（v4） -->
+        <div class="pp4-cover" id="ppHero">
+          <div class="pp4-cover-img" id="ppCoverImg"></div>
+          <div class="pp4-cover-mask"></div>
+          <div class="pp4-cover-sub" id="ppCoverSub"></div>
+          <div class="pp4-cover-title" id="ppCoverTitle">公益项目</div>
         </div>
         <div class="pp-content" id="progressBody">
-          <!-- JS 动态填充：head-card / mine banner / 执行效果 / 最新进展 / 捐赠情况 -->
+          <!-- JS 动态填充 -->
         </div>
         <div class="pp-footer-mini" id="progressFooter">
-          <!-- JS 动态填充：每月一捐 / 再帮一笔 + 小程序文字链 -->
+          <!-- JS 动态填充 -->
         </div>
       </div>
     </div>
@@ -4530,27 +5091,72 @@ const PROJECTS = {
     primaryAmount: 20,
     deep: {
       summary: '春蕾计划由中国儿基会发起，资助贫困女童完成学业。项目在腾讯公益已运营 10 年，每月在小程序公示资助名单与走访记录。',
-      beneficiary: '10 年',
-      beneficiaryLabel: '在腾讯公益运营',
-      duration: '每月',
-      durationLabel: '资助进展公示',
-      efficiency: '电子票据',
-      efficiencyLabel: '捐赠可追溯',
+      coverTag: '月捐',
+      coverTime: '持续筹款中 · 已运行 1,247 天',
+      titleDisplay: '春蕾计划<br>让乡村女孩留在课堂',
+      projTags: ['十年品牌', '捐赠票据', '民政部备案'],
+      raisedDisplay: '¥6.2 万',
+      goalDisplay: '¥10 万',
+      supporters: '1,247',
+      story: [
+        '王校长在云南怒江山区从教 30 年。每年开学，他都会发现教室里少了几个孩子 —— 大多是女孩。家里穷，能供一个读书的，就先紧着男孩。',
+        '2021 年秋，他借了一辆摩托车，跑了三个山头才说服一位山民让女儿回校。回来路上他下了决心：不能再让任何一个想读书的女孩，在山里被拦下。',
+        '这个项目从那一刻开始。它资助乡村女孩的学费、生活费和学习用品，让她们留在课堂里读到自己愿意停下的那一天。',
+        '过去 10 年，项目支持了云南、贵州、甘肃等 14 个省份的 23 万名困境女孩。其中近一半已经升学到初中或高中，有 600 多个孩子考进了大学。',
+        '钱从腾讯公益直接拨给中国儿童少年基金会，再由基金会按学期发到学校。每一笔的去向都在小程序公示，资助名单可追溯到具体的孩子。'
+      ],
+      execText: '过去 10 年累计资助 <b>14 个省份</b> 困境女童 <b>23 万人次</b>，近半数升入初中/高中，<b>600+</b> 进入大学。',
+      letter: {
+        stamp: '第 38 封',
+        from: '来自怒江第三中学 · 5月10日',
+        body: '这周我们去了怒江第三中学，把这学期的助学金交到了 22 位同学手里。其中一个孩子说想当老师，跟王校长一样。',
+        moreCount: '5'
+      },
+      letters: [
+        {
+          stamp: '第 38 封',
+          from: '来自怒江第三中学 · 5月10日',
+          body: '这周我们去了怒江第三中学，把这学期的助学金交到了 22 位同学手里。其中一个孩子说想当老师，跟王校长一样。'
+        },
+        {
+          stamp: '第 37 封',
+          from: '来自甘肃陇南 · 4月28日',
+          body: '第 37 批助学金已完成公示，42 位受助学生名单在小程序可查。本月走访中，有两个孩子交来了自己写的信，说要谢谢素未谋面的叔叔阿姨。'
+        },
+        {
+          stamp: '第 36 封',
+          from: '来自贵州黔南 · 4月12日',
+          body: '玛西把上次发的文具盒摆得整整齐齐，说等开家长会要给奶奶看。老师说她这学期语文考到了全班第三。'
+        },
+        {
+          stamp: '第 35 封',
+          from: '来自云南临沧 · 3月20日',
+          body: '珍珠生升入临沧二中已经 2 个月了，第一次住校生活她适应得很快。上周她给王校长发信息，说想把助学金省下来的零花钱寄回去给妹妹买书。'
+        },
+        {
+          stamp: '第 34 封',
+          from: '来自四川凉山 · 2月26日',
+          body: '开春第一批物资发到了 8 所学校，包括新课本、文具和冬衣。校长说孩子们这学期到得特别齐，没有一个因为天气冷不来上学。'
+        }
+      ],
+      // 老字段保留以备后用
+      beneficiary: '10 年', beneficiaryLabel: '在腾讯公益运营',
+      duration: '每月', durationLabel: '资助进展公示',
+      efficiency: '电子票据', efficiencyLabel: '捐赠可追溯',
       regions: {
         count: '14 个省份',
         desc: '集中在西部和西南山区，以云南、贵州、甘肃为主',
         list: ['云南', '贵州', '甘肃', '四川', '广西', '新疆', '青海', '西藏', '湖南', '陕西', '宁夏', '重庆', '河南', '湖北']
       },
       orgInfo: {
-        logo: '儿基',
-        fullName: '中国儿童少年基金会',
+        logo: '儿基', fullName: '中国儿童少年基金会',
         badges: ['5A级基金会', '公募资质', '民政部备案'],
         desc: '1981 年成立的全国性公募基金会，长期为困境儿童提供教育、健康、安全等领域的公益支持。'
       },
       comments: [
-        { name: '小*', amount: 20, time: '12 分钟前', text: '希望她能好好上学，未来可期。' },
-        { name: '阿**', amount: 100, time: '1 小时前', text: '以我女儿的名字捐的，想让她知道这个世界上还有很多和她一样大的孩子。' },
-        { name: '周*', amount: 10, time: '3 小时前', text: '月捐第 8 个月，愿你们都平安。' }
+        { name: '小*', displayName: '茉莉Mo', location: '北京', amount: 20, time: '12 分钟前', text: '看了王校长的故事就捐了。希望更多女孩能继续读书。' },
+        { name: '阿**', displayName: '小宇_Yu', location: '成都', amount: 100, time: '1 小时前', text: '我也是山里出来的，知道一本书的分量。' },
+        { name: '周*', displayName: '阿莹', location: '深圳', amount: 10, time: '3 小时前', text: '加油，我们等你们的好消息。' }
       ],
       commentsTotal: '共 3,821 条留言'
     }
@@ -4570,27 +5176,71 @@ const PROJECTS = {
     primaryAmount: 20,
     deep: {
       summary: '项目方在乡村建设图书角，每月更新落地进展和购书清单。基金会年报在公众号公开，新图书角平均 3 个月落地。',
-      beneficiary: '3 个月',
-      beneficiaryLabel: '新图书角落地',
-      duration: '每月',
-      durationLabel: '进展更新',
-      efficiency: '电子票据',
-      efficiencyLabel: '捐赠可追溯',
+      coverTag: '单元捐',
+      coverTime: '已建成 212 所图书角',
+      titleDisplay: '满天星公益图书馆<br>给乡村孩子一面书墙',
+      projTags: ['十年品牌', '捐赠票据', '民政部备案'],
+      raisedDisplay: '¥1.5 万',
+      goalDisplay: '¥2 万',
+      supporters: '892',
+      story: [
+        '2013 年，几个年轻人去广西支教，在一所乡村小学发现"图书室"里只有几本破损的教科书。回来后他们决定：要给乡村孩子一面真正的书墙。',
+        '12 年过去，他们已经在 9 个省份建了 212 所图书角，每一所都用了精心挑选的童书。他们坚持一件事：好的童书不能只给城里孩子读。',
+        '每个图书角的选书由 3 位儿童阅读专家共同评议，按低/中/高年级分梯度，覆盖文学、自然、科普三大方向，平均每所配书 800-1000 册。',
+        '项目方与当地教育局共建管理机制，每月由学校老师反馈使用情况、补充损耗。基金会每季度出走访报告，图书角的使用率公开可查。',
+        '资金从腾讯公益直拨到执行方，按图书角批次专款专用。每一所图书角的位置、配书清单、落成照片在小程序公示。'
+      ],
+      execText: '过去 12 年累计建成 <b>212 所</b>乡村图书角，覆盖 <b>9 个省份</b>，惠及乡村儿童约 <b>13 万人</b>。',
+      letter: {
+        stamp: '第 22 封',
+        from: '来自广西百色平果县 · 5月8日',
+        body: '今天图书角的第三批新书到了，118 本。一个二年级的女孩抱着《夏洛的网》不肯松手，问我能不能借回家。我说当然可以。',
+        moreCount: '15'
+      },
+      letters: [
+        {
+          stamp: '第 22 封',
+          from: '来自广西百色平果县 · 5月8日',
+          body: '今天图书角的第三批新书到了，118 本。一个二年级的女孩抱着《夏洛的网》不肯松手，问我能不能借回家。我说当然可以。'
+        },
+        {
+          stamp: '第 21 封',
+          from: '来自云南怒江 · 4月19日',
+          body: '怒江第二小学的图书角今天正式启用了，孩子们在新书架前排队挑书。校长说，这是他们学校有史以来第一个像样的图书角。'
+        },
+        {
+          stamp: '第 20 封',
+          from: '来自甘肃陇南 · 4月3日',
+          body: '本月新书入库 320 册，按低中高三个年级梯度上架。借阅记录显示，《神奇校车》系列借出最多，已经排到下个月。'
+        },
+        {
+          stamp: '第 19 封',
+          from: '来自贵州毕节 · 3月15日',
+          body: '新学期第二周，志愿者来回访。三年级的阿果说，她最喜欢周三的午读课，因为可以一口气读半个小时她最爱的故事书。'
+        },
+        {
+          stamp: '第 18 封',
+          from: '来自江西赣州 · 2月22日',
+          body: '本年度第一批图书角落地完成。江西赣州、湖南郴州、河北承德 3 所新图书角同时启用，孩子们围在书架前的样子让人想起春天。'
+        }
+      ],
+      beneficiary: '3 个月', beneficiaryLabel: '新图书角落地',
+      duration: '每月', durationLabel: '进展更新',
+      efficiency: '电子票据', efficiencyLabel: '捐赠可追溯',
       regions: {
         count: '9 个省份',
         desc: '以云南、广西、甘肃等乡村为主，在建和已建合计 212 所',
         list: ['云南', '广西', '甘肃', '贵州', '四川', '青海', '湖南', '江西', '河北']
       },
       orgInfo: {
-        logo: '满天星',
-        fullName: '满天星青少年公益发展中心',
+        logo: '满天星', fullName: '满天星青少年公益发展中心',
         badges: ['4A级机构', '地方民政注册', '专注儿童阅读'],
         desc: '深耕乡村儿童阅读 12 年的专业机构，自主研发书目体系和阅读课程，长期与地方教育部门合作。'
       },
       comments: [
-        { name: 'L*', amount: 50, time: '5 分钟前', text: '小时候我也是从一本课外书开始喜欢上读书的。' },
-        { name: '小*', amount: 20, time: '40 分钟前', text: '每个孩子都该有一整面墙的书。' },
-        { name: '王*', amount: 100, time: '2 小时前', text: '希望图书角早日落地。' }
+        { name: 'L*', displayName: 'Lulu_读书', location: '杭州', amount: 50, time: '5 分钟前', text: '小时候我也是从一本课外书开始喜欢上读书的。' },
+        { name: '小*', displayName: '小米饭', location: '上海', amount: 20, time: '40 分钟前', text: '每个孩子都该有一整面墙的书。' },
+        { name: '王*', displayName: '王小亮', location: '南宁', amount: 100, time: '2 小时前', text: '希望图书角早日落地。' }
       ],
       commentsTotal: '共 1,942 条留言'
     }
@@ -4610,26 +5260,70 @@ const PROJECTS = {
     primaryAmount: 20,
     deep: {
       summary: '冬季应急项目，物资定向发放到高原牧区孩子手上。每批发放都有影像留档，基金会年报公开。',
-      beneficiary: '10-15 天',
-      beneficiaryLabel: '物资送到孩子手上',
-      duration: '每批',
-      durationLabel: '发放有影像留档',
-      efficiency: '电子票据',
-      efficiencyLabel: '捐赠可追溯',
+      coverTag: '冬季应急',
+      coverTime: '紧急筹款 · 还剩 17 天',
+      titleDisplay: '山区孩子的冬天<br>一件棉衣的温度',
+      projTags: ['十年品牌', '捐赠票据', '民政部备案'],
+      raisedDisplay: '¥10,420',
+      goalDisplay: '¥12,000',
+      supporters: '438',
+      story: [
+        '青藏高原的冬天，最低能到零下 30 度。每年 11 月，志愿者要赶在第一场雪封山前，把棉衣送到牧区孩子手上。',
+        '"今年的冬天来得早，好几个孩子还穿着秋天的薄外套。"项目负责人说。这件事看似简单，但每多一天就多一份风险。',
+        '项目方与当地教育局、村委会合作排查需求，按家庭困境程度优先级发放。每件物资编号入册、签收回执影像留档。',
+        '6 年下来，已经在青海玉树、西藏那曲、甘肃甘南等 6 个高寒地区累计发放冬装 2.8 万件，覆盖 47 所牧区学校。',
+        '资金从腾讯公益直拨到爱德基金会，由项目组按发放批次报账，物资清单和发放照片在公众号定期公示。'
+      ],
+      execText: '过去 6 年累计为 <b>6 个高寒地区</b> 共 <b>2.8 万名</b>孩子送达冬装，物资清单与发放影像每批留档。',
+      letter: {
+        stamp: '第 18 封',
+        from: '来自青海玉树囊谦县 · 5月6日',
+        body: '今天送了第二批棉衣到囊谦县，118 件。其中一个孩子告诉我，他终于不用上课时把手揣兜里了。窗外又开始下雪。',
+        moreCount: '7'
+      },
+      letters: [
+        {
+          stamp: '第 18 封',
+          from: '来自青海玉树囊谦县 · 5月6日',
+          body: '今天送了第二批棉衣到囊谦县，118 件。其中一个孩子告诉我，他终于不用上课时把手揣兜里了。窗外又开始下雪。'
+        },
+        {
+          stamp: '第 17 封',
+          from: '来自西藏那曲 · 4月14日',
+          body: '那曲第一批冬装到位，96 件。孩子们的脸冻得通红但都很兴奋，老师说今年是他们最温暖的一个冬天。'
+        },
+        {
+          stamp: '第 16 封',
+          from: '来自甘肃甘南 · 3月22日',
+          body: '甘南夏河县的物资发放完成。本批次包括棉衣、保暖手套、防滑棉鞋三件套。每个孩子的签收照片已上传备案。'
+        },
+        {
+          stamp: '第 15 封',
+          from: '来自四川甘孜 · 2月18日',
+          body: '甘孜白玉县连续大雪 5 天，志愿者徒步翻过两座山把第二批物资送到了海拔 3,800 米的村小。'
+        },
+        {
+          stamp: '第 14 封',
+          from: '来自新疆阿勒泰 · 1月29日',
+          body: '阿勒泰布尔津县完成本季度第一批发放，覆盖 8 所牧区小学共 327 名孩子。下个月还有第二批补发。'
+        }
+      ],
+      beneficiary: '10-15 天', beneficiaryLabel: '物资送到孩子手上',
+      duration: '每批', durationLabel: '发放有影像留档',
+      efficiency: '电子票据', efficiencyLabel: '捐赠可追溯',
       regions: {
         count: '6 个高寒地区',
         desc: '集中在青藏高原和西北牧区，冬季气温常低于 -20℃',
         list: ['青海玉树', '西藏那曲', '甘肃甘南', '四川甘孜', '新疆阿勒泰', '内蒙锡林郭勒']
       },
       orgInfo: {
-        logo: '爱德',
-        fullName: '爱德基金会',
+        logo: '爱德', fullName: '爱德基金会',
         badges: ['5A级基金会', '公募资质', '1985 年成立'],
         desc: '中国最早的民间公益组织之一，40 年专注教育、助老、赈灾、社会发展，在全国多个省份有常驻项目点。'
       },
       comments: [
-        { name: '赵*', amount: 20, time: '15 分钟前', text: '北方人知道冷是什么滋味。' },
-        { name: '杜*', amount: 50, time: '1 小时前', text: '希望每个孩子冬天都有厚衣服穿。' }
+        { name: '赵*', displayName: '赵小北', location: '哈尔滨', amount: 20, time: '15 分钟前', text: '北方人知道冷是什么滋味。' },
+        { name: '杜*', displayName: '杜杜_Du', location: '西宁', amount: 50, time: '1 小时前', text: '希望每个孩子冬天都有厚衣服穿。' }
       ],
       commentsTotal: '共 876 条留言'
     }
@@ -4649,26 +5343,70 @@ const PROJECTS = {
     primaryAmount: 20,
     deep: {
       summary: '跨 12 个城市的社区送餐网络，志愿者每天送餐上门并在小程序打卡。基金会年报公开。',
-      beneficiary: '12 个',
-      beneficiaryLabel: '城市覆盖',
-      duration: '每日',
-      durationLabel: '志愿者打卡',
-      efficiency: '电子票据',
-      efficiencyLabel: '捐赠可追溯',
+      coverTag: '日常陪伴',
+      coverTime: '每日配送 · 已运行 5 年',
+      titleDisplay: '为困境老人<br>送一份热乎饭',
+      projTags: ['十年品牌', '捐赠票据', '民政部备案'],
+      raisedDisplay: '¥7,900',
+      goalDisplay: '¥10,000',
+      supporters: '623',
+      story: [
+        '李叔叔是上海某社区的送餐员志愿者。他每天送餐时都会多坐 5 分钟，听老人讲讲话。"很多老人不缺这一顿饭，缺的是有人按门铃。"',
+        '这个项目在 12 个城市做了 5 年，覆盖 1,800 多位独居老人。每一份饭背后都有一位志愿者，每一次送达都在小程序里打卡留证。',
+        '与每个城市的居委会合作排查独居老人名单，按身体状况、家庭情况分级匹配志愿者。志愿者每周固定时段送餐 3-5 次。',
+        '送餐之外，志愿者会观察老人健康状况，发现异常及时联系家属或社区。过去 5 年共上报 240 余次紧急情况，避免多起意外。',
+        '资金按城市批次拨付到地方公益组织，餐费、配送、志愿者补贴明细每月公示。'
+      ],
+      execText: '过去 <b>5 年</b>跨 <b>12 个城市</b>累计送达餐次 <b>26 万份</b>，覆盖独居困境老人 <b>1,800+</b> 位。',
+      letter: {
+        stamp: '第 142 封',
+        from: '来自上海虹口社区 · 5月11日',
+        body: '今天给张奶奶送饭，她说想吃红烧肉。志愿者小周下次特地从家里带了一份。张奶奶的眼睛湿了，说像孩子做给她吃的。',
+        moreCount: '23'
+      },
+      letters: [
+        {
+          stamp: '第 142 封',
+          from: '来自上海虹口社区 · 5月11日',
+          body: '今天给张奶奶送饭，她说想吃红烧肉。志愿者小周下次特地从家里带了一份。张奶奶的眼睛湿了，说像孩子做给她吃的。'
+        },
+        {
+          stamp: '第 141 封',
+          from: '来自北京东城 · 5月4日',
+          body: '本月新增 7 位独居老人加入项目，志愿者已完成上门家访。其中两位老人身体较弱，已安排周一三五三次送餐。'
+        },
+        {
+          stamp: '第 140 封',
+          from: '来自杭州拱墅 · 4月22日',
+          body: '王爷爷下楼晒太阳时摔伤了，志愿者送餐时发现后立刻联系了社区。送医及时，没有大碍。家属赶到时一直说谢谢。'
+        },
+        {
+          stamp: '第 139 封',
+          from: '来自南京秦淮 · 4月8日',
+          body: '清明前一周，志愿者陪几位独居老人一起在社区做青团。这是项目第三年组织节气活动，老人们说像找回了从前过节的感觉。'
+        },
+        {
+          stamp: '第 138 封',
+          from: '来自成都武侯 · 3月19日',
+          body: '本月送餐打卡 1,247 次，准时率 99.6%。月度志愿者会议上，大家分享了新发现需要长期关注的 3 位老人。'
+        }
+      ],
+      beneficiary: '12 个', beneficiaryLabel: '城市覆盖',
+      duration: '每日', durationLabel: '志愿者打卡',
+      efficiency: '电子票据', efficiencyLabel: '捐赠可追溯',
       regions: {
         count: '12 个城市',
         desc: '在社区层面和当地居委会合作，目前集中在东部及中部城市',
         list: ['北京', '上海', '南京', '杭州', '合肥', '武汉', '长沙', '西安', '成都', '重庆', '郑州', '济南']
       },
       orgInfo: {
-        logo: '救助',
-        fullName: '中华社会救助基金会',
+        logo: '救助', fullName: '中华社会救助基金会',
         badges: ['5A级基金会', '公募资质', '2008 年成立'],
         desc: '国务院批准的全国性公募基金会，聚焦困境群体救助，运营"善行者""大爱之行"等长期公益品牌。'
       },
       comments: [
-        { name: '文*', amount: 50, time: '刚刚', text: '希望爷爷奶奶们都有人陪。' },
-        { name: '苏**', amount: 30, time: '20 分钟前', text: '我爷爷去年走了，替他做点事。' }
+        { name: '文*', displayName: '文文Wen', location: '上海', amount: 50, time: '刚刚', text: '希望爷爷奶奶们都有人陪。' },
+        { name: '苏**', displayName: '苏小希', location: '苏州', amount: 30, time: '20 分钟前', text: '我爷爷去年走了，替他做点事。' }
       ],
       commentsTotal: '共 1,204 条留言'
     }
@@ -4688,26 +5426,70 @@ const PROJECTS = {
     primaryAmount: 20,
     deep: {
       summary: '上海本地救助基地，每周四固定在小程序更新动物照片和健康状况。支持领养和长期捐助。',
-      beneficiary: '每周四',
-      beneficiaryLabel: '更新动物近况',
-      duration: '基地',
-      durationLabel: '可实地探访',
-      efficiency: '电子票据',
-      efficiencyLabel: '捐赠可追溯',
+      coverTag: '日常救助',
+      coverTime: '已救助 1,200+ 只 · 每周四更新',
+      titleDisplay: '让它们有饭吃<br>上海流浪动物救助',
+      projTags: ['十年品牌', '捐赠票据', '民政部备案'],
+      raisedDisplay: '¥5,360',
+      goalDisplay: '¥8,000',
+      supporters: '347',
+      story: [
+        '协会的基地在上海青浦，从 1992 年开始救助流浪猫狗。32 年里，他们送走了一些，又接来了更多 —— 城市里始终有流浪动物。',
+        '"我们做的不是终点，是中转站。"理事长说。每周四是她最忙的一天 —— 要更新每一只动物的照片和健康状况，让捐过的人都能看到 ta 的样子。',
+        '基地按救助、医治、领养三段管理，每只动物入站编号建档。健康评估完成后进入领养通道，匹配领养人需要经过 3 道审核。',
+        '过去 5 年累计救助 1,200+ 只流浪猫狗，其中 800+ 已成功领养出去。剩余的会在基地获得长期照料，部分老弱伤残将常驻基地。',
+        '基地全年对外开放预约探访，捐赠人可以来基地看望救助过的动物。每月开支、医疗清单、领养记录小程序公示。'
+      ],
+      execText: '过去 5 年累计救助 <b>1,200+</b> 只<b>流浪猫狗</b>，其中 <b>800+ 已被领养</b>，基地全年对外预约探访。',
+      letter: {
+        stamp: '第 64 封',
+        from: '来自上海青浦基地 · 5月9日',
+        body: '本周新到 3 只小猫，年龄都不超过两个月，是路人在小区垃圾桶旁发现的。已经做完体检，全部健康。请大家在领养通道关注它们。',
+        moreCount: '11'
+      },
+      letters: [
+        {
+          stamp: '第 64 封',
+          from: '来自上海青浦基地 · 5月9日',
+          body: '本周新到 3 只小猫，年龄都不超过两个月，是路人在小区垃圾桶旁发现的。已经做完体检，全部健康。请大家在领养通道关注它们。'
+        },
+        {
+          stamp: '第 63 封',
+          from: '来自上海青浦基地 · 5月2日',
+          body: '本月成功领养 12 只，包括 8 只猫和 4 只狗。其中那只断尾的橘猫"小金"终于找到了它的家，新主人是一对开咖啡店的夫妻。'
+        },
+        {
+          stamp: '第 62 封',
+          from: '来自上海青浦基地 · 4月25日',
+          body: '基地完成春季疫苗接种，所有在站动物状态良好。本批次还为 3 只老猫做了牙齿检查，2 只需要后续治疗，已安排手术档期。'
+        },
+        {
+          stamp: '第 61 封',
+          from: '来自上海青浦基地 · 4月18日',
+          body: '基地开放日，来了 28 位访客。一位 7 岁的小朋友抱着她想领养的小奶猫不肯走，最后家长决定办手续。审核通过后会安排领养。'
+        },
+        {
+          stamp: '第 60 封',
+          from: '来自上海青浦基地 · 4月10日',
+          body: '本月医疗支出 1.8 万元，主要用于一只因车祸入站的中华田园犬手术。它的右后腿保住了，目前正在康复中，预计 6 周后可以站立。'
+        }
+      ],
+      beneficiary: '每周四', beneficiaryLabel: '更新动物近况',
+      duration: '基地', durationLabel: '可实地探访',
+      efficiency: '电子票据', efficiencyLabel: '捐赠可追溯',
       regions: {
         count: '上海本地',
         desc: '基地位于上海青浦，面向上海及周边的流浪动物救助和领养',
         list: ['上海青浦', '上海松江', '嘉兴周边']
       },
       orgInfo: {
-        logo: '动保',
-        fullName: '上海市小动物保护协会',
+        logo: '动保', fullName: '上海市小动物保护协会',
         badges: ['地方注册', '4A级机构', '1992 年成立'],
         desc: '全国成立较早的小动物保护机构，常年承担流浪动物救助、医治、领养、科普工作。'
       },
       comments: [
-        { name: '喵*', amount: 20, time: '7 分钟前', text: '家里两只也是领养的。' },
-        { name: '小*', amount: 50, time: '2 小时前', text: '希望它们都能找到家。' }
+        { name: '喵*', displayName: '喵叽_Mi', location: '上海', amount: 20, time: '7 分钟前', text: '家里两只也是领养的。' },
+        { name: '小*', displayName: '小卷卷', location: '苏州', amount: 50, time: '2 小时前', text: '希望它们都能找到家。' }
       ],
       commentsTotal: '共 512 条留言'
     }
@@ -4719,7 +5501,7 @@ function projectCard(projId, aiSummary, changeBtnText, categoryLabel) {
   // 截短 AI 摘要：去掉 b 标签里的"还差"语，保留场景描述
   const cleanSummary = (aiSummary || '').replace(/<\/?b>/g, '');
   return `
-    <div class="proj-card-v3" onclick="if(event.target.tagName==='BUTTON'||event.target.classList.contains('proj-card-v3-change'))return; state.currentProject='${projId}'; openProjectProgress();">
+    <div class="proj-card-v3" onclick="if(event.target.tagName==='BUTTON'||event.target.classList.contains('proj-card-v3-change'))return; state.currentProject='${projId}'; openDeepCard('${projId}');">
       <div class="proj-card-v3-hero">
         <img src="${p.imgUrl}" alt="${p.title}" loading="lazy" onerror="this.style.display='none'" />
         ${categoryLabel ? `<span class="proj-card-v3-tag">${categoryLabel}</span>` : ''}
@@ -4817,23 +5599,17 @@ function progressListCard() {
   `;
 }
 
-// 用户从列表挑了一个项目 → 用户气泡 + Agent 详情卡
+// 用户从列表挑了一个项目 → 直接打开来信半屏（不追加新气泡/卡片，保稳定感）
 async function onTapPickProject(projId, title) {
-  const shortName = title.split(' · ')[0];
-  await addUserBubble('看下' + shortName);
-  const dateMap = {
-    chunlei: '10 月 22 日',
-    elderly: '10 月 26 日',
-    rural:   '9 月 3 日'
+  const letterIdMap = {
+    chunlei: 'chunlei-38',
+    elderly: 'elderly-11',
+    rural:   'rural-09',
+    library: 'library-22'
   };
-  const orgFeedbackMap = {
-    chunlei: { date: '11 月 14 日', org: '中国儿童少年基金会' },
-    elderly: { date: '11 月 12 日', org: '爱德基金会' },
-    rural:   { date: '10 月 28 日', org: '免费午餐基金' }
-  };
-  const fb = orgFeedbackMap[projId] || orgFeedbackMap.elderly;
-  await addAgentBubble(`好。这是 ${fb.date} 机构刚发的最新反馈，你出的那 ¥XX 也用上了 ↓`, 1000);
-  await addCard(progressCardSingle(), 600);
+  const letterId = letterIdMap[projId] || 'elderly-11';
+  state.currentProject = projId;
+  openLetterDetail(letterId);
 }
 
 // 项目最近在做什么（不是"你的钱去哪了"——而是项目方此前真实反馈）
@@ -4894,29 +5670,23 @@ function doneCard(amount, projectTitle, whichBatch, nextPromise) {
   return `
     <div class="done-card">
       <div class="done-mark">
-        <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg width="48" height="48" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
           <circle cx="28" cy="28" r="27" stroke="#e8413c" stroke-width="1" fill="#fff5f5"/>
           <path d="M19 28.5L25.5 35L37.5 21.5" stroke="#e8413c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </div>
       <div class="done-title">成功捐赠</div>
-      <div class="done-amount-label">我的爱心</div>
       <div class="done-amount">¥${amount}</div>
       <div class="done-where">送往「${projectTitle}」</div>
 
-      <div class="done-promise">
-        <div>${nextPromise}</div>
-      </div>
+      <a class="done-subscribe-link" id="doneSubscribeLink" onclick="onTapSubscribeProgress(this)">订阅本项目进展 ›</a>
 
       <button class="done-btn-main" id="doneFlowerBtn" onclick="onTapBringFlower()">
-        🌸 把这朵花带到我的状态
+        🌸 戴上小红花
       </button>
-      <button class="done-btn-sub" onclick="openProjectProgress('ppProgressAnchor')">
-        看项目进展
+      <button class="done-btn-sub" onclick="openCertificate()">
+        我的捐赠证书
       </button>
-      <div class="done-cert-link">
-        <a onclick="openCertificate()">📜 我的捐赠证书 ›</a>
-      </div>
     </div>
   `;
 }
@@ -5022,8 +5792,8 @@ async function changeProject(currentId) {
   };
   const nextId = alternates[currentId] || 'chunlei';
   state.currentProject = nextId;
-  // "换一个看看"是 UI 操作不是发言，不追加用户气泡，也不再让 Agent 多说"同类里再换一个"
-  // 直接出新推荐卡，节奏更顺
+  // 用户点"换一个看看" → 先发指令气泡，再出新推荐卡
+  await addUserBubble('换一个看看');
   await wait(300);
   const storyMap = {
     library: `为乡村小学建设图书角，自主研发书目体系。<b>下一批新书就差最后一点资助</b>，新图书角平均 3 个月落地。`,
@@ -5238,6 +6008,28 @@ const LETTERS = {
     photoTags: ['图书角开箱', '孩子们读书', '老师签收'],
     body: '268 本新书送到惠水县苗族小学。从贵阳出发开了 5 个多小时山路，过了 3 个隧道才到。\n\n图书角的孩子们这两天开心得合不上嘴——我们出去的时候，已经有十几个孩子在新书前面排队等着借了。\n\n这一批里 60% 是科普类，孩子们最喜欢《十万个为什么》和《地球的秘密》。剩下是文学和绘本。',
     meta: '你支持了 1 次 · 累计 ¥20 · 项目方 9 天前发布'
+  },
+  'elderly-11': {
+    project: '为孤寡老人送一份热乎饭',
+    from: '爱德基金会 · 11 月反馈',
+    date: '2026/11/12',
+    scene: '云南红河 · 弥勒县',
+    headline: '本月已在弥勒县发出 18,420 份热饭',
+    photoColors: ['#e6d3a8', '#c8a76a', '#9b7a4a'],
+    photoTags: ['送餐现场', '张奶奶在家中', '志愿者打卡表'],
+    body: '11 月 12 日：本月已在弥勒县发出 18,420 份热饭。\n\n你支持的那一笔，让张奶奶（87 岁）连续 7 天吃上了热饭。志愿者王姐说，奶奶最近胃口好了不少，今天还多吃了一勺红烧肉。\n\n下个月我们准备把覆盖点扩展到隔壁的开远市，那里还有 200 多位等待中的独居老人。',
+    meta: '你 10/26 捐过 ¥10 · 捐赠票据可查'
+  },
+  'rural-09': {
+    project: '山区孩子的一份午餐',
+    from: '免费午餐基金 · 项目组',
+    date: '2026/10/28',
+    scene: '湖南湘西 · 龙山县',
+    headline: '湘西龙山县孩子们的本学期午餐已就绪',
+    photoColors: ['#f5d59a', '#e3a56a', '#b87a3a'],
+    photoTags: ['食堂打饭', '孩子们午餐', '厨房备菜'],
+    body: '本学期开始，龙山县 8 所小学的孩子已陆续吃上了由我们配套提供的午餐。\n\n每顿 4 元的标准，包含一荤一素一汤一主食。9 月 3 号你支持的那一笔，已经被排入 11 月的执行计划。下次更新会带来当地厨师拍的菜品图。',
+    meta: '你 9/3 捐过 ¥50 · 捐赠票据可查'
   }
 };
 
@@ -5348,97 +6140,91 @@ async function onTapDonateAgain() {
   openHalf('payOverlay');
 }
 
-// ========================= 项目深度卡 =========================
+// ========================= 项目深度卡 v3 · 故事+来信驱动 =========================
 function openDeepCard(projId) {
   const p = PROJECTS[projId];
   if (!p || !p.deep) return;
   state.currentProject = projId;
 
+  // 兼容老 hs-header 的 title（被 CSS 隐藏了，保留给可达性）
   document.getElementById('deepTitle').textContent = '关于「' + p.title + '」';
-  document.getElementById('deepOrg').textContent = '由 ' + p.org + ' 执行 · 已运营 ' + p.years + ' 年';
 
-  document.getElementById('deepBeneficiary').textContent = p.deep.beneficiary;
-  document.getElementById('deepBeneficiaryLabel').textContent = p.deep.beneficiaryLabel;
-  document.getElementById('deepDuration').textContent = p.deep.duration;
-  document.getElementById('deepDurationLabel').textContent = p.deep.durationLabel;
-  document.getElementById('deepEfficiency').textContent = p.deep.efficiency;
-  document.getElementById('deepEfficiencyLabel').textContent = p.deep.efficiencyLabel;
+  // 封面图 + 标签 + 时间（reset fallback 状态）
+  const coverImg = document.getElementById('deepV3Cover');
+  const coverFb = document.getElementById('deepV3CoverFallback');
+  if (coverFb) coverFb.style.display = 'none';
+  coverImg.style.display = '';
+  coverImg.src = p.imgUrl;
+  coverImg.alt = p.title;
 
-  // 推荐逻辑（根据用户情境动态生成）
-  const whyMap = {
-    chunlei: [
-      '匹配你提到的「想帮孩子读书」',
-      '在腾讯公益运营 ' + p.years + ' 年',
-      '你的 ' + p.friendsCount + ' 个微信好友捐过',
-      '每月公示资助进展，可在小程序查到'
-    ],
-    library: [
-      '匹配你提到的「想帮孩子读书」',
-      '在腾讯公益运营 ' + p.years + ' 年',
-      '项目方每月更新落地进展',
-      '基金会年报在公众号可查'
-    ],
-    warmth: [
-      '冬季应急项目，当下时效强',
-      '在腾讯公益运营 ' + p.years + ' 年',
-      '每批发放都有影像留档',
-      '基金会年报在公众号可查'
-    ],
-    elderly: [
-      '匹配你提到的「想帮老人」',
-      '覆盖 12 个城市，送餐到家',
-      '志愿者每日打卡可查',
-      '在腾讯公益运营 ' + p.years + ' 年'
-    ],
-    animal: [
-      '匹配你提到的「想帮小动物」',
-      '本地救助基地直连',
-      '每周更新动物照片',
-      '在腾讯公益运营 ' + p.years + ' 年'
-    ]
-  };
-  const whyList = whyMap[projId] || whyMap.chunlei;
-  document.getElementById('deepWhy').innerHTML = whyList.map(w => '<div>· ' + w + '</div>').join('');
+  // 项目标题（支持换行）
+  document.getElementById('deepV3Title').innerHTML = (p.deep.titleDisplay || p.title);
 
-  // 执行地区
-  if (p.deep.regions) {
-    document.getElementById('deepRegionCount').textContent = p.deep.regions.count;
-    document.getElementById('deepRegionDesc').textContent = p.deep.regions.desc;
-    document.getElementById('deepRegionExtra').textContent = '共 ' + p.deep.regions.list.length + ' 地';
-    document.getElementById('deepRegionList').innerHTML = p.deep.regions.list
-      .map(r => '<span class="deep-regions-tag">' + r + '</span>').join('');
+  // 项目标签
+  const ptags = (p.deep.projTags && p.deep.projTags.length)
+    ? p.deep.projTags
+    : (p.tags || []).slice(0, 3);
+  document.getElementById('deepV3Tags').innerHTML = ptags
+    .map(t => '<span class="deep-v3-ptag">' + t + '</span>').join('');
+
+  // 进度条 + 数据
+  const pct = Math.max(0, Math.min(100, p.progress || 0));
+  document.getElementById('deepV3ProgressFill').style.width = pct + '%';
+  if (p.deep.raisedDisplay && p.deep.goalDisplay) {
+    document.getElementById('deepV3Raised').textContent = p.deep.raisedDisplay;
+    document.getElementById('deepV3Goal').textContent = p.deep.goalDisplay;
+  } else {
+    // 从 progressText "还差 328.91 / 6,000 元" 反算
+    const m = (p.progressText || '').match(/还差\s*([\d,.]+)\s*\/\s*([\d,.]+)/);
+    if (m) {
+      const goal = parseFloat(m[2].replace(/,/g, ''));
+      const remaining = parseFloat(m[1].replace(/,/g, ''));
+      const raised = goal - remaining;
+      document.getElementById('deepV3Raised').textContent = '¥' + raised.toLocaleString('zh-CN', {maximumFractionDigits: 0});
+      document.getElementById('deepV3Goal').textContent = '¥' + goal.toLocaleString('zh-CN', {maximumFractionDigits: 0});
+    } else {
+      document.getElementById('deepV3Raised').textContent = pct + '%';
+      document.getElementById('deepV3Goal').textContent = '目标';
+    }
+  }
+  document.getElementById('deepV3Supporters').textContent =
+    (p.deep.supporters || (p.deep.commentsTotal ? p.deep.commentsTotal.replace(/[^\d,]/g, '') : '—'));
+
+  // 项目故事（多段）
+  const storyParas = p.deep.story || [p.deep.summary || ''];
+  const storyEl = document.getElementById('deepV3Story');
+  storyEl.innerHTML = storyParas
+    .map(s => '<p class="deep-v3-story">' + s + '</p>').join('');
+  // reset 折叠状态
+  storyEl.classList.add('story-collapsed');
+  const storyToggle = document.getElementById('deepV3StoryToggle');
+  if (storyToggle) {
+    if (storyParas.length > 3) {
+      storyToggle.style.display = '';
+      storyToggle.innerHTML = '展开全部 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px;margin-left:2px;"><polyline points="6 9 12 15 18 9"/></svg>';
+    } else {
+      storyToggle.style.display = 'none';
+    }
   }
 
-  // 机构情况
-  if (p.deep.orgInfo) {
-    document.getElementById('deepOrgLogo').textContent = p.deep.orgInfo.logo;
-    document.getElementById('deepOrgFullName').textContent = p.deep.orgInfo.fullName;
-    document.getElementById('deepOrgBadges').innerHTML = p.deep.orgInfo.badges
-      .map(b => '<span class="deep-org-badge">' + b + '</span>').join('');
-    document.getElementById('deepOrgDesc').textContent = p.deep.orgInfo.desc;
-  }
+  // 执行动态（项目进度概览 + 反馈卡组）
+  renderExecSummary(p);
+  renderFeedback(p);
 
-  // 爱心留言
+  // 机构与信任区
+  renderTrustSection(p);
+
+  // 支持者留言
   if (p.deep.comments) {
-    const commentsHtml = p.deep.comments.map(c => {
-      const initial = c.name.charAt(0);
-      return `
-        <div class="deep-comment-item">
-          <div class="deep-comment-avatar">${initial}</div>
-          <div class="deep-comment-body">
-            <div class="deep-comment-meta">
-              <span class="deep-comment-name">${c.name}</span>
-              <span class="deep-comment-amount">捐了 ¥${c.amount}</span>
-              <span class="deep-comment-time">${c.time}</span>
-            </div>
-            <div class="deep-comment-text">${c.text}</div>
-          </div>
-        </div>
-      `;
+    const html = p.deep.comments.map(c => {
+      // 把 "小*" 这种匿名格式美化成更人格化的展示
+      const display = c.displayName || c.name;
+      const loc = c.location || '匿名';
+      return `<div class="deep-v3-comment">"${c.text}"
+        <div class="deep-v3-comment-from">${display}<span class="deep-v3-dot"></span>${loc}</div>
+      </div>`;
     }).join('');
-    document.getElementById('deepComments').innerHTML = commentsHtml +
-      (p.deep.commentsTotal ? '<div class="deep-comments-total">' + p.deep.commentsTotal + '</div>' : '');
-    document.getElementById('deepCommentsExtra').textContent = p.deep.commentsTotal || '';
+    document.getElementById('deepV3Comments').innerHTML = html;
   }
 
   openHalf('deepOverlay');
@@ -5451,6 +6237,192 @@ function deepToHelp() {
   }, 350);
 }
 
+// 展开/收起项目故事（就地向下展开）
+function toggleStoryExpand() {
+  const storyEl = document.getElementById('deepV3Story');
+  const btn = document.getElementById('deepV3StoryToggle');
+  if (!storyEl || !btn) return;
+  if (storyEl.classList.contains('story-collapsed')) {
+    storyEl.classList.remove('story-collapsed');
+    btn.innerHTML = '收起 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px;margin-left:2px;"><polyline points="18 15 12 9 6 15"/></svg>';
+  } else {
+    storyEl.classList.add('story-collapsed');
+    btn.innerHTML = '展开全部 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px;margin-left:2px;"><polyline points="6 9 12 15 18 9"/></svg>';
+  }
+}
+
+// 渲染项目进度概览（执行动态第一个卡片）
+function renderExecSummary(p) {
+  const el = document.getElementById('deepV3ExecSummary');
+  if (!el) return;
+  const execText = p.deep.execText
+    || (typeof PROGRESS_DATA !== 'undefined' && PROGRESS_DATA[p.id] && PROGRESS_DATA[p.id].execText)
+    || '';
+  const dateLabel = p.deep.execDate || '截至 2026/05';
+  if (!execText) {
+    el.style.display = 'none';
+    return;
+  }
+  el.style.display = '';
+  el.innerHTML = `
+    <div class="deep-v3-exec-summary-head">
+      <span class="deep-v3-exec-summary-title">项目进度概览</span>
+      <span class="deep-v3-exec-summary-date">${dateLabel}</span>
+    </div>
+    <div class="deep-v3-exec-summary-body">${execText}</div>
+  `;
+}
+
+// 渲染反馈卡组（执行动态第二个卡片）
+function renderFeedback(p) {
+  const wrap = document.getElementById('deepV3LetterWrap');
+  if (!wrap) return;
+
+  const allLetters = (p.deep.letters && p.deep.letters.length)
+    ? p.deep.letters
+    : (p.deep.letter ? [p.deep.letter] : []);
+
+  if (!allLetters.length) {
+    wrap.style.display = 'none';
+    return;
+  }
+  wrap.style.display = '';
+
+  // 最多展示 5 封
+  const visibleLetters = allLetters.slice(0, 5);
+
+  const cardsHTML = visibleLetters.map((l, i) => {
+    const isLatest = (i === 0);
+    const stampClass = isLatest ? 'deep-v3-letter-stamp latest' : 'deep-v3-letter-stamp';
+    const stampText = isLatest ? '最新' : (l.stamp || ('第 ' + (i + 1) + ' 封'));
+    // 从 from 字段拆出地点和日期（格式："来自怒江第三中学 · 5月10日"）
+    let location = '';
+    let date = '';
+    const fromStr = l.from || '';
+    const parts = fromStr.split('·').map(s => s.trim());
+    if (parts.length >= 2) {
+      location = parts[0].replace(/^来自/, '');
+      date = parts[1];
+    } else {
+      location = fromStr.replace(/^来自/, '');
+      date = l.date || '';
+    }
+    return `
+      <div class="deep-v3-letter">
+        <div class="deep-v3-letter-top">
+          <span class="${stampClass}">${stampText}</span>
+          ${date ? `<span class="deep-v3-letter-date">${date}</span>` : ''}
+        </div>
+        ${location ? `
+          <div class="deep-v3-letter-h">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <span>${location}</span>
+          </div>
+        ` : ''}
+        <div class="deep-v3-letter-b">${l.body || '—'}</div>
+        <div class="deep-v3-letter-sign">— 项目执行小组</div>
+      </div>
+    `;
+  }).join('');
+
+  const dotsHTML = visibleLetters.map((_, i) =>
+    `<span class="deep-v3-letter-dot${i === 0 ? ' active' : ''}"></span>`
+  ).join('');
+
+  wrap.innerHTML = `
+    <div class="deep-v3-feedback-head">
+      <span class="deep-v3-feedback-title">来自一线的反馈</span>
+      <span class="deep-v3-feedback-count">共 ${visibleLetters.length} 封</span>
+    </div>
+    <div class="deep-v3-letter-swipe" id="deepV3LetterSwipe">
+      ${cardsHTML}
+    </div>
+    <div class="deep-v3-letter-dots" id="deepV3LetterDots">${dotsHTML}</div>
+  `;
+
+  // scroll → 更新小圆点
+  const swipe = document.getElementById('deepV3LetterSwipe');
+  const dots = document.getElementById('deepV3LetterDots');
+  if (swipe && dots && swipe.firstElementChild) {
+    swipe.addEventListener('scroll', () => {
+      const cardW = swipe.firstElementChild.offsetWidth + 10;
+      const idx = Math.round(swipe.scrollLeft / cardW);
+      const ds = dots.children;
+      for (let i = 0; i < ds.length; i++) {
+        ds[i].classList.toggle('active', i === idx);
+      }
+    }, { passive: true });
+  }
+}
+
+// 渲染机构详情区
+function renderTrustSection(p) {
+  const el = document.getElementById('deepV3Trust');
+  if (!el) return;
+  const org = p.deep.orgInfo || {};
+  const orgName = org.fullName || p.org || '执行机构';
+  const orgLogo = (org.logo || orgName.substring(0, 2));
+  const orgBadges = (org.badges && org.badges.length) ? org.badges : ['民政部备案'];
+  const orgMeta = orgBadges.join(' · ');
+
+  // 财务披露条目
+  const discloseItems = p.deep.discloseItems || [
+    '电子捐赠票据 · 即捐即开',
+    '月度资金公示 · 小程序可查',
+    '善款流向可追溯到具体执行点'
+  ];
+
+  el.innerHTML = `
+    <div class="deep-v3-trust-row">
+      <div class="deep-v3-trust-head">执行机构</div>
+      <div class="deep-v3-trust-org">
+        <div class="deep-v3-trust-org-logo">${orgLogo}</div>
+        <div class="deep-v3-trust-org-body">
+          <div class="deep-v3-trust-org-name">${orgName}</div>
+          <div class="deep-v3-trust-org-meta">${orgMeta}</div>
+        </div>
+      </div>
+    </div>
+    <div class="deep-v3-trust-row">
+      <div class="deep-v3-trust-head">财务披露</div>
+      <div class="deep-v3-trust-disclose">
+        ${discloseItems.map(t => `
+          <div class="deep-v3-trust-item">
+            <span class="check">✓</span>
+            <span>${t}</span>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `;
+}
+
+// 前往小程序查看更多（合规跳转：关半屏 → 用户指令气泡 → Agent 单条文字+超链气泡）
+async function goToProjectMiniProgram() {
+  const p = PROJECTS[state.currentProject];
+  const projTitle = (p && p.title) || '当前项目';
+  closeHalf('deepOverlay');
+  await new Promise(r => setTimeout(r, 420));
+  // 1. 用户指令气泡
+  await addUserBubble('查看更多项目详情');
+  // 2. Agent 一条气泡（文字 + 绿字超链合并）
+  await addAgentBubble(`
+    好的，这里是完整项目信息，包括财务报告和历史进展：
+    <div class="mp-link-wrap">
+      <a class="mp-link-row" onclick="showToast('已跳转到小程序（demo）')">
+        <span class="mp-link-icon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+          </svg>
+        </span>
+        <span class="mp-link-text">${projTitle}</span>
+        <span class="mp-link-arrow">↗</span>
+      </a>
+    </div>
+  `, 700);
+}
+
 // ========================= 带花到状态 =========================
 let currentStatusText = '做好事';
 
@@ -5459,13 +6431,38 @@ function openFlowerStatus() {
 }
 
 // 完成卡主按钮：把花带到我的状态
-function onTapBringFlower() {
+// 微信状态目前不能由 Agent 直接拉起 → 走对话气泡 + 文字链合规跳转
+async function onTapBringFlower() {
   const btn = document.getElementById('doneFlowerBtn');
   if (btn) {
     btn.classList.add('flower-done');
-    btn.innerHTML = '🌸 已带上小红花';
+    btn.innerHTML = '🌸 已生成';
   }
-  openHalf('statusOverlay');
+  const bubbleHTML = `
+    花准备好了。点下面这条，就能把它戴到你的微信状态：
+    <div class="mp-link-wrap">
+      <a class="mp-link-row" onclick="openHalf('statusOverlay')">
+        <span class="mp-link-icon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9"/>
+            <path d="M12 7v5l3 2"/>
+          </svg>
+        </span>
+        <span class="mp-link-text">戴上小红花</span>
+        <span class="mp-link-arrow">↗</span>
+      </a>
+    </div>
+  `;
+  await addAgentBubble(bubbleHTML, 700);
+}
+
+// 订阅本项目进展（走服务号订阅消息，不是 Agent push）
+async function onTapSubscribeProgress(el) {
+  if (el.classList.contains('subscribed')) return;
+  // 模拟微信订阅消息授权弹窗
+  showToast('已通过服务号订阅本项目进展');
+  el.classList.add('subscribed');
+  el.textContent = '已订阅 · 进展将通过服务号推送';
 }
 
 async function onSubscribeProject() {
@@ -5481,6 +6478,13 @@ const PROGRESS_DATA = {
     heroTag: '困境女童助学',
     trustBadges: ['平台 10 年项目', '电子捐赠票据'],
     summary: '为西部山区困境女童提供学费资助与生活支持。集中在云南、贵州、甘肃等 14 个省份，已帮助 23 万人次困境女童完成学业。由中国儿童少年基金会发起执行。',
+    storyParas: [
+      '王校长在云南怒江山区从教 30 年。每年开学，他都会发现教室里少了几个孩子 —— 大多是女孩。家里穷，能供一个读书的，就先紧着男孩。',
+      '2021 年秋，他借了一辆摩托车，跑了三个山头才说服一位山民让女儿回校。回来路上他下了决心：不能再让任何一个想读书的女孩，在山里被拦下。',
+      '这个项目从那一刻开始。它资助乡村女孩的学费、生活费、学习用品，让她们留在课堂里读到自己愿意停下的那一天。',
+      '过去 10 年，项目支持了云南、贵州、甘肃等 14 个省份的 23 万名困境女孩。其中近一半已经升学到初中或高中，有 600 多个孩子考进了大学。',
+      '钱从腾讯公益直接拨给中国儿童少年基金会，再由基金会按学期发到学校。每一笔的去向都在小程序公示，资助名单可追溯到具体的孩子。'
+    ],
     orgReceive: { name: '中国儿童少年基金会', icon: '#fde2e2' },
     orgExec: { name: '中国儿童少年基金会', icon: '#fde2e2' },
     execText: '截至 2025 年底，资助 <b>14 个省份</b>困境女童 <b>23 万人次</b>，其中云南、贵州、甘肃为主要资助地区。',
@@ -5490,6 +6494,26 @@ const PROGRESS_DATA = {
       { date: '2026/02/28', org: '中国儿童少年基金会发布', title: '月度资金公示', body: '2 月共筹集 ¥186,420，全部用于助学金发放，账目已在小程序公示。' }
     ],
     progressTotal: 13,
+    stories: [
+      {
+        hero: 'linear-gradient(135deg, #f5d59a, #e3a56a)',
+        caption: '云南临沧 · 张老师拍的合影',
+        meta: '珍珠生 · 16 岁 · 云南临沧',
+        tag: '已升初中',
+        title: '从全家 4 口人挤一间土房，到考上初中',
+        brief: '2019 年成为春蕾女童那年她 9 岁，全家 4 口人挤在一间土房里。',
+        full: '2019 年成为春蕾女童那年她 9 岁，全家 4 口人挤在一间土房里。\n\n这 7 年学费一直是项目方按学期发到学校。今年 9 月她考上了临沧二中的初中部，离家 30 公里要住校，第一次自己打饭、洗衣服。\n\n张老师上个月去看她，她说想读师范，回来当老师。'
+      },
+      {
+        hero: 'linear-gradient(135deg, #c9d4b9, #8aab85)',
+        caption: '贵州黔南 · 玛西的语文作业本',
+        meta: '玛西 · 12 岁 · 贵州黔南',
+        tag: '本学期受助',
+        title: '家里第一个上学的孩子',
+        brief: '本学期刚拿到课本和文具，是家里第一个上学的孩子。',
+        full: '玛西是家里 4 个孩子中最小的，也是第一个上学的。父母常年在外打工，跟着奶奶生活。\n\n这学期她拿到了助学金、新课本和一套文具盒。她最喜欢语文课，老师说她写字非常认真，作业本永远是干干净净的。\n\n下次反馈大概是期中后，会有她的成绩单和老师评语。'
+      }
+    ],
     donate: {
       filing: '5332000050917103XBA21005',
       label: '公众捐赠',
@@ -5607,164 +6631,89 @@ function formatShortAmount(numStr) {
   return n.toLocaleString();
 }
 
-// anchor 可选：'ppProgressAnchor' 会在半屏动画完成后平滑滚到"最新进展"
+// anchor 可选：'ppProgressAnchor' 半屏动画完成后平滑滚到锚点
 function openProjectProgress(anchor) {
   const projId = state.currentProject || 'chunlei';
   const data = PROGRESS_DATA[projId] || PROGRESS_DATA.chunlei;
   const hasDonated = !!state.hasDonated;
 
-  // 顶部 hero 渐变 + 标签
-  const hero = document.getElementById('ppHero');
-  if (hero) hero.style.background = data.heroGradient;
-  document.getElementById('ppHeroTag').textContent = data.heroTag;
+  // 顶部封面 v4
+  const coverImg = document.getElementById('ppCoverImg');
+  if (coverImg) coverImg.style.background = data.heroGradient;
+  document.getElementById('ppCoverTitle').textContent = data.projTitle;
+  const sub = document.getElementById('ppCoverSub');
+  if (sub) sub.textContent = data.heroTag || '';
 
-  // 机构行
-  const orgHTML = `
-    <div class="pp-org-row">
-      <div class="pp-org-label">善款接收</div>
-      <div class="pp-org-value">
-        <div class="pp-org-icon" style="background:${data.orgReceive.icon}"></div>
-        <span class="pp-org-name">${data.orgReceive.name}</span>
+  // sec1 · 资金状态
+  const d = data.donate || {};
+  const statusHTML = `
+    <div class="pp4-status">
+      <div class="pp4-status-row">
+        <span><b>已筹 ${d.raised || '—'}</b> / 目标 ${d.goal || '—'}</span>
+        <span>${d.donors || '—'} 人已支持</span>
       </div>
-      <span class="pp-org-arrow">›</span>
-    </div>
-    <div class="pp-org-row">
-      <div class="pp-org-label">执行机构</div>
-      <div class="pp-org-value">
-        <div class="pp-org-icon" style="background:${data.orgExec.icon}"></div>
-        <span class="pp-org-name">${data.orgExec.name}</span>
-      </div>
-      <span class="pp-org-arrow">›</span>
-    </div>
-  `;
-
-  // "你与这个项目" banner（仅已捐用户显示）
-  const mine = data.mine;
-  const mineBanner = (hasDonated && mine && mine.times > 0) ? `
-    <div class="pp-mine-banner">
-      <div>
-        <div class="pp-mine-text"><b>你与这个项目</b></div>
-        <div class="pp-mine-text" style="color:#7a5a5a;font-size:12px;margin-top:3px;">共捐过 ${mine.times} 次 · 收到 ${mine.flowers} 朵小红花</div>
-      </div>
-      <div class="pp-mine-num">¥${mine.total}</div>
-    </div>
-  ` : '';
-
-  // 最新进展列表
-  const progressHTML = data.progressList.map((p, i) => {
-    const isLast = i === data.progressList.length - 1;
-    const photosHTML = p.photos ? `
-      <div class="pp-progress-photos">
-        <div class="pp-progress-photo">${p.photos[0]}</div>
-        ${p.photos[1] ? `<div class="pp-progress-photo">${p.photos[1]}</div>` : ''}
-        ${p.photos[2] ? `<div class="pp-progress-photo-more">共 ${p.photos.length} 张</div>` : ''}
-      </div>
-    ` : '';
-    return `
-      <div class="pp-progress-item">
-        <div class="pp-progress-dot-col">
-          <div class="pp-progress-dot ${i === 0 ? 'active' : ''}"></div>
-          ${!isLast ? '<div class="pp-progress-line"></div>' : ''}
-        </div>
-        <div class="pp-progress-content">
-          <div class="pp-progress-meta">
-            <span>${p.date}</span>
-            <span class="pp-progress-org">${p.org}</span>
-            ${p.badge ? `<span class="pp-progress-badge">${p.badge}</span>` : ''}
-          </div>
-          <div class="pp-progress-title">${p.title}</div>
-          ${p.body ? `<div class="pp-progress-body">${p.body}</div>` : ''}
-          ${photosHTML}
-        </div>
-      </div>
-    `;
-  }).join('');
-
-  // 捐赠情况（累计两格独立放回作为子区，删标题旁小字）
-  const d = data.donate;
-  const donateHTML = `
-    <div class="pp-donate-section">
-      <div class="pp-section-title">捐赠情况</div>
-      <div class="pp-donate-header-row">
-        <span class="pp-donate-sub-label">${d.label}</span>
-        <div class="pp-donate-filing-inline">募捐备案 ${d.filing}<em>i</em></div>
-      </div>
-      <div class="pp-donate-main-block">
-        <div class="pp-donate-amount-row">
-          <span class="pp-donate-amount-num">${d.raised}</span>
-          <span class="pp-donate-pct">已筹 ${d.pct}</span>
-        </div>
-        <div class="pp-donate-amount-goal">本期目标 ${d.goal}</div>
-        <div class="pp-donate-progress-bar">
-          <div class="pp-donate-progress-fill" style="width:${d.pctFill}%"></div>
-        </div>
-      </div>
-      <div class="pp-donate-stats-grid">
-        <div class="pp-donate-stat-cell">
-          <span class="pp-donate-stat-num">${d.total}</span>
-          <span class="pp-donate-stat-label">${d.totalLabel}</span>
-        </div>
-        <div class="pp-donate-stat-cell">
-          <span class="pp-donate-stat-num">${d.donors}</span>
-          <span class="pp-donate-stat-label">${d.donorsLabel}</span>
-        </div>
+      <div class="pp4-status-bar">
+        <div class="pp4-status-fill" style="width:${d.pctFill || 0}%"></div>
       </div>
     </div>
   `;
 
-  // 爱心留言（从 PROJECTS[projId].deep.comments 读）
-  const projMeta = PROJECTS[projId];
-  let commentsHTML = '';
-  if (projMeta && projMeta.deep && projMeta.deep.comments) {
-    const items = projMeta.deep.comments.map(c => `
-      <div class="pp-comment-item">
-        <div class="pp-comment-avatar">${c.name.charAt(0)}</div>
-        <div class="pp-comment-body">
-          <div class="pp-comment-meta">
-            <span class="pp-comment-name">${c.name}</span>
-            <span class="pp-comment-amount">捐了 ¥${c.amount}</span>
-            <span>${c.time}</span>
-          </div>
-          <div class="pp-comment-text">${c.text}</div>
-        </div>
+  // sec2 · 爱心故事（多段，可折叠）
+  const storyParas = (data.storyParas && data.storyParas.length > 0)
+    ? data.storyParas
+    : [data.summary];
+  const storyHasMore = storyParas.length > 2;
+  const storyParasHTML = storyParas.map(p => `<p class="pp4-story-para">${p}</p>`).join('');
+  const storySecHTML = `
+    <div class="pp4-story-sec">
+      <div class="pp4-story-h">爱心故事</div>
+      <div class="pp4-story-wrap ${storyHasMore ? 'pp4-story-collapsed' : ''}" id="pp4StoryWrap">
+        ${storyParasHTML}
       </div>
-    `).join('');
-    commentsHTML = `
-      <div class="pp-comments-section">
-        <div class="pp-section-title">爱心留言</div>
-        ${items}
-        ${projMeta.deep.commentsTotal ? `<div class="pp-comments-total">${projMeta.deep.commentsTotal}</div>` : ''}
+      ${storyHasMore ? `<span class="pp4-story-toggle" onclick="onTogglePp4Story(this)">展开看完整故事 ›</span>` : ''}
+    </div>
+  `;
+
+  // sec3 · 最近反馈一行链
+  const latestLetter = (data.progressList && data.progressList[0]) || null;
+  let latestRowHTML = '';
+  if (latestLetter) {
+    const totalCount = data.progressTotal || data.progressList.length;
+    const letterIdMap = { chunlei: 'chunlei-38', library: 'library-22', elderly: 'elderly-11', rural: 'rural-09' };
+    const letterId = letterIdMap[projId] || 'chunlei-38';
+    latestRowHTML = `
+      <div class="pp4-row-link" onclick="closeHalf('progressOverlay'); setTimeout(()=>openLetterDetail('${letterId}'), 320);">
+        <div class="pp4-row-link-left">
+          最近反馈：${latestLetter.title || ''}
+          <span class="sub">${latestLetter.org || ''} · 共 ${totalCount} 条</span>
+        </div>
+        <span class="pp4-row-link-arrow">›</span>
       </div>
     `;
   }
 
-  // 拼接半屏正文（执行效果独立成区，放在最新进展上面）
-  document.getElementById('progressBody').innerHTML = `
-    <div class="pp-head-card">
-      <div class="pp-head-row">
-        <div class="pp-proj-title">${data.projTitle}</div>
+  // sec4 · 机构资质一行链
+  const orgName = (data.orgExec && data.orgExec.name) || (data.orgReceive && data.orgReceive.name) || '';
+  const orgRowHTML = `
+    <div class="pp4-row-link" onclick="goToProgressMiniProgram('${projId}')">
+      <div class="pp4-row-link-left">
+        由 ${orgName} 执行
+        <span class="sub">资质与财报可查 · 民政部备案</span>
       </div>
-      <div class="pp-head-summary">${data.summary}</div>
-      <div class="pp-org-section">${orgHTML}</div>
+      <span class="pp4-row-link-arrow">›</span>
     </div>
-
-    ${mineBanner}
-
-    <div class="pp-exec-section">
-      <div class="pp-section-title">执行效果</div>
-      <div class="pp-exec-text">${data.execText}</div>
-    </div>
-
-    <div class="pp-section-title" id="ppProgressAnchor">最新进展</div>
-    <div class="pp-progress-list" id="ppProgressList">${progressHTML}</div>
-    <a class="pp-progress-more-link" id="ppProgressMore" onclick="loadMoreProgress('${projId}')">查看全部 ${data.progressTotal} 条进展 ›</a>
-
-    ${donateHTML}
-
-    ${commentsHTML}
   `;
 
-  // 底部按钮：按"是否已捐"切换文案
+  // 拼接半屏正文（v4：3 段 + 2 行链）
+  document.getElementById('progressBody').innerHTML = `
+    ${statusHTML}
+    <div id="ppProgressAnchor"></div>
+    ${storySecHTML}
+    ${latestRowHTML}
+    ${orgRowHTML}
+  `;
+
+  // 底部 CTA
   const donateLabel = hasDonated ? '再帮一笔' : '我想帮一下';
   document.getElementById('progressFooter').innerHTML = `
     <div class="pp-footer-btns">
@@ -5776,17 +6725,53 @@ function openProjectProgress(anchor) {
 
   openHalf('progressOverlay');
 
-  // 锚点跳转：半屏动画约 320ms，等完成后滚到最新进展
   if (anchor === 'ppProgressAnchor') {
     setTimeout(() => {
       const sheet = document.querySelector('#progressOverlay .half-sheet');
       const target = document.getElementById('ppProgressAnchor');
       if (sheet && target) {
-        const offset = target.offsetTop - 14;
-        sheet.scrollTo({ top: offset, behavior: 'smooth' });
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
-    }, 380);
+    }, 360);
   }
+}
+
+// v4：项目故事折叠/展开
+function onTogglePp4Story(linkEl) {
+  const wrap = document.getElementById('pp4StoryWrap');
+  if (!wrap) return;
+  const isCollapsed = wrap.classList.contains('pp4-story-collapsed');
+  if (isCollapsed) {
+    wrap.classList.remove('pp4-story-collapsed');
+    linkEl.textContent = '收起 ›';
+  } else {
+    wrap.classList.add('pp4-story-collapsed');
+    linkEl.textContent = '展开看完整故事 ›';
+  }
+}
+
+// 「机构资质」一行链（progressOverlay 用）→ 走合规跳小程序流程
+async function goToProgressMiniProgram(projId) {
+  const data = PROGRESS_DATA[projId] || PROGRESS_DATA.chunlei;
+  closeHalf('progressOverlay');
+  await wait(420);
+  const orgName = (data.orgExec && data.orgExec.name) || '执行机构';
+  const bubbleHTML = `
+    项目的机构资质和财报都在腾讯公益小程序里：
+    <div class="mp-link-wrap">
+      <a class="mp-link-row" onclick="onOpenMiniProgramLink('${projId}')">
+        <span class="mp-link-icon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="4" y="3" width="16" height="18" rx="2"/>
+            <path d="M8 8h8"/><path d="M8 12h8"/><path d="M8 16h5"/>
+          </svg>
+        </span>
+        <span class="mp-link-text">${data.projTitle}</span>
+        <span class="mp-link-arrow">↗</span>
+      </a>
+    </div>
+  `;
+  await addAgentBubble(bubbleHTML, 700);
 }
 
 // 加载更多进展（追加 5 条预置）
