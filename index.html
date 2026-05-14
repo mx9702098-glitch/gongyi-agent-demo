@@ -259,44 +259,11 @@ body {
 .msg.user { justify-content: flex-end; }
 
 .msg .avatar {
-  width: 36px;
-  height: 36px;
-  border-radius: 4px;
-  flex-shrink: 0;
-  background: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
+  display: none;
 }
-
-.msg.agent .avatar {
-  background: linear-gradient(135deg, #a78bfa 0%, #ec4899 50%, #f59e0b 100%);
-  font-size: 16px;
-  position: relative;
-  overflow: hidden;
-  color: transparent;
-}
-
-.msg.agent .avatar::after {
-  content: '';
-  position: absolute;
-  inset: 4px;
-  border-radius: 3px;
-  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9), rgba(255,255,255,0) 55%);
-}
-
-.msg.user .avatar {
-  background: #d8d8d8;
-  font-size: 18px;
-  color: #666;
-  margin-left: 8px;
-}
-
-.msg.agent .avatar { margin-right: 8px; }
 
 .bubble {
-  max-width: 260px;
+  max-width: 280px;
   padding: 10px 14px;
   font-size: 15px;
   line-height: 1.45;
@@ -399,10 +366,11 @@ body {
 
 /* Agent 卡片 */
 .card-wrap {
-  margin-left: 44px;
+  margin-left: 0;
   margin-top: 6px;
   margin-bottom: 18px;
   max-width: 280px;
+  width: 280px;
   opacity: 0;
   animation: cardIn 0.4s cubic-bezier(0.17, 0.67, 0.3, 1) forwards;
 }
@@ -739,12 +707,16 @@ body {
   border: 0.5px solid rgba(0,0,0,0.06);
   cursor: pointer;
   transition: transform 0.15s;
+  width: 280px;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  flex-direction: column;
 }
 .proj-card-v3:active { transform: scale(0.995); }
 .proj-card-v3-hero {
   position: relative;
   width: 100%;
-  height: 158px;
+  flex: 0 0 140px;
   background: linear-gradient(135deg, #c4ad7a 0%, #8a6f43 60%, #4d3d22 100%);
   overflow: hidden;
 }
@@ -776,41 +748,48 @@ body {
           mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='currentColor'><path d='M5 8.5L2.5 6l1-1L5 6.5l3.5-3.5 1 1z'/></svg>") no-repeat center / contain;
 }
 .proj-card-v3-body {
-  padding: 14px 16px 16px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 10px 14px 12px;
+  min-height: 0;
 }
 .proj-card-v3-title {
-  font-size: 16px; font-weight: 700; color: #111;
-  line-height: 1.4;
-  margin-bottom: 8px;
+  font-size: 15px; font-weight: 700; color: #111;
+  line-height: 1.35;
+  margin-bottom: 4px;
 }
 .proj-card-v3-summary {
-  font-size: 13px; color: #666;
-  line-height: 1.65;
-  margin-bottom: 14px;
+  font-size: 12px; color: #666;
+  line-height: 1.55;
+  margin-bottom: 8px;
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  flex: 1;
 }
 .proj-card-v3-help {
   width: 100%;
-  height: 44px;
+  height: 36px;
   border: none;
-  border-radius: 10px;
+  border-radius: 8px;
   background: #c43a36; color: #fff;
-  font-size: 15px; font-weight: 500;
+  font-size: 14px; font-weight: 500;
   cursor: pointer;
   transition: all 0.15s;
+  flex-shrink: 0;
 }
 .proj-card-v3-help:active { background: #ad2f2c; transform: scale(0.99); }
 .proj-card-v3-change {
   display: block;
   width: 100%;
   text-align: center;
-  font-size: 13px; color: #07c160; font-weight: 500;
-  padding: 10px 0 0;
+  font-size: 12px; color: #07c160; font-weight: 500;
+  padding: 6px 0 0;
   cursor: pointer;
   background: none; border: none;
+  flex-shrink: 0;
 }
 .proj-card-v3-change:active { opacity: 0.6; }
 
