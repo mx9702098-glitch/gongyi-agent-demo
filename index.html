@@ -716,7 +716,7 @@ body {
 .proj-card-v3-hero {
   position: relative;
   width: 100%;
-  flex: 0 0 140px;
+  flex: 0 0 130px;
   background: linear-gradient(135deg, #c4ad7a 0%, #8a6f43 60%, #4d3d22 100%);
   overflow: hidden;
 }
@@ -769,29 +769,39 @@ body {
   overflow: hidden;
   flex: 1;
 }
+.proj-card-v3-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.proj-card-v3-swap {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 38px;
+  padding: 0 10px;
+  border: 0.5px solid #e5e5e5;
+  border-radius: 8px;
+  background: #fff;
+  color: #555;
+  font-size: 12.5px;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.15s;
+}
+.proj-card-v3-swap:active { background: #f5f5f5; }
 .proj-card-v3-help {
-  width: 100%;
-  height: 36px;
+  flex: 1;
+  height: 38px;
   border: none;
   border-radius: 8px;
   background: #c43a36; color: #fff;
   font-size: 14px; font-weight: 500;
   cursor: pointer;
   transition: all 0.15s;
-  flex-shrink: 0;
 }
 .proj-card-v3-help:active { background: #ad2f2c; transform: scale(0.99); }
-.proj-card-v3-change {
-  display: block;
-  width: 100%;
-  text-align: center;
-  font-size: 12px; color: #07c160; font-weight: 500;
-  padding: 6px 0 0;
-  cursor: pointer;
-  background: none; border: none;
-  flex-shrink: 0;
-}
-.proj-card-v3-change:active { opacity: 0.6; }
 
 
 .help-btn:active {
@@ -5606,8 +5616,15 @@ function projectCard(projId, aiSummary, changeBtnText, categoryLabel) {
       <div class="proj-card-v3-body">
         <div class="proj-card-v3-title">${p.title}</div>
         <div class="proj-card-v3-summary">${cleanSummary}</div>
-        <button class="proj-card-v3-help" onclick="event.stopPropagation(); openDonate('${projId}')">我想帮一下</button>
-        ${changeBtnText ? `<button class="proj-card-v3-change" onclick="event.stopPropagation(); changeProject('${projId}')">换一个看看 ›</button>` : ''}
+        <div class="proj-card-v3-actions">
+          ${changeBtnText ? `
+            <button class="proj-card-v3-swap" onclick="event.stopPropagation(); changeProject('${projId}')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+              换一个
+            </button>
+          ` : ''}
+          <button class="proj-card-v3-help" onclick="event.stopPropagation(); openDonate('${projId}')">我想帮一下</button>
+        </div>
       </div>
     </div>
   `;
